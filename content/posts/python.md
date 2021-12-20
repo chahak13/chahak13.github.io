@@ -1,0 +1,10 @@
++++
+title = "python"
+author = ["Chahak Mehta"]
+draft = false
++++
+
+e:PROPERTIES:
+:ID:       b8d95e76-b898-4de9-9379-a1a30398ada0
+
+:END:

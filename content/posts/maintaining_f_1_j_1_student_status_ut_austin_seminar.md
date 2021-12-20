@@ -1,0 +1,74 @@
++++
+title = "Maintaining F-1/J-1 student status (UT Austin seminar)"
+author = ["Chahak Mehta"]
+date = 2021-06-03
+tags = ["utaustin", "us", "masters"]
+draft = false
++++
+
+## Maintaining Status {#maintaining-status}
+
+-   Enroll full-time for each Fall and Spring semester:
+    -   Graduate: 9 hours
+-   Make normal progress towards the degree
+-   Passport should not expire
+-   I-20 should be accurate and valid at all times
+-   Grace period after end of program:
+    -   F1: 60 days
+
+
+### Enrollment during Covid {#enrollment-during-covid}
+
+-   You may not enter US if you plan to enroll to all online classes
+-   If in US, should enroll in at-least one in-person course
+-   Austin plans to hold most courses in person
+-   Online semesters do not count towards fulfilling two semester requirement for CPT/OPT
+
+
+### Employment {#employment}
+
+-   Can work on-campus
+    -   Up to **30 days** before start of classes
+    -   **Maximum** of **20 hours/week** (Fall and Spring sems)
+    -   **DON'T** work without proper authorization. Reach out to ISSS before off-campus work
+
+
+### myIO {#myio}
+
+-   Complete all required forms in myIO to finish Check-in process
+-   After registration of classes, ISSS will update that status
+
+
+### Changing Addresses {#changing-addresses}
+
+-   Update to local address in MyUT within **10 days** of arrival or change.
+-   <http://my.utexas.edu>
+
+
+## Travel Reminders {#travel-reminders}
+
+-   Documents to be kept at all times:
+    -   Valid I-20 signed within a year
+    -   Valid Passport and visa
+    -   Proof of enrollment and funding
+    -   SEVIS fee receipt
+-   Carry all original docs when leaving Austin, especially within 100 miles of international border
+-   Cannot re-enter during grace period
+
+
+## Q&A {#q-and-a}
+
+1.  COVID Vaccine requirements?
+    None really, as of now. Students at UT have an option to get it
+2.  I-20 signatures?
+    Please sign bottom of page 1 with blue pen. Sign and Date
+3.  Wait-time for I-20s?
+    A bit hard to say, but if waiting for >2 weeks, please reach out to the office.
+4.  Travel signature on I-20?
+    On pg 2 of I-20, there will be a travel signature from the ISSS office. While student, travel sign is valid for 12 months. If sign is older than a year, request for a new sign if you have any travel plans.
+5.  When can students enter?
+    Earliest is 30 days prior to program start date on I-20
+6.  Does UT require full vaccination for in-person classes?
+    Not right now, no. Vaccines are available for students when they arrive.
+7.  What are off-campus employment options as F-1 student?
+    A seminar on this very thing next week. Main option is CPT.

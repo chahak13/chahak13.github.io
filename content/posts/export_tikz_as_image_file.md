@@ -1,0 +1,41 @@
++++
+title = "Export tikz as image file"
+author = ["Chahak Mehta"]
+draft = false
++++
+
+## [Export tikz as image file](https://tex.stackexchange.com/questions/275023/export-tikz-as-image-file) {#export-tikz-as-image-file}
+
+I have created a tikz picture as a standalone.
+Can I export the tex file as an image instead of as a pdf?
+
+Comments
+
+-   (_Johannes\_B_) No, but you can easily convert the pdf to jpg or png.
+-   (_Arun Debray_) A couple possible solutions are discussed in tex.stackexchange.com/a/11880/55879.
+-   (_user11232_) standalone provides convert option. For this you will need imagemagick installed.
+-   (_user11232_) Or you can directly convert it using imagemagick → convert -density 300 yourfile.pdf yourfile.png (or .jpg whatever)
+-   (_vaettchen_) QTikZ is a nice editor cum preview pane and offers export to PNG
+
+
+### Answer 1 {#answer-1}
+
+I achieved the best results with `pdftoppm`, the anti-aliasing is much better than imagemagicks `convert`.
+Just do:
+
+```text
+$ pdftoppm -png -r <dpi> document.pdf > document.png
+
+```
+
+I usually use 300 or 600 dpi.
+`pdftoppm` comes with `poppler` (package `poppler-utils` on Ubuntu).
+
+Comments:
+
+
+### Answer 2 {#answer-2}
+
+If you are using Texmaker, right-click on the pdf, then choose `convert page to png image` choice. **Note:** if you intend to include this image in your tex file, then you can include the pdf directly. As a matter of fact, the quality of the pdf is better than converting the pdf to an image.
+
+Comments:
