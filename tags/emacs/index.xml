@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>emacs on Musings</title><link>https://chahak13.github.io/tags/emacs/</link><description>Recent content in emacs on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 11 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chahak13.github.io/tags/emacs/index.xml" rel="self" type="application/rss+xml"/><item><title>Completion in Emacs</title><link>https://chahak13.github.io/posts/completion_in_emacs/</link><pubDate>Sun, 11 Jul 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/completion_in_emacs/</guid><description>Trying out different completion frameworks for Emacs instead of simply Ivy, just for the heck of it.
+(use-package vertico :straight t :init (vertico-mode) :config (setq vertico-cycle t)) (use-package vertico-buffer :after vertico) Also use the orderless completion style to improve the completion methods for vertico/selectrum etc. This also allows using space as delimeter in vertico, since it reads space as a character to match otherwise.
+(use-package orderless :straight t :init (setq completion-styles &amp;#39;(orderless)) (setq completion-category-defaults nil) (setq completion-category-overrides &amp;#39;((file (styles partial-completion))))) To persist history over Emacs restarts, vertico uses the savehist-mode that is built into emacs by default.</description><content>&lt;p>Trying out different completion frameworks for Emacs instead of simply Ivy, just for the heck of it.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package vertico
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:init
+(vertico-mode)
+:config
+(setq vertico-cycle &lt;span style="color:#66d9ef">t&lt;/span>))
+(use-package vertico-buffer
+:after vertico)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Also use the &lt;code>orderless&lt;/code> completion style to improve the completion methods for vertico/selectrum etc. This also allows using space as delimeter in vertico, since it reads space as a character to match otherwise.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package orderless
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:init
+(setq completion-styles &lt;span style="color:#f92672">&amp;#39;&lt;/span>(orderless))
+(setq completion-category-defaults &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq completion-category-overrides &lt;span style="color:#f92672">&amp;#39;&lt;/span>((file (styles partial-completion)))))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To persist history over Emacs restarts, vertico uses the &lt;code>savehist-mode&lt;/code> that is built into emacs by default.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package savehist
+:straight &lt;span style="color:#66d9ef">nil&lt;/span>
+:init
+(savehist-mode))
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="embark">&lt;!-- raw HTML omitted -->TODO&lt;!-- raw HTML omitted --> Embark&lt;/h2>
+&lt;h2 id="marginalia">&lt;!-- raw HTML omitted -->TODO&lt;!-- raw HTML omitted --> Marginalia&lt;/h2>
+&lt;p>Marginalia provides extra metadata depending on the context and type of object being actioned upon. This provides an &lt;code>ivy-rich&lt;/code> type interface for vertico.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package marginalia
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:init
+(marginalia-mode))
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="consult">&lt;!-- raw HTML omitted -->TODO&lt;!-- raw HTML omitted --> Consult&lt;/h2></content></item><item><title>Change font size in emacs</title><link>https://chahak13.github.io/posts/change_font_size_in_emacs/</link><pubDate>Fri, 25 Jun 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/change_font_size_in_emacs/</guid><description>Text in emacs can be scaled using &amp;lsquo;C-x C-+&amp;rsquo; or &amp;lsquo;C-x C-&amp;rsquo; to increase and &amp;lsquo;C-x C--&amp;rsquo; to decrease. C-x C-0 can be used to bring it back to the default size.</description><content>&lt;p>Text in emacs can be scaled using &amp;lsquo;&lt;code>C-x C-+&lt;/code>&amp;rsquo; or &amp;lsquo;&lt;code>C-x C-&lt;/code>&amp;rsquo; to increase and &amp;lsquo;&lt;code>C-x C--&lt;/code>&amp;rsquo; to decrease. &lt;code>C-x C-0&lt;/code> can be used to bring it back to the default size.&lt;/p></content></item><item><title>Mail in emacs - mu4e</title><link>https://chahak13.github.io/posts/mail_in_emacs_mu4e/</link><pubDate>Sun, 30 May 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/mail_in_emacs_mu4e/</guid><description>mu4e (mu-for-emacs) is an e-mail client for GNU Emacs version 24.4 or higher, built on top of the mu(1) e-mail search engine. mu4e is optimized for quickly processing large amounts of e-mail.
+As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&amp;rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like mbsync, offlineimap etc.</description><content>&lt;blockquote>
+&lt;p>mu4e (mu-for-emacs) is an e-mail client for GNU Emacs version 24.4 or
+higher, built on top of the mu(1) e-mail search engine. mu4e is
+optimized for quickly processing large amounts of e-mail.&lt;/p>
+&lt;/blockquote>
+&lt;p>As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&amp;rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like &lt;code>mbsync&lt;/code>, &lt;code>offlineimap&lt;/code> etc. I use &lt;a href="https://chahak13.github.io/posts/fetching_emails_mbsync/">Fetching emails - mbsync&lt;/a> for getting my mail periodically from gmail.&lt;/p>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;p>mu4e comes along with the &lt;code>mu&lt;/code> utility that can be downloaded directly from the OS&amp;rsquo;s package manager. For Arch, this can be done via the AUR&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">paru -S mu
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This installs the &lt;code>mu&lt;/code> indexer and its mu4e interface for emacs.&lt;/p>
+&lt;h2 id="configuration">Configuration&lt;/h2>
+&lt;p>First thing to use mu4e is to load it into emacs. Since mu4e is installed via the package manager, it needs to be loaded into emacs. This can be done via the &lt;code>load-path&lt;/code> directive in use-package.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package mu4e
+:load-path &lt;span style="color:#e6db74">&amp;#34;/usr/share/emacs/site-lisp/mu4e&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will load mu4e into emacs. We now need to configure mu4e to look at the right paths for loading all the emails. The first variable that we need to set is the mail directory where mu4e will look for mails.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq mu4e-maildir &lt;span style="color:#e6db74">&amp;#34;~/Mail&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now that mu4e knows where to look for all emails, we can start configuring other variables for our liking.&lt;/p>
+&lt;h3 id="retrieval-and-indexing-mails">Retrieval and indexing mails&lt;/h3>
+&lt;p>An important thing to note is that mu4e doesn&amp;rsquo;t retrieve emails from the provider itself but it can call other utilities periodically to do so. This can be done by setting the following to variables.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq mu4e-get-mail-command &lt;span style="color:#e6db74">&amp;#34;mbsync -a&amp;#34;&lt;/span>)
+(setq mu4e-update-interval (&lt;span style="color:#a6e22e">*&lt;/span> &lt;span style="color:#ae81ff">10&lt;/span> &lt;span style="color:#ae81ff">60&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Using these variables, mu4e uses the shell command set in the &lt;code>mu4e-get-mail-command&lt;/code> variable every &lt;code>mu4e-update-interval&lt;/code> seconds, which is set to 10 mins here. This can be changed as per requirement. To improve the indexing performace, I set the the &lt;code>mu4e-index-lazy-check&lt;/code> variable to &lt;code>t&lt;/code>. This variable tells the mu indexer to not update index for directories whose last modified time is not after the previous indexing. While this doesn&amp;rsquo;t take into consideration changing/updating of messages, it handles addition and removal of messages. Since most of my operations don&amp;rsquo;t involve changing emails in place, I&amp;rsquo;m going to try and use this to see how it affects my flow.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq mu4e-index-lazy-check &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="contexts">Contexts&lt;/h3>
+&lt;p>Contexts provide the useful ability to switch between various email accounts, based on the right context, or manually. Using this, we can dynamically switch between folders of different email accounts. An &lt;code>mu4e-context&lt;/code> is a Lisp object with a few useful members:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>name&lt;/code>: The name of the context. e.g. work or private&lt;/li>
+&lt;li>&lt;code>vars&lt;/code>: An association-list of variable settings for this account.&lt;/li>
+&lt;li>&lt;code>match-func&lt;/code>: A function that takes a MSG message plist as argument and returns non-nil if this context matches the situation. mu4e uses the first context that matches.&lt;/li>
+&lt;/ul>
+&lt;p>We can use these variables to set contexts in mu4e as follows:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq mu4e-contexts
+(&lt;span style="color:#a6e22e">list&lt;/span>
+(make-mu4e-context
+:name &lt;span style="color:#e6db74">&amp;#34;Private&amp;#34;&lt;/span>
+:match-func (lambda (msg)
+(when msg
+(string-prefix-p &lt;span style="color:#e6db74">&amp;#34;/chahakcr7&amp;#34;&lt;/span> (mu4e-message-field msg :maildir))))
+:vars
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>(
+(user-mail-address &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;chahakcr7@gmail.com&amp;#34;&lt;/span>)
+(&lt;span style="color:#a6e22e">user-full-name&lt;/span> &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Chahak&amp;#34;&lt;/span>)
+(mu4e-drafts-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakcr7/[Gmail]/Drafts&amp;#34;&lt;/span>)
+(mu4e-sent-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakcr7/[Gmail]/Sent Mail&amp;#34;&lt;/span>)
+(mu4e-refile-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakcr7/[Gmail]/All Mail&amp;#34;&lt;/span>)
+(mu4e-trash-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakcr7/[Gmail]/Trash&amp;#34;&lt;/span>)
+))
+&lt;span style="color:#75715e">;; Official Email&lt;/span>
+(make-mu4e-context
+:name &lt;span style="color:#e6db74">&amp;#34;Official&amp;#34;&lt;/span>
+:match-func (lambda (msg)
+(when msg
+(string-prefix-p &lt;span style="color:#e6db74">&amp;#34;/chahakmehta013&amp;#34;&lt;/span> (mu4e-message-field msg :maildir))))
+:vars
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>(
+(user-mail-address &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;chahak.mehta013@gmail.com&amp;#34;&lt;/span>)
+(&lt;span style="color:#a6e22e">user-full-name&lt;/span> &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Chahak Mehta&amp;#34;&lt;/span>)
+(mu4e-drafts-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakmehta013/[Gmail]/Drafts&amp;#34;&lt;/span>)
+(mu4e-sent-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakmehta013/[Gmail]/Sent Mail&amp;#34;&lt;/span>)
+(mu4e-refile-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakmehta013/[Gmail]/All Mail&amp;#34;&lt;/span>)
+(mu4e-trash-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakmehta013/[Gmail]/Trash&amp;#34;&lt;/span>)
+))
+&lt;span style="color:#75715e">;; UT Austin email&lt;/span>
+(make-mu4e-context
+:name &lt;span style="color:#e6db74">&amp;#34;UT Austin&amp;#34;&lt;/span>
+:match-func (lambda (msg)
+(when msg
+(string-prefix-p &lt;span style="color:#e6db74">&amp;#34;/chahakut&amp;#34;&lt;/span> (mu4e-message-field msg :maildir))))
+:vars
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>(
+(user-mail-address &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;chahak@utexas.edu&amp;#34;&lt;/span>)
+(&lt;span style="color:#a6e22e">user-full-name&lt;/span> &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Chahak Mehta&amp;#34;&lt;/span>)
+(mu4e-drafts-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakut/[Gmail]/Drafts&amp;#34;&lt;/span>)
+(mu4e-sent-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakut/[Gmail]/Sent Mail&amp;#34;&lt;/span>)
+(mu4e-refile-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakut/[Gmail]/All Mail&amp;#34;&lt;/span>)
+(mu4e-trash-folder &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/chahakut/[Gmail]/Trash&amp;#34;&lt;/span>)
+))))
+&lt;/code>&lt;/pre>&lt;/div></content></item><item><title>emacs-jupyter and inline images in org-mode</title><link>https://chahak13.github.io/posts/emacs_jupyter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/emacs_jupyter/</guid><description>emacs-jupyter is an emacs interface for jupyter kernels. It can be installed using
+(use-package jupyter :straight t) If ob-async is installed, then jupyter-python needs to be added to the list of languages that are not run asychronously. (Refer this issue). This can be done by
+(setq ob-async-no-async-languages-alist &amp;#39;(&amp;#34;jupyter-python&amp;#34;)) An example python block:
+print(&amp;quot;ab&amp;quot;) ab emacs-jupyter works doesn&amp;rsquo;t work in server When I first installed emacs-jupyter I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon.</description><content>&lt;p>&lt;code>emacs-jupyter&lt;/code> is an emacs interface for jupyter kernels. It can be installed using&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package jupyter
+:straight &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If &lt;code>ob-async&lt;/code> is installed, then &lt;code>jupyter-python&lt;/code> needs to be added to the list of languages that are not run asychronously. (Refer &lt;a href="https://github.com/astahlman/ob-async/pull/71">this issue&lt;/a>). This can be done by&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq ob-async-no-async-languages-alist &lt;span style="color:#f92672">&amp;#39;&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;jupyter-python&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>An example python block:&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">print(&amp;quot;ab&amp;quot;)
+&lt;/code>&lt;/pre>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">ab
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="emacs-jupyter-works-doesn-t-work-in-server">emacs-jupyter works doesn&amp;rsquo;t work in server&lt;/h2>
+&lt;p>When I first installed &lt;code>emacs-jupyter&lt;/code> I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon. On the other hand, if it was started separately as a window, everything ran fine. The issue was that I was adding &lt;code>/home/boticelli/.local/bin/&lt;/code> (path to jupyter executable) to &lt;code>exec-path&lt;/code> at the end of the config files. When opening emacs from a terminal as an independent session, it was considering this added path somehow, maybe by inheriting it from the shell itself, but it was. I moved that line to near the beginning of the &lt;code>init.el&lt;/code> file itself and this seemed to solve the issue. This issue was very similar to the &lt;a href="https://chahak13.github.io/posts/pipenv_in_emacs/">Pipenv in emacs&lt;/a> issue that I had recently.&lt;/p>
+&lt;h2 id="why-emacs-jupyter">Why emacs-jupyter&lt;/h2>
+&lt;p>Running python code in normal org-mode source block is nice and easy. But using them to plot images was a bit painful/difficult. Since &lt;code>emacs-jupyter&lt;/code> uses &lt;code>ipython&lt;/code> kernel, it allows some magic commands like &lt;code>%matplotlib inline&lt;/code> etc to make this easier. It also gives &lt;code>%timeit&lt;/code> which is really useful.&lt;/p>
+&lt;p>Now, with &lt;code>emacs-jupyter&lt;/code>, I can do imports like this and make plotting easier for myself.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.hist(np.random.default_rng().normal(0, 1, 50000), bins=100);
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/normal_dist.png" />
+&lt;/figure></content></item><item><title>Migrating to org-roam v2</title><link>https://chahak13.github.io/posts/migrating_to_org_roam_v2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/migrating_to_org_roam_v2/</guid><description>org-roam recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for org-roam configuration. I&amp;rsquo;m going to try and implement a workflow similar to Jethro&amp;rsquo;s, as a starting step.
+Installing All the package repository recipies have been updated to install the newer version of org so a simple installation should be good enough to get the newer version.
+(use-package org-roam :straight t) On installing v2 for the first time, there&amp;rsquo;ll be warning showing the change of the version.</description><content>&lt;p>&lt;code>org-roam&lt;/code> recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for &lt;code>org-roam&lt;/code> configuration. I&amp;rsquo;m going to try and implement a workflow similar to Jethro&amp;rsquo;s, as a starting step.&lt;/p>
+&lt;h2 id="installing">Installing&lt;/h2>
+&lt;p>All the package repository recipies have been updated to install the newer version of org so a simple installation should be good enough to get the newer version.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package org-roam
+:straight &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>On installing v2 for the first time, there&amp;rsquo;ll be warning showing the change of the version. It shows the steps to migrate an existing roam database to the newer version but I think I&amp;rsquo;ll be doing a completely new setup. For reference, the warning would be&lt;/p>
+&lt;blockquote>
+&lt;hr>
+&lt;p>WARNING: You’re now on Org-roam v2!&lt;/p>
+&lt;hr>
+&lt;p>You may have arrived here from a package upgrade. Please read the
+wiki entry at
+&lt;a href="https://github.com/org-roam/org-roam/wiki/Hitchhiker%E2%80%99s-Rough-Guide-to-Org-roam-V2">https://github.com/org-roam/org-roam/wiki/Hitchhiker%E2%80%99s-Rough-Guide-to-Org-roam-V2&lt;/a>
+for an overview of the major changes.&lt;/p>
+&lt;p>Notes taken in v1 are incompatible with v2, but you can upgrade
+them to the v2 format via a simple command. To migrate your
+notes, first make sure you’re on at least Org 9.4 (check with
+C-h v org-version) and set your org-roam-directory to your notes:&lt;/p>
+&lt;p>(setq org-roam-directory &amp;ldquo;path/to/org/files&amp;rdquo;)&lt;/p>
+&lt;p>then, run:&lt;/p>
+&lt;p>M-x org-roam-migrate-wizard&lt;/p>
+&lt;p>If you wish to stay on v1, v1 is unfortunately not distributed on
+MELPA. See org-roam/org-roam-v1 on GitHub on how to install v1.&lt;/p>
+&lt;p>If you’ve gone through the migration steps (if necessary), and
+know what you’re doing set ‘org-roam-v2-ack’ to ‘t’ to disable
+this warning. You can do so by adding:&lt;/p>
+&lt;p>(setq org-roam-v2-ack t)&lt;/p>
+&lt;p>To your init file.&lt;/p>
+&lt;/blockquote>
+&lt;p>To acknowledge that we do want the newer version, we&amp;rsquo;ll add the variable as suggested in the warning.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq org-roam-v2-ack &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="setup">Setup&lt;/h2>
+&lt;p>The biggest change in the newer version is that now instead of files, the smallest independent entity is a &lt;code>node&lt;/code> which is defined as &lt;em>any headline or top level file with an ID&lt;/em>. The ids can be created by using the &lt;code>org-id-get-create&lt;/code> function.&lt;/p>
+&lt;p>Each link between the nodes use the Org&amp;rsquo;s standard ID link feature.&lt;/p>
+&lt;p>First of all, we have to create the directory for roam to create the notes in.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(make-directory &lt;span style="color:#e6db74">&amp;#34;~/org/roam&amp;#34;&lt;/span> &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-directory (file-truename &lt;span style="color:#e6db74">&amp;#34;~/org/roam&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>org-roam&lt;/code> doesn&amp;rsquo;t have a major mode anymore. Instead, &lt;code>org-roam-setup&lt;/code> is to be used to start roam.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(org-roam-setup)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="creating-and-linking-nodes">Creating and Linking Nodes&lt;/h2>
+&lt;p>There are 3 main functions for creating/linking the nodes in v2.&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>org-roam-node-insert&lt;/code> :: Creates a node if it doesn&amp;rsquo;t exist, and inserts a link to he node at point.&lt;/li>
+&lt;li>&lt;code>org-roam-node-find&lt;/code> :: Creates a node if it doesn&amp;rsquo;t exist, and visits the node.&lt;/li>
+&lt;li>&lt;code>org-roam-capture&lt;/code> :: Creates a node if it doesn&amp;rsquo;t exist, and restores the current window configuration upon completion.&lt;/li>
+&lt;/ol>
+&lt;p>org-roam builds up on the &lt;code>org-capture&lt;/code> templating system. The default template simply adds a property drawer with an ID and a title to the new file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">:PROPERTIES:
+:ID: 9102114b-61c3-4cce-857d-53bd72d3044a
+:END:
+#+title: Hello roam v2!
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="org-roam-buffer">Org-roam buffer&lt;/h2>
+&lt;p>Instead of the side window, backlinks are now shown in a dedicated org-roam buffer. &lt;code>org-roam-buffer-toggle&lt;/code> launches an org-roam buffer that tracks the node currently at point. The content of this buffer changes depending on the node under point.&lt;/p>
+&lt;h2 id="tags">Tags&lt;/h2>
+&lt;p>Org-roam uses the same tagging system that org uses. This means that the tags are set by the &lt;code>#+filetags&lt;/code> keyword for the file and as regular org tags for headline level nodes.&lt;/p>
+&lt;h2 id="org-roam-protocol">Org-roam protocol&lt;/h2>
+&lt;p>&lt;code>org-protocol&lt;/code> provides a way to capture content from external applications like browser. It does it by extending the &lt;code>org-protocol&lt;/code> with 2 protocols: the &lt;code>roam-node&lt;/code> and &lt;code>roam-ref&lt;/code> protocol.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package org-roam-protocol
+:after org-roam)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="org-protocol-on-linux">org-protocol on Linux&lt;/h3>
+&lt;p>First of all, we need to install the &lt;code>org-protocol&lt;/code>. To do that, we first need to create a desktop appplication in &lt;code>~/.local/share/applications/org-protocol.desktop&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">[Desktop Entry]
+Name=Org-Protocol
+Exec=emacsclient %u
+Icon=emacs-icon
+Type=Application
+Terminal=false
+MimeType=x-scheme-handler/org-protocol
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We then associate the &lt;code>org-protocol://&lt;/code> links with the desktop application by running the following command in the shell:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">xdg-mime default org-protocol.desktop x-scheme-handler/org-protocol
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="roam-node-protocol">roam-node protocol&lt;/h3>
+&lt;p>The roam-node protocol opens the node with the ID specified &lt;code>node&lt;/code> key (eg. &lt;code>org-protocol://roam-node://roam-node?node=node-id&lt;/code>). &lt;code>org-roam-graph&lt;/code> uses this to make the graph navigable.&lt;/p>
+&lt;h3 id="roam-ref-protocol">roam-ref protocol&lt;/h3>
+&lt;p>This protocol find or creates a new note with a given &lt;code>roam_key&lt;/code>. This can be used with a javascript bookmarklet in the browser.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-javascript" data-lang="javascript">&lt;span style="color:#a6e22e">javascript&lt;/span>&lt;span style="color:#f92672">:&lt;/span>&lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">href&lt;/span> &lt;span style="color:#f92672">=&lt;/span>
+&lt;span style="color:#e6db74">&amp;#39;org-protocool://roam-ref?template=r&amp;amp;ref=&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(&lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">href&lt;/span>)
+&lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;amp;title=&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(document.&lt;span style="color:#a6e22e">title&lt;/span>)
+&lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;amp;body=&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(window.&lt;span style="color:#a6e22e">getSelection&lt;/span>())
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>where &lt;code>template&lt;/code> is the template key for a template in &lt;code>org-roam-capture-ref-templates&lt;/code>. These templates should contain a &lt;code>#+roam_key: ${ref}&lt;/code> in it.&lt;/p>
+&lt;h2 id="templating-system">Templating system&lt;/h2>
+&lt;p>For templates, the first step is to create a normal org capture template.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq cm/org-agenda-directory (file-truename &lt;span style="color:#e6db74">&amp;#34;~/org/gtd&amp;#34;&lt;/span>))
+(setq org-agenda-files cm/org-agenda-directory)
+(setq org-capture-templates
+&lt;span style="color:#f92672">`&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;i&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Inbox&amp;#34;&lt;/span> entry (file &lt;span style="color:#f92672">,&lt;/span>(&lt;span style="color:#a6e22e">expand-file-name&lt;/span> &lt;span style="color:#e6db74">&amp;#34;inbox.org&amp;#34;&lt;/span> cm/org-agenda-directory))
+&lt;span style="color:#f92672">,&lt;/span>(&lt;span style="color:#a6e22e">concat&lt;/span> &lt;span style="color:#e6db74">&amp;#34;* TODO %?\n&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;/Entered on/ %u&amp;#34;&lt;/span>))
+(&lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;org-protocol-capture&amp;#34;&lt;/span> entry (file+olp &lt;span style="color:#f92672">,&lt;/span>(&lt;span style="color:#a6e22e">expand-file-name&lt;/span> &lt;span style="color:#e6db74">&amp;#34;reading_and_writing_inbox.org&amp;#34;&lt;/span> org-roam-directory) &lt;span style="color:#e6db74">&amp;#34;The List&amp;#34;&lt;/span>)
+&lt;span style="color:#e6db74">&amp;#34;* TO-READ [[%:link][%:description]]&amp;#34;&lt;/span>
+:immediate-finish &lt;span style="color:#66d9ef">t&lt;/span>)))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>For org-roam templates,&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq org-roam-capture-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;d&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;default&amp;#34;&lt;/span> plain
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:if-new (file+head &lt;span style="color:#e6db74">&amp;#34;${slug}.org&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n&amp;#34;&lt;/span>)
+:immediate-finish &lt;span style="color:#66d9ef">t&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)))
+(setq org-roam-capture-ref-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ref&amp;#34;&lt;/span> plain &lt;span style="color:#e6db74">&amp;#34;/${body}/&amp;#34;&lt;/span>
+:if-new (file+head &lt;span style="color:#e6db74">&amp;#34;${slug}.org&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;+TITLE: ${title}\n&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;+ROAM_KEY: ${ref}\n&amp;#34;&lt;/span>)
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)))
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="using-general-dot-el-to-set-keybindings">Using general.el to set keybindings&lt;/h2>
+&lt;p>To add new keymaps and bindings, I&amp;rsquo;m going to use &lt;code>general.el&lt;/code> to create new keybindings.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package general
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(general-create-definer cm/roam-leader
+:prefix &lt;span style="color:#e6db74">&amp;#34;M-o&amp;#34;&lt;/span>)
+(cm/roam-leader
+&lt;span style="color:#e6db74">&amp;#34;f&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-node-find&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-capture&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;i&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-node-insert&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;o&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-buffer-toggle&lt;/span>)
+)
+&lt;/code>&lt;/pre>&lt;/div></content></item><item><title>Most used keybindings in Emacs</title><link>https://chahak13.github.io/posts/most_used_keybindings_in_emacs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/most_used_keybindings_in_emacs/</guid><description> Keybinding Function New binding (?) C-x C-f find-file C-x b switch-buffer C-x C-b ibuffer-other-window C-x p p projectile-switch-project M-o f org-roam-node-find M-o o org-roam-buffer-toggle M-o i org-roam-node-insert C-a beginning-of-visual-line C-e move-end-of-line org-end-of-line</description><content>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Keybinding&lt;/th>
+&lt;th>Function&lt;/th>
+&lt;th>New binding (?)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>C-x C-f&lt;/td>
+&lt;td>find-file&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-x b&lt;/td>
+&lt;td>switch-buffer&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-x C-b&lt;/td>
+&lt;td>ibuffer-other-window&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-x p p&lt;/td>
+&lt;td>projectile-switch-project&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>M-o f&lt;/td>
+&lt;td>org-roam-node-find&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>M-o o&lt;/td>
+&lt;td>org-roam-buffer-toggle&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>M-o i&lt;/td>
+&lt;td>org-roam-node-insert&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-a&lt;/td>
+&lt;td>beginning-of-visual-line&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>C-e&lt;/td>
+&lt;td>move-end-of-line&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>org-end-of-line&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></content></item><item><title>Pipenv in emacs</title><link>https://chahak13.github.io/posts/pipenv_in_emacs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/pipenv_in_emacs/</guid><description>org-mode is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&amp;rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode.</description><content>&lt;p>&lt;code>org-mode&lt;/code> is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&amp;rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode. I use &lt;a href="https://pipenv.pypa.io/en/latest/">pipenv&lt;/a> for managing my virtual environments. To use that in emacs, I found the &lt;a href="https://github.com/pwalsh/pipenv.el">pipenv.el&lt;/a> package that seems to provide all the necessary functionalities to use pipenv in emacs. It can be installed using &lt;code>straight.el&lt;/code> directly&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package pipenv
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:hook ((python-mode-hook &lt;span style="color:#f92672">.&lt;/span> pipenv-mode)
+(org-mode-hook &lt;span style="color:#f92672">.&lt;/span> pipenv-mode))
+)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This enables the &lt;code>pipenv-mode&lt;/code> minor mode while using &lt;code>python-mode&lt;/code> or &lt;code>org-mode&lt;/code>. This should provide functions like &lt;code>pipenv-activate&lt;/code> and &lt;code>pipenv-deactivate&lt;/code> to activate the required virtual environment and &lt;code>pipenv-install&lt;/code> to install any package and add it to the &lt;code>Pipfile&lt;/code>.&lt;/p>
+&lt;p>When I enabled the &lt;code>pipenv-mode&lt;/code> minor mode and ran &lt;code>M-x pipenv-activate&lt;/code> in a directory that contained a &lt;code>Pipfile&lt;/code>, it showed me an error &lt;code>Searching for program: No such file or directory, pipenv&lt;/code>. I tried restarting the emacs session but it did not work.&lt;/p>
+&lt;h2 id="getting-pipenv-to-work">Getting pipenv to work&lt;/h2>
+&lt;p>After running into the issue, I decided going into the source code to see what&amp;rsquo;s going wrong. First important thing that I noticed was that the function &lt;code>pipenv-activate&lt;/code> checks if the current directory or any of its parent directory is a pipenv project via the &lt;code>pipenv-project?&lt;/code> function. This is done using the &lt;code>locate-dominating-file&lt;/code> function and returns the path to the first found directory that contains &lt;code>Pipfile&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (defun pipenv-project? ()
+&lt;span style="color:#e6db74">&amp;#34;Are we in a Pipenv project?&amp;#34;&lt;/span>
+(locate-dominating-file default-directory &lt;span style="color:#e6db74">&amp;#34;Pipfile&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>pipenv-activate&lt;/code> then waits for the &lt;code>pipenv-venv&lt;/code> function to return the path to the virtual environment for the current project. On trying this function on a file in a pipenv project, I found out that it was this function that was throwing the error. This also made the error more clear as I realised that it is trying to run the &lt;code>pipenv --venv&lt;/code> command and couldn&amp;rsquo;t find the &lt;code>pipenv&lt;/code> executable. On further inspection, I found out that the &lt;code>pipenv&lt;/code> executable was in &lt;code>~/.local/bin/&lt;/code> which was not in the emacs &lt;code>exec-path&lt;/code> variable. So, adding this path should potentially resolve this issue.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (add-to-list &lt;span style="color:#e6db74">&amp;#39;exec-path&lt;/span> &lt;span style="color:#e6db74">&amp;#34;~/.local/bin&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Yay! &lt;code>pipenv-activate&lt;/code> works now :)&lt;/p></content></item><item><title>Setup for org-roam and its compatriots</title><link>https://chahak13.github.io/posts/org_roam/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/org_roam/</guid><description>org-roam is an Emacs package that improves note-taking process in org-mode. Per the manual, Org-roam is a tool for network thought. I&amp;rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.
+Zettelkasten Zettelkasten is a German word, and the name of a note taking system that was developed by a German sociologist Niklas Luhmann who used to take notes on cards and then put them into a slip-box.</description><content>&lt;p>&lt;code>org-roam&lt;/code> is an Emacs package that improves note-taking process in &lt;code>org-mode&lt;/code>. Per the manual, &lt;em>Org-roam is a tool for network thought&lt;/em>. I&amp;rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.&lt;/p>
+&lt;h2 id="zettelkasten">Zettelkasten&lt;/h2>
+&lt;p>&lt;code>Zettelkasten&lt;/code> is a German word, and the name of a note taking system that was developed by a German sociologist &lt;strong>Niklas Luhmann&lt;/strong> who used to take notes on cards and then put them into a slip-box. The idea is that, with enough notes linked to each other, one can come up with various ideas to think, write, watch about. This introduction is, by no means, a good introduction and one should definitely read about Zettelkasten on their own if they find it interesting. &lt;code>org-roam&lt;/code> aims to be the slip-box, where every note is a zettel/card of its own.&lt;/p>
+&lt;h3 id="fleeting-notes">Fleeting notes&lt;/h3>
+&lt;p>Notes that are essentially short quick reminders of information or ideas that need to be processed later on, or trashed. I have tried using &lt;code>org-capture&lt;/code> for this with a decent amount of success but I plan to try &lt;code>org-roam&lt;/code>&amp;rsquo;s daily notes feature first to have a comparison. These kinds of notes are a central inbox that are to be further refiled and processed into permanent notes.&lt;/p>
+&lt;h3 id="permanent-notes">Permanent notes&lt;/h3>
+&lt;p>Permanent notes form the basic structure of the network of notes. They are full-fledged notes that are supposed to be self-explanatory, and can be of two types: &lt;strong>literature notes&lt;/strong> and &lt;strong>concept notes&lt;/strong>.&lt;/p>
+&lt;h4 id="literature-notes">Literature notes&lt;/h4>
+&lt;p>Each note is a condensed summary of a particular source of reading (eg. book, website, paper etc.). It can also contain any annotations that are made during the reading. These notes provide an easy access to sift through past readings, and provides a way to retain more consumed information.&lt;/p>
+&lt;h4 id="concept-notes">Concept notes&lt;/h4>
+&lt;p>Concept notes are more in-depth and require more care in authoring. They need to be detailed notes on a particular concept that one can refer to whenever required. They can then be linked to various fleeting or literature notes, which provides a better network of view for that particular concept.&lt;/p>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;p>I used the &lt;code>straight.el&lt;/code> package manager, with the &lt;code>use-package&lt;/code> package as a configuration manager to install and customize &lt;code>org-roam&lt;/code> and other packages. This can be done by running the following&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package org-roam
+:straight &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>org-roam&lt;/code> needs &lt;code>sqlite3&lt;/code> to work. Please make sure that it is installed and available to emacs (Check &lt;code>exec-path&lt;/code> variable)&lt;/p>
+&lt;h2 id="getting-started">Getting started&lt;/h2>
+&lt;p>The first step to start using &lt;code>org-roam&lt;/code> is to set the &lt;code>org-roam-directory&lt;/code> variable. This directory will contain all the notes that are created during the time of using &lt;code>org-roam&lt;/code>. We will set this using the &lt;code>:config&lt;/code> block in &lt;code>use-package&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package org-roam
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(setq org-roam-directory &lt;span style="color:#e6db74">&amp;#34;~/org&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Org-roam manual recommends using a flat hierarchy to store all the notes, instead of creating a folder hierarchy. I wasn&amp;rsquo;t sure how I felt about that but I decided to go with it anyway. Instead of any form of explicit categorization, links established between the notes should provide a form of grouping.&lt;/p>
+&lt;p>The next step is to enable the minor mode &lt;code>org-roam-mode&lt;/code> globally. While this sets up Emacs with several hooks, it is not enabled on startup. To do that, we&amp;rsquo;ll add a hook to the &lt;code>use-package&lt;/code> block we&amp;rsquo;ve been building.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package org-roam
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:hook
+((after-init-hook &lt;span style="color:#f92672">.&lt;/span> org-roam-mode))
+:config
+(setq org-roam-directory &lt;span style="color:#e6db74">&amp;#34;~/org-roam&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To build the note cache manually, one needs to use &lt;code>M-x org-roam-db-build-cache&lt;/code>. Cache builds might take a while in the first run, but is often very quick in subsequent runs because it only reprocesses modified files.&lt;/p>
+&lt;p>To start taking notes, one of the two functions can be used &lt;code>org-roam-find-file&lt;/code> or &lt;code>org-roam-capture&lt;/code>. While both of them will create a new file with the provided title, the major difference is that &lt;code>org-roam-find-file&lt;/code> will point to the newly created note in the buffer, while &lt;code>org-roam-capture&lt;/code> will point the user back to the original buffer, similar to &lt;code>org-capture&lt;/code>.&lt;/p>
+&lt;p>To insert links in a note, use &lt;code>M-x org-roam-insert&lt;/code>. This will bring up a prompt with a list of titles for existing notes. Selecting an existing entry will create and insert a link to the current file. Entering a non-existent title will create a new note with that title and link it. Org-roam recommends liberal linking of files, facilitating build up of a denser graph of inter-connected notes. To toggle the visibility of backlinks of a note, along with some context, call &lt;code>M-x org-roam&lt;/code>.&lt;/p>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>While the bulk of &lt;code>org-roam&lt;/code>&amp;rsquo;s functionality is built up on vanilla org, it adds some extensions and keywords to support additional functionality.&lt;/p>
+&lt;h3 id="file-titles">File Titles&lt;/h3>
+&lt;p>Each note needs to be prescribed with a title (duh?). This allows quick searching of notes. &lt;code>org-roam&lt;/code> adds to the standard &lt;code>+title&lt;/code> keyword in org-mode by using an new keyword called &lt;code>#+roam_alias&lt;/code>. These aliases are space-delimited quoted strings that can also be used to refer the note while using &lt;code>org-roam&lt;/code>. It also provides support for extracting title from the first headline in the file. The default action is to determine titles using &lt;code>#+title&lt;/code> and &lt;code>#+roam_alias&lt;/code> and if &lt;code>#+title&lt;/code> isn&amp;rsquo;t available, then fallback to the first headline. This is useful in topics like &amp;ldquo;World War 2&amp;rdquo; where it can also be referred to as &amp;ldquo;WW2&amp;rdquo; or &amp;ldquo;World War II&amp;rdquo; or such.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text"> #+title: World War 2
+#+roam_alias: &amp;#34;WWII&amp;#34; &amp;#34;WW2&amp;#34; &amp;#34;World War II&amp;#34;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Title extraction can be customized using the &lt;code>org-roam-title-sources&lt;/code> variable.&lt;/p>
+&lt;h3 id="file-tags">File Tags&lt;/h3>
+&lt;p>Tags are used as meta-data for files. They facilitate interaction with notes where titles are insufficient. It also provides a good interface for categorization of notes, especially while searching through all notes. By default, tags are extracted from the &lt;code>#+roam_tags&lt;/code> property. Tags are space-delimited quoted strings. To customize this behaviour, check &lt;code>org-roam-tag-sources&lt;/code> variable.&lt;/p>
+&lt;p>&lt;strong>DOUBT&lt;/strong>: The screenshots show a &lt;code>- tags ::&lt;/code> directive. Need to confirm what works.&lt;/p>
+&lt;h3 id="file-refer">File Refer&lt;/h3>
+&lt;p>Refs are unique identifiers for files. They are declared using the &lt;code>+roam_key&lt;/code> and show up as a Ref Backlink in the org-roam link list.&lt;/p>
+&lt;h2 id="templates">Templates&lt;/h2>
+&lt;p>Org-roam extends the &lt;code>org-capture&lt;/code> capabilities for its templating system. Org-roam&amp;rsquo;s capture templates are not completely compatible with &lt;code>org-capture&lt;/code>, hence, to modify the templates, use the &lt;code>org-roam-capture-templates&lt;/code>. An example template is shown below. This can be added in the &lt;code>:config&lt;/code> section of the &lt;code>use-package&lt;/code> configuration.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (setq org-roam-capture-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;d&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;default&amp;#34;&lt;/span> plain (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+(&lt;span style="color:#e6db74">&amp;#34;p&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;paper&amp;#34;&lt;/span> entry (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n#+AUTHOR: ${authors}\n&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+))
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="inserting-links">Inserting Links&lt;/h2>
+&lt;p>&lt;code>file&lt;/code> links for files and &lt;code>id&lt;/code> links for headlines are preferred as they ensure that the links will work even without &lt;code>org-roam&lt;/code>. &lt;code>file&lt;/code> links can be inserted using &lt;code>org-roam-insert&lt;/code> whereas links to headlines can be inserted by navigating to the headline and calling &lt;code>org-store-link&lt;/code> to store an ID and link into the org-roam database. That link can then be inserted via &lt;code>org-insert-link&lt;/code>.&lt;/p>
+&lt;p>Org-roam also extends org linking syntax by adding &lt;code>roam&lt;/code> links. Org-roam registers this link type, and interprets the path as follows:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>[[roam:title]]&lt;/code>: links to an org-roam file with title or alias as &amp;ldquo;title&amp;rdquo;.&lt;/li>
+&lt;li>&lt;code>[[roam:*headline]]&lt;/code>: links to the headline &amp;ldquo;headline&amp;rdquo; in the current org-roam file.&lt;/li>
+&lt;li>&lt;code>[[roam:title*headline]]&lt;/code>: links to the headline &amp;ldquo;headline&amp;rdquo; in the org-roam file with title or alias &amp;ldquo;title&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;h2 id="graphing">Graphing&lt;/h2>
+&lt;p>&lt;code>org-roam-server&lt;/code> is basically a web application to visualize the org-roam database. It needs to be installed separately and can be done easily using &lt;code>straight.el&lt;/code> and &lt;code>use-package&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package org-roam-server
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(setq org-roam-server-host &lt;span style="color:#e6db74">&amp;#34;127.0.0.1&amp;#34;&lt;/span>)
+(setq org-roam-server-port &lt;span style="color:#ae81ff">8080&lt;/span>)
+(setq org-roam-server-authenticate &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq org-roam-server-export-inline-images &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-server-serve-files &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq org-roam-server-served-file-extensions &lt;span style="color:#f92672">&amp;#39;&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;pdf&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;mp4&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ogv&amp;#34;&lt;/span>))
+(setq org-roam-server-network-poll &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-server-network-arrows &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq org-roam-server-network-label-truncate &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-server-network-label-truncate-length &lt;span style="color:#ae81ff">60&lt;/span>)
+(setq org-roam-server-network-label-wrap-length &lt;span style="color:#ae81ff">20&lt;/span>)
+(org-roam-server-mode)
+)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>org-roam-server-mode&lt;/code> will enable the global mode. This will start a web server on &lt;a href="http://127.0.0.1:8080">http://127.0.0.1:8080&lt;/a> that can be accessed for the org-roam visualization. To open the note on clicking a node, the &lt;code>org-roam-protocol&lt;/code> needs to be set up, which is done in the next section.&lt;/p>
+&lt;h2 id="roam-protocol">Roam protocol&lt;/h2>
+&lt;p>To enable org-roam&amp;rsquo;s protocol extensions, add the following to emacs init file&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package org-roam-protocol
+:after org-roam)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I had to make a desktop application file for &lt;code>emacsclient&lt;/code> to use &lt;code>org-protocol&lt;/code>. It can be made on Linux platforms by creating a file in &lt;code>~/.local/share/applications/&lt;/code> directory. An example file is shown below&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text"> [Desktop Entry]
+Name=Org-Protocol
+Exec=emacsclient %u
+Icon=emacs-icon
+Type=Application
+Terminal=false
+MimeType=x-scheme-handle/org-protocol
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="the-roam-ref-protocol">The &lt;code>roam-ref&lt;/code> Protocol&lt;/h3>
+&lt;p>This protocol finds or creates a new note with a given &lt;code>roam_key&lt;/code>. This is one of the most appealing features of &lt;code>org-roam&lt;/code> for me. I&amp;rsquo;m guessing that this in conjunction with Zotero will make my note-taking life much easier on the web. To use this, a bookmarklet needs to be created in the browser. For my choice, that is currently Firefox. The steps to create a bookmarklet are&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Add a new bookmark from the bookmarks toolbar.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the name field, add the required name for the bookmark.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the location field, add the following code&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-javascript" data-lang="javascript"> &lt;span style="color:#a6e22e">javascript&lt;/span>&lt;span style="color:#f92672">:&lt;/span>&lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">href&lt;/span> &lt;span style="color:#f92672">=&lt;/span>
+&lt;span style="color:#e6db74">&amp;#39;org-protocol://roam-ref?template=w&amp;amp;ref=&amp;#39;&lt;/span>
+&lt;span style="color:#960050;background-color:#1e0010">​&lt;/span> &lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(&lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">href&lt;/span>)
+&lt;span style="color:#960050;background-color:#1e0010">​&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;amp;title=&amp;#39;&lt;/span>
+&lt;span style="color:#960050;background-color:#1e0010">​&lt;/span> &lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(document.&lt;span style="color:#a6e22e">title&lt;/span>)
+&lt;span style="color:#960050;background-color:#1e0010">​&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;amp;body=&amp;#39;&lt;/span>
+&lt;span style="color:#960050;background-color:#1e0010">​&lt;/span> &lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(window.&lt;span style="color:#a6e22e">getSelection&lt;/span>())
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>Here, &lt;code>template&lt;/code> is the template key for a template in &lt;code>org-roam-capture-ref-templates&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (setq org-roam-capture-ref-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ref&amp;#34;&lt;/span> plain (function org-roam-capture--get-point)
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n#+roam_key: ${ref}&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+(&lt;span style="color:#e6db74">&amp;#34;w&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;webpage&amp;#34;&lt;/span> plain (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;/${body}/&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n#+roam_key: ${ref}\n\n&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now, I can simply click on this bookmarklet from whatever website/article I am looking at, to directly create a note in emacs using org-roam. With the &lt;code>webpage&lt;/code> template, I write down the selected text from the browser into the top of the body of the note, in italics.&lt;/p>
+&lt;h2 id="daily-notes">Daily-notes&lt;/h2>
+&lt;p>Org-roam provides functions similar to org-journal. I decided to stick to org-roam for the daily notes too, to keep all the notes under one umbrella. To configure daily notes, there are 2 main variables: &lt;code>org-roam-dailies-directory&lt;/code> and &lt;code>org-roam-dailies-capture-templates&lt;/code>. They are the path to the daily-notes and the capture templates for daily notes respectively. A sane default config taken directly from the manual is&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (setq org-roam-dailies-directory &lt;span style="color:#e6db74">&amp;#34;daily/&amp;#34;&lt;/span>)
+(setq org-roam-dailies-capture-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;d&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;default&amp;#34;&lt;/span> entry (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;* #?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;daily/%&amp;lt;%Y-%m-%d&amp;gt;&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: %&amp;lt;%Y-%m-%d&amp;gt;\n\n&amp;#34;&lt;/span>)))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>org-roam-dailies-directory&lt;/code> should appear in the &lt;code>:file-name&lt;/code> for the notes to be recognized as daily-notes.&lt;/p>
+&lt;p>To start writing daily-notes, call the &lt;code>org-roam-dailies-capture-today&lt;/code> function. It creates an entry in the notes for today. &lt;code>org-roam-dailies-find-today&lt;/code> finds the note for today, creating it if necessary. Another important function that can be used for searching is the &lt;code>org-roam-dailies-find-date&lt;/code> which will open the note for the particular date using a calendar.&lt;/p>
+&lt;p>Other functions to keep in mind:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>org-roam-dailies-find-directory&lt;/code>&lt;/li>
+&lt;li>&lt;code>org-roam-dailies-find-previous-note&lt;/code>&lt;/li>
+&lt;li>&lt;code>org-roam-dailies-find-next-note&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h2 id="diagnosing-and-repairing-files">Diagnosing and Repairing Files&lt;/h2>
+&lt;p>Once in a while, it would be a good idea to check for the correctness of the links. To do this easily, org-roam provides the &lt;code>org-roam-doctor&lt;/code> function. This function checks the links in the current org-roam buffer. To run it on all files, use &lt;code>C-u M-x org-roam-doctor&lt;/code> but this might take some time.&lt;/p>
+&lt;h2 id="finding-unlinked-references">Finding Unlinked References&lt;/h2>
+&lt;p>It is difficult, and pointless to an extent, to try and remember all the notes to link to. For some such cases, org-roam has the &lt;code>org-roam-unlinked-references&lt;/code>. It tries to find strings in the current buffer that match the title or aliases of any existing note in the org-roam database. These can then be converted to new links.&lt;/p>
+&lt;p>&lt;strong>PS&lt;/strong>: Using this requires &lt;a href="https://github.com/BurntSushi/ripgrep">ripgrep&lt;/a> with PCRE support installed on the system.&lt;/p>
+&lt;h2 id="deft-org-noter-org-roam-bibtex">&lt;!-- raw HTML omitted -->NEXT&lt;!-- raw HTML omitted --> Deft, org-noter, org-roam-bibtex&lt;/h2>
+&lt;h3 id="deft">Deft&lt;/h3>
+&lt;p>&lt;code>deft&lt;/code> is an interface for enhanced searching and filtering of notes. This provides a better interface to quickly go to a required note as it searches both, title and body of the note. It can be installed directly from MELPA and is fairly easy to get started with.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package deft
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:bind
+(&lt;span style="color:#e6db74">&amp;#34;&amp;lt;f8&amp;gt;&amp;#34;&lt;/span> &lt;span style="color:#f92672">.&lt;/span> deft)
+:config
+(setq deft-directory &lt;span style="color:#e6db74">&amp;#34;~/org-roam&amp;#34;&lt;/span>)
+(setq deft-extensions &lt;span style="color:#f92672">&amp;#39;&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;org&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;md&amp;#34;&lt;/span>))
+)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="keybindings-for-org-roam-functions">Keybindings for &lt;code>org-roam&lt;/code> functions&lt;/h2>
+&lt;p>I decided to create a keymap for org-roam, and I had heard about the &lt;code>general&lt;/code> package on David Wilson&amp;rsquo;s Emacs-from-scratch series so I decided to give that a shot.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package general
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(general-create-definer cm/leader-keys
+:prefix &lt;span style="color:#e6db74">&amp;#34;M-o&amp;#34;&lt;/span>)
+(cm/leader-keys
+&lt;span style="color:#e6db74">&amp;#34;f&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-find-file&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-capture&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;i&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-insert&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;o&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;M-t&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-dailies-find-today&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;t&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-dailies-capture-today&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;u&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-unlinked-references&lt;/span>)
+)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="use-package-code-block">&lt;code>use-package&lt;/code> code block&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package org-roam
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(setq org-roam-directory &lt;span style="color:#e6db74">&amp;#34;~/org-roam&amp;#34;&lt;/span>)
+(setq org-roam-capture-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;d&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;default&amp;#34;&lt;/span> plain (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+(&lt;span style="color:#e6db74">&amp;#34;p&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;paper&amp;#34;&lt;/span> entry (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n#+AUTHOR: ${authors}\n&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+))
+)
+(use-package org-roam-protocol
+:after org-roam
+:config
+(setq org-roam-capture-ref-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ref&amp;#34;&lt;/span> plain (function org-roam-capture--get-point)
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n#+roam_key: ${ref}&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+(&lt;span style="color:#e6db74">&amp;#34;w&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;webpage&amp;#34;&lt;/span> plain (function org-roam--capture-get-point)
+&lt;span style="color:#e6db74">&amp;#34;/${body}/&amp;#34;&lt;/span>
+:file-name &lt;span style="color:#e6db74">&amp;#34;%&amp;lt;%Y%m%d%H%M%S&amp;gt;-${slug}&amp;#34;&lt;/span>
+:head &lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n#+roam_key: ${ref}\n\n&amp;#34;&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)
+))
+)
+(use-package org-roam-server
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(setq org-roam-server-host &lt;span style="color:#e6db74">&amp;#34;127.0.0.1&amp;#34;&lt;/span>)
+(setq org-roam-server-port &lt;span style="color:#ae81ff">8080&lt;/span>)
+(setq org-roam-server-authenticate &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq org-roam-server-export-inline-images &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-server-serve-files &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq org-roam-server-served-file-extensions &lt;span style="color:#f92672">&amp;#39;&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;pdf&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;mp4&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ogv&amp;#34;&lt;/span>))
+(setq org-roam-server-network-poll &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-server-network-arrows &lt;span style="color:#66d9ef">nil&lt;/span>)
+(setq org-roam-server-network-label-truncate &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-server-network-label-truncate-length &lt;span style="color:#ae81ff">60&lt;/span>)
+(setq org-roam-server-network-label-wrap-length &lt;span style="color:#ae81ff">20&lt;/span>)
+(org-roam-server-mode)
+)
+(use-package deft
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:bind
+(&lt;span style="color:#e6db74">&amp;#34;&amp;lt;f8&amp;gt;&amp;#34;&lt;/span> &lt;span style="color:#f92672">.&lt;/span> deft)
+:config
+(setq deft-directory &lt;span style="color:#e6db74">&amp;#34;~/org-roam&amp;#34;&lt;/span>)
+(setq deft-extensions &lt;span style="color:#f92672">&amp;#39;&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;org&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;md&amp;#34;&lt;/span>))
+)
+&lt;/code>&lt;/pre>&lt;/div></content></item></channel></rss>

@@ -1,0 +1,223 @@
+<!doctype html><html lang=en>
+<head>
+<title>python :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/tags/python/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="python">
+<meta property="og:description" content>
+<meta property="og:url" content="https://chahak13.github.io/tags/python/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<link href=/tags/python/index.xml rel=alternate type=application/rss+xml title=Musings>
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=posts>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/gaussian_quadrature_in_scipy/>Gaussian quadrature in scipy</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-14
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/maths/>maths</a>&nbsp;
+</span>
+<div class=post-content>
+Scipy has an gaussian quadrature integration built-in in the integrate module as the integrate.quadrature function.
+import numpy as np from scipy import integrate A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.
+f = lambda x: 2*x print("Quadrature integration:", integrate.quadrature(f, 0, 2)) print("Analytical solution:", 2**2) A more complex function can also be passed to the quadrature function.
+</div>
+<div>
+<a class="read-more button" href=/posts/gaussian_quadrature_in_scipy/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/suppress_warnings_in_python/>Suppress warnings in python</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-14
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+While working with packages like numpy and scipy, python can possibly give a lot of warnings. These warnings can be suppressed easily by using the warnings module in the python library.
+import warnings warnings.filterwarnings("ignore") And done. This should suppress all the warnings your code produces.
+NOTE OF CAUTION: Do this only if you know what you&rsquo;re doing and what warnings are being suppressed. Most of the times, having a warning means that something in your code can be improved.
+</div>
+<div>
+<a class="read-more button" href=/posts/suppress_warnings_in_python/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/resampling_in_pandas/>Resampling in Pandas</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-12
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/resampling_in_pandas/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/chunky_pandas_read_csv_in_chunks/>Chunky Pandas - Read CSV in chunks</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/chunky_pandas_read_csv_in_chunks/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/emacs_jupyter/>emacs-jupyter and inline images in org-mode</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+emacs-jupyter is an emacs interface for jupyter kernels. It can be installed using
+(use-package jupyter :straight t) If ob-async is installed, then jupyter-python needs to be added to the list of languages that are not run asychronously. (Refer this issue). This can be done by
+(setq ob-async-no-async-languages-alist '("jupyter-python")) An example python block:
+print("ab") ab emacs-jupyter works doesn&rsquo;t work in server When I first installed emacs-jupyter I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon.
+</div>
+<div>
+<a class="read-more button" href=/posts/emacs_jupyter/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/hillshading_in_matplotlib/>Hillshading in matplotlib</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/matplotlib/>matplotlib</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see this Twitter post by James Beattie or this visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (here).
+Let us first import the required libraries.
+</div>
+<div>
+<a class="read-more button" href=/posts/hillshading_in_matplotlib/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/pipenv_in_emacs/>Pipenv in emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+</span>
+<div class=post-content>
+org-mode is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode.
+</div>
+<div>
+<a class="read-more button" href=/posts/pipenv_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class=pagination>
+<div class=pagination__buttons>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

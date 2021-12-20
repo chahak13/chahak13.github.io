@@ -1,0 +1,157 @@
+<!doctype html><html lang=en>
+<head>
+<title>Hillshading in matplotlib :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see this Twitter post by James Beattie or this visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (here).
+Let us first import the required libraries.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/hillshading_in_matplotlib/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hillshading in matplotlib">
+<meta property="og:description" content="Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see this Twitter post by James Beattie or this visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (here).
+Let us first import the required libraries.">
+<meta property="og:url" content="https://chahak13.github.io/posts/hillshading_in_matplotlib/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/hillshading_in_matplotlib/>Hillshading in matplotlib</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/matplotlib/>matplotlib</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see <a href="https://twitter.com/astro%5Fturb/status/1392315741177671682?s=09">this</a> Twitter post by James Beattie or <a href=https://twitter.com/noam%5Fvv/status/1392960446391623683>this</a> visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (<a href=https://matplotlib.org/stable/gallery/mplot3d/custom%5Fshaded%5F3d%5Fsurface.html#sphx-glr-gallery-mplot3d-custom-shaded-3d-surface-py>here</a>).</p>
+<p>Let us first import the required libraries.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm, cbook
+from matplotlib.colors import LightSource
+</code></pre><p>Now that we have the libraries, we need to set up the data that we will use for plotting. We will use the sample data provided in matplotlib.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>dem = cbook.get_sample_data(&quot;jacksboro_fault_dem.npz&quot;, np_load=True)
+z = dem['elevation']
+nrows, ncols = z.shape
+x = np.linspace(dem[&quot;xmin&quot;], dem[&quot;xmax&quot;], ncols)
+y = np.linspace(dem[&quot;ymin&quot;], dem[&quot;ymax&quot;], nrows)
+x, y = np.meshgrid(x, y)
+
+region = np.s_[5:50, 5:50]
+x, y, z = x[region], y[region], z[region]
+</code></pre><p>We will first use this data to plot a simple surface plot without any light sources to see what it adds.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>fig, ax = plt.subplots(subplot_kw=dict(projection='3d'), figsize=(8,8))
+surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, linewidth=0, antialiased=False, shade=False, cmap=plt.get_cmap('gist_earth'))
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_zticks([])
+fig.savefig(&quot;./images/plain_surface.png&quot;)
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>[]
+</code></pre></div>
+<figure class=left>
+<img src=/ox-hugo/plain_surface.png>
+</figure>
+<p>Now, if we add a lightsource to this, we should be able to see the differences in the plot in a much better way.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>fig_l, ax_l = plt.subplots(subplot_kw=dict(projection='3d'), figsize=(8,8))
+ls = LightSource(0, 45)
+rgb = ls.shade(z, cmap=cm.gist_earth, vert_exag=0.1, blend_mode='soft')
+ax_l.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb, linewidth=0, antialiased=False, shade=False)
+ax_l.set_xticks([])
+ax_l.set_yticks([])
+ax_l.set_zticks([])
+fig_l.savefig('./images/light_surface.png')
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>[]
+</code></pre></div>
+<figure class=left>
+<img src=/ox-hugo/light_surface.png>
+</figure>
+<p>We will try and animate this lightsource to make its presence more visible.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>from matplotlib.animation import FuncAnimation
+
+def update(frame):
+    ax_l.collections = []
+    ls = LightSource(frame%360, 45)
+    rgb = ls.shade(z, cmap=cm.gist_earth, vert_exag=0.1, blend_mode='soft')
+    ax_l.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb, linewidth=0, antialiased=False, shade=False)
+
+anim = FuncAnimation(fig_l, update, frames=360)
+anim.save(&quot;./images/lightsource.gif&quot;, writer=&quot;imagemagick&quot;, fps=60)
+# anim.save(&quot;./images/lightsource.mp4&quot;, writer=&quot;ffmpeg&quot;, fps=60)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/lightsource.gif>
+</figure>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/hello_notetaking/>
+<span class=button__icon>←</span>
+<span class=button__text>Hello note-taking</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/how_can_you_run_python_with_a_bookmark/>
+<span class=button__text>How can you run python with a bookmark?</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

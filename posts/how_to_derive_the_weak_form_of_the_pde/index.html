@@ -1,0 +1,124 @@
+<!doctype html><html lang=en>
+<head>
+<title>How to derive the weak form of the PDE？ :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="How to derive the weak form of the PDE？ I have some difficulties solving the weak form of the PDE： The proof of the preceding statement is elementary. The weak form of the PDE \(\nabla \cdot (A(x) \nabla u) + \omega^2 q(x) u = 0\) for all \(\phi\) that vanish at \(\partial \Omega\). Could you suggest some approaches to solve this? Thank you very much for helping me out！！
+Comments">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/how_to_derive_the_weak_form_of_the_pde/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to derive the weak form of the PDE？">
+<meta property="og:description" content="How to derive the weak form of the PDE？ I have some difficulties solving the weak form of the PDE： The proof of the preceding statement is elementary. The weak form of the PDE \(\nabla \cdot (A(x) \nabla u) + \omega^2 q(x) u = 0\) for all \(\phi\) that vanish at \(\partial \Omega\). Could you suggest some approaches to solve this? Thank you very much for helping me out！！
+Comments">
+<meta property="og:url" content="https://chahak13.github.io/posts/how_to_derive_the_weak_form_of_the_pde/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/how_to_derive_the_weak_form_of_the_pde/>How to derive the weak form of the PDE？</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content><div>
+<h2 id=how-to-derive-the-weak-form-of-the-pde><a href=https://math.stackexchange.com/questions/1339709/how-to-derive-the-weak-form-of-the-pde>How to derive the weak form of the PDE？</a><a href=#how-to-derive-the-weak-form-of-the-pde class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I have some difficulties solving the weak form of the PDE：
+The proof of the preceding statement is elementary. The weak form of the PDE
+\(\nabla \cdot (A(x) \nabla u) + \omega^2 q(x) u = 0\)
+for all \(\phi\) that vanish at \(\partial \Omega\). Could you suggest some approaches to solve this?
+Thank you very much for helping me out！！</p>
+<p>Comments</p>
+<ul>
+<li>(<em>user147263</em>) \(\begingroup\)</li>
+<li>(<em>Chee Han</em>) \(\begingroup\)</li>
+<li>(<em>Robert Lewis</em>) \(\begingroup\)</li>
+<li>(<em>Robert Lewis</em>) \(\begingroup\)</li>
+</ul>
+<h3 id=answer-1>Answer 1<a href=#answer-1 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>A general way to derive a weak form is to multiply a test function on both sides of the equation and then integrate them. The second step is to use some kind of divergence theorems to derive the weak solution such that the solution is some what not so smooth as in the strong form. For your question here, we can derive the weak form as follows:
+Let the equation multiply a \(\phi\in C_0^\infty\) on both sides and then integrate them, we get</p>
+<p>\begin{equation}
+\int_\Omega-\nabla\cdot (A(x)\nabla u)\phi dx=\int_\Omega\omega^2q(x)u\phi dx.
+\end{equation}</p>
+<p>Using the divergence theorem and the condition that \(\phi\) vanishes on bdry, the LHS becoms</p>
+<p>\begin{equation}
+\int_\Omega (A(x)\nabla u)\cdot\nabla\phi dx.
+\end{equation}</p>
+<p>And we have the weak form</p>
+<p>\begin{equation}
+\int_\Omega (A(x)\nabla u)\cdot\nabla\phi dx=\int_\Omega\omega^2q(x)u\phi dx.
+\end{equation}</p>
+<p>for all \(\phi\in C_0^\infty\).</p>
+<p>Comments:</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/how_the_personal_computer_broke_the_human_body/>
+<span class=button__icon>←</span>
+<span class=button__text>How the Personal Computer Broke the Human Body</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/how_whatsapp_enables_multi_device_capability_facebook_engineering/>
+<span class=button__text>How WhatsApp enables multi-device capability - Facebook Engineering</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

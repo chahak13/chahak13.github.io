@@ -1,0 +1,118 @@
+<!doctype html><html lang=en>
+<head>
+<title>zotero workflow into emacs? :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="zotero workflow into emacs? is there a facility people use to export plain text to emacs orgmode as part of their research workflow to organise their links and annotations? I heard zotxt is useful, does anyone have opinions on it or of something better?
+Comments
+Answer 1 There isn&amp;rsquo;t a single tool, but there are numerous packages that might be helpful if you use Zotero and Emacs alongside one another. There are various online tutorials which discuss setting up combinations of these to the individual author&amp;rsquo;s taste.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/zotero_workflow_into_emacs/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zotero workflow into emacs?">
+<meta property="og:description" content="zotero workflow into emacs? is there a facility people use to export plain text to emacs orgmode as part of their research workflow to organise their links and annotations? I heard zotxt is useful, does anyone have opinions on it or of something better?
+Comments
+Answer 1 There isn&amp;rsquo;t a single tool, but there are numerous packages that might be helpful if you use Zotero and Emacs alongside one another. There are various online tutorials which discuss setting up combinations of these to the individual author&amp;rsquo;s taste.">
+<meta property="og:url" content="https://chahak13.github.io/posts/zotero_workflow_into_emacs/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/zotero_workflow_into_emacs/>zotero workflow into emacs?</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content><div>
+<h2 id=zotero-workflow-into-emacs><a href=https://emacs.stackexchange.com/questions/24725/zotero-workflow-into-emacs>zotero workflow into emacs?</a><a href=#zotero-workflow-into-emacs class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>is there a facility people use to export plain text to emacs orgmode as part of their research workflow to organise their links and annotations? I heard zotxt is useful, does anyone have opinions on it or of something better?</p>
+<p>Comments</p>
+<h3 id=answer-1>Answer 1<a href=#answer-1 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>There isn&rsquo;t a single tool, but there are numerous packages that might be helpful if you use Zotero and Emacs alongside one another. There are <a href=http://www.mkbehr.com/posts/a-research-workflow-with-zotero-and-org-mode/>various</a> <a href=http://iflysib14.iflysib.unlp.edu.ar/tomas/en/blog/reference-management.html>online</a> <a href=https://tincman.wordpress.com/2011/01/04/research-paper-management-with-emacs-org-mode-and-reftex/>tutorials</a> which discuss setting up combinations of these to the individual author&rsquo;s taste.
+Rather than repeating these, I&rsquo;ll try and give an overview, since it&rsquo;s not completely clear from your question what you&rsquo;d like to do.
+Consider first that the &ldquo;research workflow&rdquo;, so far as research literature is concerned, has various steps, such as:
+In &ldquo;standard&rdquo; Zotero, Zotero does 1 to 6, and the Zotero word-processor plug-in does 7 and 8.
+I&rsquo;d suggest thinking first what you want Emacs to do, and what you like about Zotero. You can manage bibliographies and write scientific papers entirely within Emacs; plenty of people do. Instead of Zotero&rsquo;s database bibliographic information is stored in a Bib(La)Tex (<code>.bib</code>) file, and citations added to LaTeX, org or markdown files.
+But in my view Zotero has particular strengths at 1-4 (adding and managing data) and at 6 (it has a very fast and powerful search tool). Annotating (5) is relatively weak, because the simple text editor is uncomfortable if you&rsquo;re used to Emacs. And if you author your own papers in Emacs you need something that does tasks 7 and 8.
+If you&rsquo;re using Emacs side-by-side with Zotero, Emacs needs some way to see what you have in your database. The best way to do this is to export a <code>.bib</code> file, for which format Emacs has extensive support, from Zotero.
+This can be done manually, but packages like <a href=https://github.com/vspinu/zotelo><code>zotelo</code></a> or the fork <a href=https://gist.github.com/andersjohansson/fa7ca643782771b6e15da41514e1358a><code>emacs-zotero-bib-fetch</code></a> will allow you to quickly keep the <code>.bib</code> file up-to-date from within Emacs. <code>zotelo</code> requires Mozrepl, which is currently <a href=https://github.com/vspinu/zotelo/issues/34>not supported</a> by Firefox Quantum, so I recommend using <code>emacs-zotero-bib-fetch</code>.
+Once you have a <code>.bib</code> file, the in-built package <code>reftex</code>, as well as <a href=https://github.com/jkitchin/org-ref><code>org-ref</code></a> and <a href=https://github.com/tmalsburg/helm-bibtex><code>helm-bibtex</code></a> will let you search your bibliographic data. One or both of these latter packages is likely to be very helpful; they do a number of tasks from the list above, including facilities for making notes.
+<code>helm-bibtex</code> is particularly clever at finding PDFs linked to bibliographic items, which you can then open in Emacs. <a href=https://github.com/politza/pdf-tools><code>pdf-tools</code></a> is an excellent alternative PDF viewer within Emacs. It allows you to view and create annotations within the PDF file. If you like using PDF files this way, the <a href=http://zotfile.com><code>zotfile</code></a> extension for Zotero can extract annotations automatically into a Zotero note.
+<code>helm-bibtex</code> and <code>org-ref</code> packages both have facilities for adding notes to bibliographic items. These are stored as org files.
+Once I have finished my notes on an item I do <code>C-c C-e h o</code> to export an HTML version and copy and paste this back into Zotero as a note so that it is searchable. I haven&rsquo;t found a slicker way to do this.
+This is partly dependent on what format you write (org, reftex, markdown) and partly dependent on what format you want at the end (PDF, HTML).
+Again, both <code>helm-bibtex</code> and <code>org-ref</code> as well as <code>reftex</code> allow inserting citations into documents you are writing of any of these types.
+Assuming you are writing in org, there is (not yet) a standard citation syntax, but org-ref provides one. Other people just use the LaTeX citation commands directly in org.
+If your primary output target is PDF, then <code>org-mode</code>&rsquo;s own exporting (via LaTeX) is likely the easiest route.
+You mention <code>zotxt</code>; I haven&rsquo;t used this, but it appears to be a tool for resolving and formatting citations in plain text files, including support for <code>pandoc</code>. Pandoc markdown <em>does</em> have a standard citation format and support for resolving and formatting bibliographies (using CSL). Pandoc may be preferable if you want to export primarily to multiple formats (e.g. HTML, markdown).</p>
+<p>Comments:</p>
+<h3 id=answer-2>Answer 2<a href=#answer-2 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Generally I use emacs' <a href=https://orgmode.org/>org-mode</a> for organizing projects, tasks, and ideas, but Zotero is helpful for storing resources like PDFs / websites, etc. when researching something. To combine the two, it is nice to be able to link from org-mode to the location within Zotero where a resource is.
+<a href=https://zoteromusings.wordpress.com/2013/04/23/zotero-item-uris-from-client/>This blog post</a> describes a means of getting Zotero URLs that works fairly well:
+Now whenever you are viewing an item in Zotero, if you press <code>Ctrl+Alt+C</code> (or <code>Cmd+Shift+C</code> on a Mac), a URL will be copied to the clipboard. This URL refers to an item within Zotero and will open Zotero to view the item. The URL can be pasted into an org-mode file (or any other kind of document).</p>
+<p>Comments:</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/uber_s_crazy_yolo_app_rewrite_from_the_front_seat_the_pragmatic_engineer/>
+<span class=button__icon>←</span>
+<span class=button__text>Uber's Crazy YOLO App Rewrite, From the Front Seat - The Pragmatic Engineer</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

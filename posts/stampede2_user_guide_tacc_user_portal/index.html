@@ -1,0 +1,331 @@
+<!doctype html><html lang=en>
+<head>
+<title>Stampede2 User Guide - TACC User Portal :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="System Overview KNL Compute Nodes Stampede2 has 4,200 Knight&amp;rsquo;s Landing (KNL) compute nodes. An overview of the specifications of each node is as follows
+   Model Intel Xeon Phi 7250 (&amp;ldquo;Knights Landing&amp;rdquo;)     Total cores per KNL node 68 cores on a single socket   Hardware threads per core 4   Hardware threads per node 68 x 4 = 272   Clock rate 1.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/stampede2_user_guide_tacc_user_portal/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stampede2 User Guide - TACC User Portal">
+<meta property="og:description" content="System Overview KNL Compute Nodes Stampede2 has 4,200 Knight&amp;rsquo;s Landing (KNL) compute nodes. An overview of the specifications of each node is as follows
+   Model Intel Xeon Phi 7250 (&amp;ldquo;Knights Landing&amp;rdquo;)     Total cores per KNL node 68 cores on a single socket   Hardware threads per core 4   Hardware threads per node 68 x 4 = 272   Clock rate 1.">
+<meta property="og:url" content="https://chahak13.github.io/posts/stampede2_user_guide_tacc_user_portal/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/stampede2_user_guide_tacc_user_portal/>Stampede2 User Guide - TACC User Portal</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/us/>us</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/utaustin/>utaustin</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/masters/>masters</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/tacc/>tacc</a>&nbsp;
+</span>
+<div class=post-content><div>
+<h2 id=system-overview>System Overview<a href=#system-overview class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<h3 id=knl-compute-nodes>KNL Compute Nodes<a href=#knl-compute-nodes class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Stampede2 has 4,200 Knight&rsquo;s Landing (KNL) compute nodes. An overview of the specifications of each node is as follows</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Intel Xeon Phi 7250 (&ldquo;Knights Landing&rdquo;)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total cores per KNL node</td>
+<td>68 cores on a single socket</td>
+</tr>
+<tr>
+<td>Hardware threads per core</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Hardware threads per node</td>
+<td>68 x 4 = 272</td>
+</tr>
+<tr>
+<td>Clock rate</td>
+<td>1.4GHz</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>96GB DDR4 plus 16GB high-speed MCDRAM. Configurable in two important ways</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td>32KB L1 data cache/core; 1MB L2/two-core tile. In default config, MCDRAM</td>
+</tr>
+<tr>
+<td></td>
+<td>operates as 16GB direct-mapped L3.</td>
+</tr>
+</tbody>
+</table>
+<p>All but 504 KNL nodes have a 107GB <code>/tmp</code> partition on a 200GB Solid State Drive (SSD). The 504 KNLs originally installed as the Stampede1 KNL sub-system each have a 32GB <code>/tmp</code> partition on 112GB SSDs. The latter nodes currently make up the development, long and flat-quadrant queues. Size of <code>/tmp</code> partitions as of 24 Apr 2018.</p>
+<h3 id=skx-compute-nodes>SKX Compute Nodes<a href=#skx-compute-nodes class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Stampede2 hosts 1,738 SKX compute nodes.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Intel Xeon Platinum 8160 (&ldquo;Skylake&rdquo;)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total cores per KNL node</td>
+<td>48 cores on two socket (24 cores/socket)</td>
+</tr>
+<tr>
+<td>Hardware threads per core</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Hardware threads per node</td>
+<td>48 x 2 = 96</td>
+</tr>
+<tr>
+<td>Clock rate</td>
+<td>2.1GHz nominal (1.4-3.7GHz depending on instruction set and number of active cores</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>192GB (2.67GHz) DDR4</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td>32KB L1 data cache/core; 1MB L2/core. 33MB L2/socket.</td>
+</tr>
+</tbody>
+</table>
+<p>Local storage on the SKX compute nodes is in tthe form of 144GB <code>/tmp</code> partitions on a 200GB SSD.</p>
+<h2 id=file-systems>File Systems<a href=#file-systems class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Stampede2 mounts three shared Lustre file systems on which each user has account-specific directories for <code>$HOME</code>, <code>$WORK</code>, and <code>$SCRATCH</code>. Each of the file systems are available on all Stampede2 nodes.</p>
+<table>
+<thead>
+<tr>
+<th>File System</th>
+<th>Quota</th>
+<th>Key Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$HOME</code></td>
+<td>10GB; 200,000 files</td>
+<td><strong>Not intended for parallel or high-intensity file operations</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Backed up regularly</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>~1PB Overall capacity. 2 Meta-Data Servers, 4 Object Storage Targets</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Not purged</td>
+</tr>
+<tr>
+<td><code>$WORK</code></td>
+<td>1TB; 3,000,000 files across all</td>
+<td><strong>Not intended for parallel or high-intensity file operations</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>TACC systems.</td>
+<td>On Global Shared FS mounted on most TACC systems.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>Not backed up</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Not purged</td>
+</tr>
+<tr>
+<td><code>$SCRATCH</code></td>
+<td>no quota</td>
+<td>Overall ~30PB. 4 Meta-Data Servers. 66 Object Storage Targets</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>Not backed up</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>Files are subject to purge if access time >10 days old</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>$SCRATCH</code> is a temporary storage space. Files not accessed in last 10 days will be subject to the purging. Reading or executing a file/script will update the access time. <code>ls -ul</code> can be used to view access times.</p>
+<h2 id=accessing-the-system>Accessing the system<a href=#accessing-the-system class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Access to all TACC systems requires setting up MFA. This is done using the TACC Token App. This app provides a token for each login, that needs to be given while using ssh.</p>
+<p><strong>Important:</strong> <em>If user created TACC account using UT EID, then they&rsquo;ll have to go to the reset password using the email-id provided and create a password that will then be used as a password in ssh.</em></p>
+<p>To initiate a stampede2 ssh session, simply use ssh on the command-line.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ssh &lt;username&gt;@stampede2.tacc.utexas.edu
+</code></pre></div><p>If one wants to connect to a specific login node (not sure when would this be required), then the full domain can be used. For example, to log into the second node, use</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ssh &lt;username&gt;@login2.stampede2.tacc.utexas.edu
+</code></pre></div><p>To connect with graphical support (X11), use the normal ssh flags of <code>-X</code> or <code>-Y</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ssh -X &lt;username&gt;@stampede2.tacc.utexas.edu
+</code></pre></div><p><strong>Important</strong> <code>ssh-keygen</code> should <em>NOT</em> be run on Stampede2. When logging in, it creates the right key-pair by itself.</p>
+<h2 id=using-stampede2>Using Stampede2<a href=#using-stampede2 class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Stampede2 nodes run <strong>Red Hat Enterprise Linux 7</strong>.</p>
+<h3 id=configuring-account>Configuring account<a href=#configuring-account class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<h4 id=linux-shell>Linux Shell<a href=#linux-shell class=hanchor arialabel=Anchor>&#8983;</a> </h4>
+<p>The default login shell is <strong>bash</strong>. It can be changed to csh, sh, tcsh, or zsh by submitting a ticket through TACC portal. <code>chsh</code> command won&rsquo;t work.</p>
+<h4 id=account-level-diagnostics>Account-level Diagnostics<a href=#account-level-diagnostics class=hanchor arialabel=Anchor>&#8983;</a> </h4>
+<p>TACC has a <code>sanitytool</code> module that loads an account-level diagnostics package to detect account-level issues. It also provides fixes for the issues. To run the tool, execute the following commands</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ module load sanitytool
+$ sanitycheck
+</code></pre></div><p>It is a good habit to periodically run <code>sanitycheck</code> as preventive measure. To read more help on it, run <code>module help sanitytool</code>.</p>
+<h4 id=file-system-usage-recommendations>File System Usage Recommendations<a href=#file-system-usage-recommendations class=hanchor arialabel=Anchor>&#8983;</a> </h4>
+<table>
+<thead>
+<tr>
+<th>File system</th>
+<th>Best practices</th>
+<th>Best activities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$HOME</td>
+<td>cron jobs</td>
+<td>compiling, editing</td>
+</tr>
+<tr>
+<td></td>
+<td>small scripts</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>environment settings</td>
+<td></td>
+</tr>
+<tr>
+<td>$WORK</td>
+<td>store software installations</td>
+<td>staging datasets</td>
+</tr>
+<tr>
+<td></td>
+<td>original datasets that can&rsquo;t be reproduced</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>job scripts and templates</td>
+<td></td>
+</tr>
+<tr>
+<td>$SCRATCH</td>
+<td><strong>Temporary storage</strong></td>
+<td>all job I/O activity</td>
+</tr>
+<tr>
+<td></td>
+<td>I/O files</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>job files</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>temporary datasets</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/org_roam/>
+<span class=button__icon>←</span>
+<span class=button__text>Setup for org-roam and its compatriots</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/the_macaroni_in_yankee_doodle_is_not_what_you_think_atlas_obscura/>
+<span class=button__text>The Macaroni in 'Yankee Doodle' Is Not What You Think - Atlas Obscura</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

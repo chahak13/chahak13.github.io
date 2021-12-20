@@ -1,0 +1,195 @@
+<!doctype html><html lang=en>
+<head>
+<title>Github Action: Split Long Command into Multiple Lines :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Github Action: Split Long Command into Multiple Lines I have a Github action command that is really long:
+name: build on: [push] jobs: build: runs-on: ubuntu-18.04 steps: - uses: actions/checkout@v1 - name: Install Prerequisites run: | sudo apt-get update sudo apt-get install -y --no-install-recommends &amp;#34;a very very long list of prerequisites&amp;#34; May I know whether it is possible to split the long command into multiple lines for better readability? I have tried the separator &amp;lsquo;\&amp;rsquo; but it does not work.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/github_action_split_long_command_into_multiple_lines/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github Action: Split Long Command into Multiple Lines">
+<meta property="og:description" content="Github Action: Split Long Command into Multiple Lines I have a Github action command that is really long:
+name: build on: [push] jobs: build: runs-on: ubuntu-18.04 steps: - uses: actions/checkout@v1 - name: Install Prerequisites run: | sudo apt-get update sudo apt-get install -y --no-install-recommends &amp;#34;a very very long list of prerequisites&amp;#34; May I know whether it is possible to split the long command into multiple lines for better readability? I have tried the separator &amp;lsquo;\&amp;rsquo; but it does not work.">
+<meta property="og:url" content="https://chahak13.github.io/posts/github_action_split_long_command_into_multiple_lines/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/github_action_split_long_command_into_multiple_lines/>Github Action: Split Long Command into Multiple Lines</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content><div>
+<h2 id=github-action-split-long-command-into-multiple-lines><a href=https://stackoverflow.com/questions/59954185/github-action-split-long-command-into-multiple-lines>Github Action: Split Long Command into Multiple Lines</a><a href=#github-action-split-long-command-into-multiple-lines class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I have a Github action command that is really long:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>name: build
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-18.04
+        steps:
+            - uses: actions/checkout@v1
+            - name: Install Prerequisites
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y --no-install-recommends &#34;a very very long list of prerequisites&#34;
+
+</code></pre></div><p>May I know whether it is possible to split the long command into multiple lines for better readability? I have tried the separator &lsquo;\&rsquo; but it does not work. Thanks in advance.</p>
+<p>Comments</p>
+<h3 id=answer-1>Answer 1<a href=#answer-1 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>I have a multi line command using backslash to separate the lines as follows:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>- name: Configure functions
+  run: |
+    firebase functions:config:set \
+      some.key1=&#34;${{ secrets.SOME_KEY_1 }}&#34; \
+      some.key2=&#34;${{ secrets.SOME_KEY_2 }}&#34; \
+    ...
+
+
+</code></pre></div><p>Note the preceding &lsquo;|&rsquo; character.</p>
+<p>Comments:</p>
+<ul>
+<li>(<em>tom</em>) This is the correct answer and would be a better accepted answer. The backslashes work the same as a multiline command in bash. (I&rsquo;d recommend a hanging indent for readability though.)</li>
+<li>(<em>dan1st</em>) Does anyone know since when this is possible? (I think it was not possible when I wrote my answer but I fully agree with that answer being accepted, now)</li>
+<li>(<em>Bojian Zheng</em>) @dan1st I also do not think this is possible by the time I asked this, but it seems that Github people have added the support for backslash.</li>
+<li>(<em>mcserep</em>) I don&rsquo;t know how did it work previously for anyone, but adding a backslash does not work right now with GitHub Actions. This shouldn&rsquo;t be the accepted answer.</li>
+<li>(<em>IvanD</em>) I confirm: this does not work on GitHub Actions as of now. You need to use &ldquo;>&rdquo; instead of &ldquo;I&rdquo; (see other answers)</li>
+</ul>
+<h3 id=answer-2>Answer 2<a href=#answer-2 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>You can use the YAML <strong>folded style</strong> with <code>&amp;gt;</code> which is supported by GitHub Actions.
+For example,</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>run: &gt;
+  xvfb-run
+  ./mvnw -f my/pom.xml
+  clean verify
+  -DskipTests
+
+</code></pre></div><p>newlines will be replaced with spaces so the above is equivalent to</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>run: xvfb-run ./mvnw -f my/pom.xml clean verify -DskipTests
+
+</code></pre></div><p>Comments:</p>
+<ul>
+<li>(<em>sschuberth</em>) Also see yaml-multiline.info to play around with the different scalar / chomping styles.</li>
+<li>(<em>Johnny Oshika</em>) This works, thank you! Important note: per yml spec, white space is important here, so any extra tabs before the lines will cause problems.</li>
+<li>(<em>OZZIE</em>) It seems to work but it doesn&rsquo;t fail on any errors, same with | also.. so it becomes kind of pointless..</li>
+<li>(<em>ruohola</em>) @JohnnyOshika Thank you for that comment! It cleared a long standing misunderstanding for me.</li>
+<li>(<em>Waldir Leoncio</em>) Just a quick note about this being for the default shell. For example, my YML file had some bits running R code with shell: Rscript {0}, and line breaking in those cases don&rsquo;t need any special characters (just like in R).</li>
+</ul>
+<h3 id=answer-3>Answer 3<a href=#answer-3 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Going to share this in since it has not been mentioned.
+You can use:
+I found the site <a href=https://yaml-multiline.info/>yaml-multiline.info</a> useful for understanding how yaml strings are interpreted.
+For my use case, I ended up doing the following:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>run: &gt;-
+  for i in $(find . -type f -name &#34;*.log&#34;);
+  do
+   echo &#34;File: ${i} \n&#34;;
+   cat $i;
+   printf &#39;%*s\n&#39; &#34;${COLUMNS:-$(tput cols)}&#34; &#39;&#39; | tr &#39; &#39; -;
+  done
+
+</code></pre></div><p>Comments:</p>
+<ul>
+<li>(<em>silkfire</em>) What does the hyphen in >- do?</li>
+<li>(<em>Arclite</em>) @silkfire According to the linked website, it appears to strip newlines from the end of the block, so that there&rsquo;s not an extra trailing \n at the end.</li>
+<li>(<em>Arclite</em>) That said, this is not supported by GitHub Actions: github.com/actions/runner/issues/418</li>
+</ul>
+<h3 id=answer-4>Answer 4<a href=#answer-4 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>This was not possible using backslashes, earlier. See the accepted answer on how to do it now.
+As far as I know, GitHub Actions does not support that.
+However, you can use environment variables for that.
+For example, this script splits your command in 3 lines of code and executes it as one line.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>steps:
+  - name: Install Prerequisites
+    run: |
+      sudo apt-get update
+      bash -c &#34;$line1 $line2 $line3&#34;
+    env:
+    - line1=&#39;sudo apt-get install -y --no-install-recommends &#39;
+    - line2=&#39;a very very long list&#39;
+    - line3=&#39;of prerequisites&#39;
+
+</code></pre></div><p>It creates the environment variables <code>line1</code>, <code>line2</code> and <code>line3</code> and concats and executes them in a bash session.</p>
+<p>Comments:</p>
+<h3 id=answer-5>Answer 5<a href=#answer-5 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Note also the <a href=https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#join>join</a> and <a href=https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#format>format</a> functions for expressions:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>HELLO_WORLD = ${{ join(&#39;Hello&#39;, &#39;world!&#39;) }}
+HELLO_WORLD = ${{ format(&#39;{{Hello {0}}}&#39;, &#39;World&#39;) }}
+
+</code></pre></div><p>Presumably these could be combined with env variables.</p>
+<p>Comments:</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/software_katharina_brunner/>
+<span class=button__icon>←</span>
+<span class=button__text>Generative Art – Katharina Brunner</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/hello_notetaking/>
+<span class=button__text>Hello note-taking</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

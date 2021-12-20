@@ -1,0 +1,289 @@
+<!doctype html><html lang=en>
+<head>
+<meta name=generator content="Hugo 0.91.0">
+<title>Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Unstrucured thoughts regarding everything">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Musings">
+<meta property="og:description" content="Unstrucured thoughts regarding everything">
+<meta property="og:url" content="https://chahak13.github.io/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<link href=/index.xml rel=alternate type=application/rss+xml title=Musings>
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=index-content>
+<p>Hi! You&rsquo;ve come across a stash of random musings that I have started to collect. This contains various things I found interesting, things that I want to read/have read, stackoverflow answers that I used sometime in my life, notes on topics, and other thoughts. I am trying to get into the habit of writing down more of what I keep on thinking. Hopefully this will help with that.</p>
+<p>&ndash; Chahak :)</p>
+</div>
+<div class=posts>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/completion_in_emacs/>Completion in Emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+Trying out different completion frameworks for Emacs instead of simply Ivy, just for the heck of it.
+(use-package vertico :straight t :init (vertico-mode) :config (setq vertico-cycle t)) (use-package vertico-buffer :after vertico) Also use the orderless completion style to improve the completion methods for vertico/selectrum etc. This also allows using space as delimeter in vertico, since it reads space as a character to match otherwise.
+(use-package orderless :straight t :init (setq completion-styles '(orderless)) (setq completion-category-defaults nil) (setq completion-category-overrides '((file (styles partial-completion))))) To persist history over Emacs restarts, vertico uses the savehist-mode that is built into emacs by default.
+</div>
+<div>
+<a class="read-more button" href=/posts/completion_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/workspace_setup_ideas/>Workspace setup ideas</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/random/>random</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/misc/>misc</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/workspace_setup_ideas/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/how_to_create_art_from_math/>How to create art from math</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-26
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/generative-art/>generative-art</a>&nbsp;
+</span>
+<div class=post-content>
+We&rsquo;ll be using the numpy and matplotlib modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.
+import numpy as np import matplotlib.pyplot as plt # %matplotlib inline First, some auxiliary functions to setup figures using matplotlib.
+def create_fig(facecolor="#fee4a6", **kwargs): fig, ax = plt.subplots(figsize=(7,7), **kwargs) ax.set_facecolor(facecolor) for spine in ax.spines.keys(): ax.spines[spine].set_color(facecolor) ax.set_xticks([]) ax.set_yticks([]) return fig, ax We want to see what happens when you provide mathematical transformations to seemingly simple set of points.
+</div>
+<div>
+<a class="read-more button" href=/posts/how_to_create_art_from_math/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/change_font_size_in_emacs/>Change font size in emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-25
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/change_font_size_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/on_and_off_campus_employment/>On and Off Campus Employment</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-23
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/utaustin/>utaustin</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/us/>us</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/masters/>masters</a>&nbsp;
+</span>
+<div class=post-content>
+During studies On-campus Employment Any employment paid by uni or through approved vendor. Need to maintain F-1 status No authorization needed Can work upto 20 hrs/week during academic semesters Beyond 20 in breaks Need process done with ISSS for SSN CPT Beyond 20hours a week on campus / Any paid off campus
+must be enrolled in US for 2 semesters
+Job with determined dates
+</div>
+<div>
+<a class="read-more button" href=/posts/on_and_off_campus_employment/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/chunky_pandas_read_csv_in_chunks/>Chunky Pandas - Read CSV in chunks</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/chunky_pandas_read_csv_in_chunks/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/sir_alex_ferguson_never_give_in/>Sir Alex Ferguson - Never Give In</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-09
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/sir_alex_ferguson_never_give_in/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/maintaining_f_1_j_1_student_status_ut_austin_seminar/>Maintaining F-1/J-1 student status (UT Austin seminar)</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-03
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/utaustin/>utaustin</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/us/>us</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/masters/>masters</a>&nbsp;
+</span>
+<div class=post-content>
+Maintaining Status Enroll full-time for each Fall and Spring semester: Graduate: 9 hours Make normal progress towards the degree Passport should not expire I-20 should be accurate and valid at all times Grace period after end of program: F1: 60 days Enrollment during Covid You may not enter US if you plan to enroll to all online classes If in US, should enroll in at-least one in-person course Austin plans to hold most courses in person Online semesters do not count towards fulfilling two semester requirement for CPT/OPT Employment Can work on-campus Up to 30 days before start of classes Maximum of 20 hours/week (Fall and Spring sems) DON&rsquo;T work without proper authorization.
+</div>
+<div>
+<a class="read-more button" href=/posts/maintaining_f_1_j_1_student_status_ut_austin_seminar/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/fetching_emails_mbsync/>Fetching emails - mbsync</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-05-30
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/fetching_emails_mbsync/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/mail_in_emacs_mu4e/>Mail in emacs - mu4e</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-05-30
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+mu4e (mu-for-emacs) is an e-mail client for GNU Emacs version 24.4 or higher, built on top of the mu(1) e-mail search engine. mu4e is optimized for quickly processing large amounts of e-mail.
+As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like mbsync, offlineimap etc.
+</div>
+<div>
+<a class="read-more button" href=/posts/mail_in_emacs_mu4e/>Read more →</a>
+</div>
+</div>
+<div class=pagination>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=/>
+<span class=button__icon>←</span>
+<span class=button__text>Newer posts</span>
+</a>
+</span>
+<span class="button next">
+<a href=/page/3/>
+<span class=button__text>Older posts</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

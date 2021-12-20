@@ -1,0 +1,193 @@
+<!doctype html><html lang=en>
+<head>
+<title>Export source code of tex file :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Export source code of tex file I have to create a training guide for Maple as part of an assignment. Obviously I need to hand in the final PDF document, but I also need to hand in the LaTeX source code to prove that I created the document using LaTeX. Is there a way of exporting the source code with all the colours, indentation etc. still in place?
+Comments
+ (JP-Ellis) Welcome to LaTeX!">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/export_source_code_of_tex_file/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Export source code of tex file">
+<meta property="og:description" content="Export source code of tex file I have to create a training guide for Maple as part of an assignment. Obviously I need to hand in the final PDF document, but I also need to hand in the LaTeX source code to prove that I created the document using LaTeX. Is there a way of exporting the source code with all the colours, indentation etc. still in place?
+Comments
+ (JP-Ellis) Welcome to LaTeX!">
+<meta property="og:url" content="https://chahak13.github.io/posts/export_source_code_of_tex_file/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/export_source_code_of_tex_file/>Export source code of tex file</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content><div>
+<h2 id=export-source-code-of-tex-file><a href=https://tex.stackexchange.com/questions/296758/export-source-code-of-tex-file>Export source code of tex file</a><a href=#export-source-code-of-tex-file class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I have to create a training guide for Maple as part of an assignment. Obviously I need to hand in the final PDF document, but I also need to hand in the LaTeX source code to prove that I created the document using LaTeX. Is there a way of exporting the source code with all the colours, indentation etc. still in place?</p>
+<p>Comments</p>
+<ul>
+<li>(<em>JP-Ellis</em>) Welcome to LaTeX! Welcome to TeX.SX! Just to clarify, where are you intending to export the LaTeX source? Are you looking to embed the TeX file into the PDF? or do you want to pretty-print the LaTeX source?</li>
+<li>(<em>George Wilson</em>) Ideally, the LaTeX source code would follow the actual PDF document.</li>
+<li>(<em>jamesqf</em>) I think you have a major misunderstanding here. The colors you may see as you write your LaTeX source (I&rsquo;m assuming you mean syntax colorization?) are not part of LaTeX or the source file, they are applied by whatever editor you&rsquo;re using to write the LaTeX code. Likewise, there&rsquo;s no need to &lsquo;export&rsquo; the LaTeX file, as your editor should already have saved it on your hard drive. Indentation is a part of that file. You can, as others have said, include that file in your LaTeX document, or you can simply print it as a plain text file.</li>
+<li>(<em>Bakuriu</em>) When they tell you to provide the sources it means you just hand them the .tex file so that they can compile them and check the output pdf is the same you handed in&mldr;</li>
+</ul>
+<h3 id=answer-1>Answer 1<a href=#answer-1 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Here is a <code>tcolorbox</code> - <code>listings</code> way of inputting the document itself to the file and displaying the code.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>\documentclass{article}
+
+
+\usepackage[most]{tcolorbox}
+
+\begin{document}
+This is my nice \LaTeXe{} file.
+
+It shows the code of itself:
+
+\tcbinputlisting{breakable,listing file=\jobname.tex,listing only,colback=white!40!yellow,sharp corners}
+\end{document}
+
+</code></pre></div><p>[[<img src=https://i.stack.imgur.com/eApUH.png alt>][]]
+For breakable boxes:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[most]{tcolorbox}
+
+\begin{document}
+This is my nice \LaTeXe{} file.
+
+It shows the code of it self -- and here is some blind text to make the text longer
+
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut
+
+\tcbinputlisting{breakable,listing file=\jobname.tex,listing only,colback=white!40!yellow,sharp corners}
+\end{document}
+
+</code></pre></div><p>[]]
+[[https://i.stack.imgur.com/GANeH.png]<a href=https://i.stack.imgur.com/wbGAM.png></a></p>
+<p>Comments:</p>
+<ul>
+<li>(<em>George Wilson</em>) I love that. My source code spans over many pages (over 300 lines at the moment) and this solution seems to not split the code over several pages. How can I solve this?</li>
+<li>(<em>user31729</em>) @Will: Add the breakable option to the \tcbinputlisting options. See the updated code (but i did not add a new screen shot (yet))</li>
+<li>(<em>George Wilson</em>) Just added that argument in. Thanks a lot, looks great!</li>
+<li>(<em>George Wilson</em>) Another question, when the inputted code is in math mode, it goes off the screen. How can I prevent this?</li>
+<li>(<em>user31729</em>) @Will: That&rsquo;s another question ;-)</li>
+</ul>
+<h3 id=answer-2>Answer 2<a href=#answer-2 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>One possibility is to simply input the TeX file in a verbatim environment. A really neat option is the <a href=http://ctan.org/pkg/minted><code>minted</code></a> package which has nice syntax highlighting:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>\documentclass{article}
+
+\usepackage{minted}
+\usepackage{mwe}
+
+\begin{document}
+
+\blinddocument
+
+\clearpage
+
+\inputminted[bgcolor=gray!10]{latex}{will.tex}
+
+\end{document}
+
+</code></pre></div><p>This places, on the last page, the following:
+[[<img src=https://i.stack.imgur.com/YgIDW.png alt>][]]
+You can customize the appearance of the output in minted.
+If you don&rsquo;t like <code>minted</code>, there are other packages to typeset code as well and you should be able to use them in essentially the same way. Have a search through this website to see a few other options.</p>
+<p>Comments:</p>
+<h3 id=answer-3>Answer 3<a href=#answer-3 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>I use this construction in the <code>\LaTeX</code> source for exercises for my students</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>\usepackage{verbatim}
+...
+\newpage
+\emph{
+Here is the \LaTeX{} source for this document. You can cut it from the
+pdf and use it to start your answers. I used the \verb!\jobname!
+\emph{macro for the source file name, so you can call your file by any
+  name you like.}
+\verbatiminput{\jobname}
+\end{document}
+
+</code></pre></div><p>Comments:</p>
+<h3 id=answer-4>Answer 4<a href=#answer-4 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>try</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>\begin{verbatimwrite}{myfile}
+
+\end{verbatimwrite}
+
+</code></pre></div><p>Comments:</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/estimating_residence_time_matrix/>
+<span class=button__icon>←</span>
+<span class=button__text>Estimating residence-time matrix</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/export_tikz_as_image_file/>
+<span class=button__text>Export tikz as image file</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

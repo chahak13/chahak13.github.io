@@ -1,0 +1,115 @@
+<!doctype html><html lang=en>
+<head>
+<title>How can you run python with a bookmark? :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="How can you run python with a bookmark? I am writing a script to log into web pages (I know it&amp;rsquo;s a bad idea, and I don&amp;rsquo;t care), but I need to run it with a bookmark from Firefox. Does anyone know how to help me?
+Comments
+ (jarst) Save yourself a hassle and create a javascript bookmarklet. (Glazbee) Following on @jarst&amp;rsquo;s comment, why not just create an extention? (orangeInk) stackoverflow.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/how_can_you_run_python_with_a_bookmark/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How can you run python with a bookmark?">
+<meta property="og:description" content="How can you run python with a bookmark? I am writing a script to log into web pages (I know it&amp;rsquo;s a bad idea, and I don&amp;rsquo;t care), but I need to run it with a bookmark from Firefox. Does anyone know how to help me?
+Comments
+ (jarst) Save yourself a hassle and create a javascript bookmarklet. (Glazbee) Following on @jarst&amp;rsquo;s comment, why not just create an extention? (orangeInk) stackoverflow.">
+<meta property="og:url" content="https://chahak13.github.io/posts/how_can_you_run_python_with_a_bookmark/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/how_can_you_run_python_with_a_bookmark/>How can you run python with a bookmark?</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content><div>
+<h2 id=how-can-you-run-python-with-a-bookmark><a href=https://stackoverflow.com/questions/53882628/how-can-you-run-python-with-a-bookmark>How can you run python with a bookmark?</a><a href=#how-can-you-run-python-with-a-bookmark class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I am writing a script to log into web pages (I know it&rsquo;s a bad idea, and I don&rsquo;t care), but I need to run it with a bookmark from Firefox. Does anyone know how to help me?</p>
+<p>Comments</p>
+<ul>
+<li>(<em>jarst</em>) Save yourself a hassle and create a javascript bookmarklet.</li>
+<li>(<em>Glazbee</em>) Following on @jarst&rsquo;s comment, why not just create an extention?</li>
+<li>(<em>orangeInk</em>) stackoverflow.com/questions/2034373/…</li>
+</ul>
+<h3 id=answer-1>Answer 1<a href=#answer-1 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>There is no pre-made solution and as it stands, you left part of your question ambiguous.
+But here is one possible outline on how you could accomplish what you want from completely inside firefox.
+First off you need to get python in the browser, but it is normally compiled into machine code. The solution is the <a href=http://www.transcrypt.org>Transcrypt project</a>, which is Python is transcompiled into javascript and that script is then loaded into your browser. This allows you to run python code.
+Extensions to python are made so it can access the DOM in a similiar way you can from javascript.
+The transcrypt website has some examples, and some more can be found at a <a href=https://developer.mozilla.org/en-US/docs/Learn/Drafts/Python>draft page at Mozilla</a>.
+Your bookmarklet would be to load a script to load transcrypt and feed it your python code, something like
+javascript:(function(){var el=document.createElement(&lsquo;script&rsquo;);el.src=&lsquo;file:///something/something/transcript_loader_and_my_python_code.js&rsquo;;document.body.appendChild(el);})();
+But the exact bookmarklet would depend on how you go about things. Writing transcript_loader_and_my_python_code.js is on your own, but if you get the examples from the links above working it should be trivial.</p>
+<p>Comments:</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/hillshading_in_matplotlib/>
+<span class=button__icon>←</span>
+<span class=button__text>Hillshading in matplotlib</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/1_how_scientists_colorize_photos_of_space_youtube/>
+<span class=button__text>How scientists colorize photos of space - YouTube</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

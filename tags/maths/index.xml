@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>maths on Musings</title><link>https://chahak13.github.io/tags/maths/</link><description>Recent content in maths on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 14 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chahak13.github.io/tags/maths/index.xml" rel="self" type="application/rss+xml"/><item><title>Gaussian quadrature in scipy</title><link>https://chahak13.github.io/posts/gaussian_quadrature_in_scipy/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/gaussian_quadrature_in_scipy/</guid><description>Scipy has an gaussian quadrature integration built-in in the integrate module as the integrate.quadrature function.
+import numpy as np from scipy import integrate A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.
+f = lambda x: 2*x print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(f, 0, 2)) print(&amp;quot;Analytical solution:&amp;quot;, 2**2) A more complex function can also be passed to the quadrature function.</description><content>&lt;p>Scipy has an gaussian quadrature integration built-in in the &lt;code>integrate&lt;/code> module as the &lt;code>integrate.quadrature&lt;/code> function.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">import numpy as np
+from scipy import integrate
+&lt;/code>&lt;/pre>&lt;p>A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">f = lambda x: 2*x
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(f, 0, 2))
+print(&amp;quot;Analytical solution:&amp;quot;, 2**2)
+&lt;/code>&lt;/pre>&lt;p>A more complex function can also be passed to the &lt;code>quadrature&lt;/code> function.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def func(x):
+return x**2 + 2*x + 3
+a = 2
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(func, 0, 2))
+print(&amp;quot;Analytical solution:&amp;quot;, a**3/3 + a**2 + 3*a)
+&lt;/code>&lt;/pre>&lt;p>Now, to take into consideration functions that are dependent on more than just the integrating variable.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def func_2(t, z):
+return z*t + z**2 + 2*t
+a = 2
+z = 2
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(func_2, 0, 2, args=(z,)))
+print(&amp;quot;Analytical solution:&amp;quot;, z*a**2/2 + a*z**2 + a**2)
+&lt;/code>&lt;/pre>&lt;p>If the function to integrate depends on more variables and even other functions, then we can pass those functions as parameters to the integrating function and solve the quadrature integration.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def func_3(t, z, f1, f2):
+return f1(t) + z*t + f2(t)**2
+f1 = lambda x: x**2
+f2 = lambda x: x**3
+a, z = 2, 2
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(func_3, 0, 2, args=(z, f1, f2)))
+print(&amp;quot;Analytical solution:&amp;quot;, a**3/3 + z*a**2/2 + a**7/7)
+&lt;/code>&lt;/pre>&lt;p>Functions with vector output need to provide the &lt;code>vec_func&lt;/code> argument as &lt;code>True&lt;/code>.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def f(x):
+# print(&amp;quot;x:&amp;quot;, x)
+# print(&amp;quot;z:&amp;quot;, z)
+return z*x*2
+z = np.array([2, 3])
+integrate.quad_vec(f, 0, 2)
+&lt;/code>&lt;/pre>&lt;p>For fixed order Gaussian quadrature integration&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">f = lambda x, a: np.sin(np.kron(a, x)).reshape(-1, x.shape[0])
+x = np.array([1,2,3])
+a = np.array([1,2])
+print(f(x, a).shape)
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">np.kron(a, x)
+&lt;/code>&lt;/pre>&lt;p>:results:&lt;/p>
+&lt;p>Writing gaussian quadrature integration from scratch using numpy&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def norm_pdf(x, mu, sigma):
+mu, sigma = mu.reshape(-1, 1), sigma.reshape(-1, 1)
+x = x.reshape(-1, 1)
+variance = sigma**2
+numerator = x - mu
+denominator = 2 * variance
+pdf = ((1/(np.sqrt(2 * np.pi) * sigma)) * np.exp(-(numerator**2) / denominator))
+return pdf
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def h_z(a, b, T_i, x, y, sigma_m2, delta_a, delta_b, indicator, n_time_samples=1000):
+mc_sum = np.zeros(x.shape)
+t = rng.uniform(0, T_i, size=n_time_samples)
+alpha = t/T_i
+mu_x = a.x + alpha * (b.x - a.x)
+mu_y = a.y + alpha * (b.y - a.y)
+sigma = np.sqrt(t * (1 - alpha) * sigma_m2
++ (1 - alpha)**2 * (delta_a**2)
++ (alpha**2) * (delta_b**2))
+pdf_x = norm_pdf(x, mu_x, sigma)
+pdf_y = norm_pdf(y, mu_y, sigma)
+mc_sum += indicator * pdf_x * pdf_y
+return mc_sum
+&lt;/code>&lt;/pre></content></item><item><title>Monte Carlo integration - Wikipedia</title><link>https://chahak13.github.io/posts/monte_carlo_integration_wikipedia/</link><pubDate>Fri, 14 May 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/monte_carlo_integration_wikipedia/</guid><description>Monte Carlo Integration is a technique for numerical integration using random numbers. It is a type of Monte Carlo methods that can be used to numerically compute a definite integral. The main differing point of such integration is that while standard methods use a regular interval to evaluate the integrand, Monte Carlo uses a random set of points to evaluate. This method is particularly useful for higher-dimensional integrals. There are various methods to perform such an integration: Uniform sampling, stratified sampling, importance sampling, sequential Monte Carlo, and mean field particle methods.</description><content>&lt;p>Monte Carlo Integration is a technique for numerical integration using random numbers. It is a type of Monte Carlo methods that can be used to numerically compute a definite integral. The main differing point of such integration is that while standard methods use a regular interval to evaluate the integrand, Monte Carlo uses a random set of points to evaluate. This method is particularly useful for higher-dimensional integrals. There are various methods to perform such an integration: Uniform sampling, stratified sampling, importance sampling, sequential Monte Carlo, and mean field particle methods. We&amp;rsquo;ll be taking a look at the uniform sampling, and importance sampling methods in brief.&lt;/p>
+&lt;h2 id="overview">Overview&lt;/h2>
+&lt;p>At the core of it, Monte Carlo is an approximation method used to approximate the value of the integral as compared to the deterministic approach of methods like the &lt;a href="https://chahak13.github.io/posts/trapezoidal_rule/">trapezoidal-rule&lt;/a>. Each simulation of a monte carlo integral provides a different outcome, which can be averaged over multiple simulations.&lt;/p>
+&lt;p>Let I be a multidimensional definite integral defined as&lt;/p>
+&lt;p>\[
+I=\int_{a}^{b}f(x)dx
+\]&lt;/p>
+&lt;p>and a random variable \(X_i ~ p(x)\) where \(p(x)\) must be nonzero for all \(x\) where \(f(x)\) is nonzero. Then, the Monte Carlo estimator is defined as&lt;/p>
+&lt;p>\[
+F_{N} = \frac{1}{N}\sum_{i=1}^{N}\frac{f(X_i)}{p(X_i)}
+\]&lt;/p>
+&lt;p>The value of \(I\) can be estimated by taking an average of several such Monte Carlo estimator values.&lt;/p>
+&lt;h2 id="basic-monte-carlo-estimator">Basic Monte Carlo Estimator&lt;/h2>
+&lt;p>The basic monte carlo estimator is a special case of Importance Sampling Estimator case where we sample the points from a uniform random variable, to calculate the integral. Therefore, \(X_i ~ p(x) = c\). This follows that for interval \((a, b)\), the value of \(c = \frac{1}{b-a}\). Therefore, the Monte Carlo estimator then becomes&lt;/p>
+&lt;p>We can also extend this to be N-Dimensional. For example, a 3D basic estimator for an integral&lt;/p>
+&lt;p>would be defined as&lt;/p>
+&lt;p>Therefore, a general rule can be written as follows. For an n-dimensional integral&lt;/p>
+&lt;p>the MC Estimator is defined as&lt;/p>
+&lt;p>where \(N\) is the number of samples that are taken from the uniform distribution for evaluation.&lt;/p>
+&lt;h3 id="simulation">Simulation&lt;/h3>
+&lt;p>This method can be simulated fairly easily using python. Let us try and integrate the following function for \(0.8 &amp;lt; x &amp;lt; 3\)&lt;/p>
+&lt;p>To do this, we&amp;rsquo;ll first have to define a python function using numpy&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python"> &lt;span style="color:#f92672">import&lt;/span> numpy &lt;span style="color:#66d9ef">as&lt;/span> np
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f&lt;/span>(x):
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">/&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">+&lt;/span>np&lt;span style="color:#f92672">.&lt;/span>sinh(&lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">*&lt;/span>x)&lt;span style="color:#f92672">*&lt;/span>np&lt;span style="color:#f92672">.&lt;/span>log(x)&lt;span style="color:#f92672">**&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now that we have a function that calculates the value of \(f(x)\) at a given set of points, let us start with the MC estimator. First we will define the limits of the integral \((a, b)\) and the number of estimators \(N\). We will also define the number of points that are sampled.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python"> n_estimators &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">100&lt;/span>
+N &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">100&lt;/span>
+a, b &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0.8&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now, we need to perform the calculation for each MC estimator and find the average. We can do this more efficiently by using numpy&amp;rsquo;s vector operations and random number generator.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python"> rng &lt;span style="color:#f92672">=&lt;/span> np&lt;span style="color:#f92672">.&lt;/span>random&lt;span style="color:#f92672">.&lt;/span>default_rng()
+r &lt;span style="color:#f92672">=&lt;/span> rng&lt;span style="color:#f92672">.&lt;/span>uniform(a, b, size&lt;span style="color:#f92672">=&lt;/span>(n_estimators, N))
+result &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">/&lt;/span>n_estimators)&lt;span style="color:#f92672">*&lt;/span>((b&lt;span style="color:#f92672">-&lt;/span>a)&lt;span style="color:#f92672">/&lt;/span>N)&lt;span style="color:#f92672">*&lt;/span>(np&lt;span style="color:#f92672">.&lt;/span>sum(f(r)))
+result
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">0.6786189790691812
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can check this result by comparing it with the function &lt;code>scipy.integrate.quad&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python"> &lt;span style="color:#f92672">from&lt;/span> scipy &lt;span style="color:#f92672">import&lt;/span> integrate
+integrate&lt;span style="color:#f92672">.&lt;/span>quad(f, a, b)[&lt;span style="color:#ae81ff">0&lt;/span>]
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">0.6768400757156462
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, the two results are fairly similar. Do note that the result due to MC estimators is bound to change but it is still a fairly close estimate to the integration function from scipy.&lt;/p>
+&lt;h2 id="importance-sampling">Importance Sampling&lt;/h2>
+&lt;p>The formula for a MC estimator that we saw above was for an importance sampling estimator. What it means is that, instead of choosing random points over an interval with uniform probability, we try to sample points based on its expected contribution to the integral. This means that instead of a uniform distribution, we use a distribution \(p(x)\) of our choice that we hope makes the calculation more efficient. The intuition behind this is that if a particular point \(x_i\) is picked up with a higher probability, then we weigh it down by a factor of its probability \(p(x_i)\).&lt;/p></content></item><item><title>trapezoidal-rule</title><link>https://chahak13.github.io/posts/trapezoidal_rule/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/trapezoidal_rule/</guid><description/><content/></item></channel></rss>

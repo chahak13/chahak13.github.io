@@ -1,0 +1,345 @@
+<!doctype html><html lang=en>
+<head>
+<title>Setup for org-roam and its compatriots :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="org-roam is an Emacs package that improves note-taking process in org-mode. Per the manual, Org-roam is a tool for network thought. I&amp;rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.
+Zettelkasten Zettelkasten is a German word, and the name of a note taking system that was developed by a German sociologist Niklas Luhmann who used to take notes on cards and then put them into a slip-box.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/org_roam/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Setup for org-roam and its compatriots">
+<meta property="og:description" content="org-roam is an Emacs package that improves note-taking process in org-mode. Per the manual, Org-roam is a tool for network thought. I&amp;rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.
+Zettelkasten Zettelkasten is a German word, and the name of a note taking system that was developed by a German sociologist Niklas Luhmann who used to take notes on cards and then put them into a slip-box.">
+<meta property="og:url" content="https://chahak13.github.io/posts/org_roam/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/org_roam/>Setup for org-roam and its compatriots</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-roam/>org-roam</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p><code>org-roam</code> is an Emacs package that improves note-taking process in <code>org-mode</code>. Per the manual, <em>Org-roam is a tool for network thought</em>. I&rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.</p>
+<h2 id=zettelkasten>Zettelkasten<a href=#zettelkasten class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p><code>Zettelkasten</code> is a German word, and the name of a note taking system that was developed by a German sociologist <strong>Niklas Luhmann</strong> who used to take notes on cards and then put them into a slip-box. The idea is that, with enough notes linked to each other, one can come up with various ideas to think, write, watch about. This introduction is, by no means, a good introduction and one should definitely read about Zettelkasten on their own if they find it interesting. <code>org-roam</code> aims to be the slip-box, where every note is a zettel/card of its own.</p>
+<h3 id=fleeting-notes>Fleeting notes<a href=#fleeting-notes class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Notes that are essentially short quick reminders of information or ideas that need to be processed later on, or trashed. I have tried using <code>org-capture</code> for this with a decent amount of success but I plan to try <code>org-roam</code>&rsquo;s daily notes feature first to have a comparison. These kinds of notes are a central inbox that are to be further refiled and processed into permanent notes.</p>
+<h3 id=permanent-notes>Permanent notes<a href=#permanent-notes class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Permanent notes form the basic structure of the network of notes. They are full-fledged notes that are supposed to be self-explanatory, and can be of two types: <strong>literature notes</strong> and <strong>concept notes</strong>.</p>
+<h4 id=literature-notes>Literature notes<a href=#literature-notes class=hanchor arialabel=Anchor>&#8983;</a> </h4>
+<p>Each note is a condensed summary of a particular source of reading (eg. book, website, paper etc.). It can also contain any annotations that are made during the reading. These notes provide an easy access to sift through past readings, and provides a way to retain more consumed information.</p>
+<h4 id=concept-notes>Concept notes<a href=#concept-notes class=hanchor arialabel=Anchor>&#8983;</a> </h4>
+<p>Concept notes are more in-depth and require more care in authoring. They need to be detailed notes on a particular concept that one can refer to whenever required. They can then be linked to various fleeting or literature notes, which provides a better network of view for that particular concept.</p>
+<h2 id=installation>Installation<a href=#installation class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I used the <code>straight.el</code> package manager, with the <code>use-package</code> package as a configuration manager to install and customize <code>org-roam</code> and other packages. This can be done by running the following</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package org-roam
+    :straight <span style=color:#66d9ef>t</span>)
+</code></pre></div><p><code>org-roam</code> needs <code>sqlite3</code> to work. Please make sure that it is installed and available to emacs (Check <code>exec-path</code> variable)</p>
+<h2 id=getting-started>Getting started<a href=#getting-started class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>The first step to start using <code>org-roam</code> is to set the <code>org-roam-directory</code> variable. This directory will contain all the notes that are created during the time of using <code>org-roam</code>. We will set this using the <code>:config</code> block in <code>use-package</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package org-roam
+    :straight <span style=color:#66d9ef>t</span>
+    :config
+    (setq org-roam-directory <span style=color:#e6db74>&#34;~/org&#34;</span>))
+</code></pre></div><p>Org-roam manual recommends using a flat hierarchy to store all the notes, instead of creating a folder hierarchy. I wasn&rsquo;t sure how I felt about that but I decided to go with it anyway. Instead of any form of explicit categorization, links established between the notes should provide a form of grouping.</p>
+<p>The next step is to enable the minor mode <code>org-roam-mode</code> globally. While this sets up Emacs with several hooks, it is not enabled on startup. To do that, we&rsquo;ll add a hook to the <code>use-package</code> block we&rsquo;ve been building.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package org-roam
+    :straight <span style=color:#66d9ef>t</span>
+    :hook
+    ((after-init-hook <span style=color:#f92672>.</span> org-roam-mode))
+    :config
+    (setq org-roam-directory <span style=color:#e6db74>&#34;~/org-roam&#34;</span>))
+</code></pre></div><p>To build the note cache manually, one needs to use <code>M-x org-roam-db-build-cache</code>. Cache builds might take a while in the first run, but is often very quick in subsequent runs because it only reprocesses modified files.</p>
+<p>To start taking notes, one of the two functions can be used <code>org-roam-find-file</code> or <code>org-roam-capture</code>. While both of them will create a new file with the provided title, the major difference is that <code>org-roam-find-file</code> will point to the newly created note in the buffer, while <code>org-roam-capture</code> will point the user back to the original buffer, similar to <code>org-capture</code>.</p>
+<p>To insert links in a note, use <code>M-x org-roam-insert</code>. This will bring up a prompt with a list of titles for existing notes. Selecting an existing entry will create and insert a link to the current file. Entering a non-existent title will create a new note with that title and link it. Org-roam recommends liberal linking of files, facilitating build up of a denser graph of inter-connected notes. To toggle the visibility of backlinks of a note, along with some context, call <code>M-x org-roam</code>.</p>
+<h2 id=files>Files<a href=#files class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>While the bulk of <code>org-roam</code>&rsquo;s functionality is built up on vanilla org, it adds some extensions and keywords to support additional functionality.</p>
+<h3 id=file-titles>File Titles<a href=#file-titles class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Each note needs to be prescribed with a title (duh?). This allows quick searching of notes. <code>org-roam</code> adds to the standard <code>+title</code> keyword in org-mode by using an new keyword called <code>#+roam_alias</code>. These aliases are space-delimited quoted strings that can also be used to refer the note while using <code>org-roam</code>. It also provides support for extracting title from the first headline in the file. The default action is to determine titles using <code>#+title</code> and <code>#+roam_alias</code> and if <code>#+title</code> isn&rsquo;t available, then fallback to the first headline. This is useful in topics like &ldquo;World War 2&rdquo; where it can also be referred to as &ldquo;WW2&rdquo; or &ldquo;World War II&rdquo; or such.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>  #+title: World War 2
+  #+roam_alias: &#34;WWII&#34; &#34;WW2&#34; &#34;World War II&#34;
+</code></pre></div><p>Title extraction can be customized using the <code>org-roam-title-sources</code> variable.</p>
+<h3 id=file-tags>File Tags<a href=#file-tags class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Tags are used as meta-data for files. They facilitate interaction with notes where titles are insufficient. It also provides a good interface for categorization of notes, especially while searching through all notes. By default, tags are extracted from the <code>#+roam_tags</code> property. Tags are space-delimited quoted strings. To customize this behaviour, check <code>org-roam-tag-sources</code> variable.</p>
+<p><strong>DOUBT</strong>: The screenshots show a <code>- tags ::</code> directive. Need to confirm what works.</p>
+<h3 id=file-refer>File Refer<a href=#file-refer class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>Refs are unique identifiers for files. They are declared using the <code>+roam_key</code> and show up as a Ref Backlink in the org-roam link list.</p>
+<h2 id=templates>Templates<a href=#templates class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Org-roam extends the <code>org-capture</code> capabilities for its templating system. Org-roam&rsquo;s capture templates are not completely compatible with <code>org-capture</code>, hence, to modify the templates, use the <code>org-roam-capture-templates</code>. An example template is shown below. This can be added in the <code>:config</code> section of the <code>use-package</code> configuration.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (setq org-roam-capture-templates
+        <span style=color:#f92672>&#39;</span>((<span style=color:#e6db74>&#34;d&#34;</span> <span style=color:#e6db74>&#34;default&#34;</span> plain (function org-roam--capture-get-point)
+           <span style=color:#e6db74>&#34;%?&#34;</span>
+           :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+           :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n&#34;</span>
+           :unnarrowed <span style=color:#66d9ef>t</span>)
+          (<span style=color:#e6db74>&#34;p&#34;</span> <span style=color:#e6db74>&#34;paper&#34;</span> entry (function org-roam--capture-get-point)
+           <span style=color:#e6db74>&#34;%?&#34;</span>
+           :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+           :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n#+AUTHOR: ${authors}\n&#34;</span>
+           :unnarrowed <span style=color:#66d9ef>t</span>)
+          ))
+</code></pre></div><h2 id=inserting-links>Inserting Links<a href=#inserting-links class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p><code>file</code> links for files and <code>id</code> links for headlines are preferred as they ensure that the links will work even without <code>org-roam</code>. <code>file</code> links can be inserted using <code>org-roam-insert</code> whereas links to headlines can be inserted by navigating to the headline and calling <code>org-store-link</code> to store an ID and link into the org-roam database. That link can then be inserted via <code>org-insert-link</code>.</p>
+<p>Org-roam also extends org linking syntax by adding <code>roam</code> links. Org-roam registers this link type, and interprets the path as follows:</p>
+<ul>
+<li><code>[[roam:title]]</code>: links to an org-roam file with title or alias as &ldquo;title&rdquo;.</li>
+<li><code>[[roam:*headline]]</code>: links to the headline &ldquo;headline&rdquo; in the current org-roam file.</li>
+<li><code>[[roam:title*headline]]</code>: links to the headline &ldquo;headline&rdquo; in the org-roam file with title or alias &ldquo;title&rdquo;</li>
+</ul>
+<h2 id=graphing>Graphing<a href=#graphing class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p><code>org-roam-server</code> is basically a web application to visualize the org-roam database. It needs to be installed separately and can be done easily using <code>straight.el</code> and <code>use-package</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package org-roam-server
+    :straight <span style=color:#66d9ef>t</span>
+    :config
+    (setq org-roam-server-host <span style=color:#e6db74>&#34;127.0.0.1&#34;</span>)
+    (setq org-roam-server-port <span style=color:#ae81ff>8080</span>)
+    (setq org-roam-server-authenticate <span style=color:#66d9ef>nil</span>)
+    (setq org-roam-server-export-inline-images <span style=color:#66d9ef>t</span>)
+    (setq org-roam-server-serve-files <span style=color:#66d9ef>nil</span>)
+    (setq org-roam-server-served-file-extensions <span style=color:#f92672>&#39;</span>(<span style=color:#e6db74>&#34;pdf&#34;</span> <span style=color:#e6db74>&#34;mp4&#34;</span> <span style=color:#e6db74>&#34;ogv&#34;</span>))
+    (setq org-roam-server-network-poll <span style=color:#66d9ef>t</span>)
+    (setq org-roam-server-network-arrows <span style=color:#66d9ef>nil</span>)
+    (setq org-roam-server-network-label-truncate <span style=color:#66d9ef>t</span>)
+    (setq org-roam-server-network-label-truncate-length <span style=color:#ae81ff>60</span>)
+    (setq org-roam-server-network-label-wrap-length <span style=color:#ae81ff>20</span>)
+    (org-roam-server-mode)
+    )
+</code></pre></div><p><code>org-roam-server-mode</code> will enable the global mode. This will start a web server on <a href=http://127.0.0.1:8080>http://127.0.0.1:8080</a> that can be accessed for the org-roam visualization. To open the note on clicking a node, the <code>org-roam-protocol</code> needs to be set up, which is done in the next section.</p>
+<h2 id=roam-protocol>Roam protocol<a href=#roam-protocol class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>To enable org-roam&rsquo;s protocol extensions, add the following to emacs init file</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package org-roam-protocol
+    :after org-roam)
+</code></pre></div><p>I had to make a desktop application file for <code>emacsclient</code> to use <code>org-protocol</code>. It can be made on Linux platforms by creating a file in <code>~/.local/share/applications/</code> directory. An example file is shown below</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>  [Desktop Entry]
+  Name=Org-Protocol
+  Exec=emacsclient %u
+  Icon=emacs-icon
+  Type=Application
+  Terminal=false
+  MimeType=x-scheme-handle/org-protocol
+</code></pre></div><h3 id=the-roam-ref-protocol>The <code>roam-ref</code> Protocol<a href=#the-roam-ref-protocol class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>This protocol finds or creates a new note with a given <code>roam_key</code>. This is one of the most appealing features of <code>org-roam</code> for me. I&rsquo;m guessing that this in conjunction with Zotero will make my note-taking life much easier on the web. To use this, a bookmarklet needs to be created in the browser. For my choice, that is currently Firefox. The steps to create a bookmarklet are</p>
+<ol>
+<li>
+<p>Add a new bookmark from the bookmarks toolbar.</p>
+</li>
+<li>
+<p>In the name field, add the required name for the bookmark.</p>
+</li>
+<li>
+<p>In the location field, add the following code</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript>     <span style=color:#a6e22e>javascript</span><span style=color:#f92672>:</span><span style=color:#a6e22e>location</span>.<span style=color:#a6e22e>href</span> <span style=color:#f92672>=</span>
+         <span style=color:#e6db74>&#39;org-protocol://roam-ref?template=w&amp;ref=&#39;</span>
+<span style=color:#960050;background-color:#1e0010>​</span>         <span style=color:#f92672>+</span> encodeURIComponent(<span style=color:#a6e22e>location</span>.<span style=color:#a6e22e>href</span>)
+<span style=color:#960050;background-color:#1e0010>​</span>         <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;&amp;title=&#39;</span>
+<span style=color:#960050;background-color:#1e0010>​</span>         <span style=color:#f92672>+</span> encodeURIComponent(document.<span style=color:#a6e22e>title</span>)
+<span style=color:#960050;background-color:#1e0010>​</span>         <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;&amp;body=&#39;</span>
+<span style=color:#960050;background-color:#1e0010>​</span>         <span style=color:#f92672>+</span> encodeURIComponent(window.<span style=color:#a6e22e>getSelection</span>())
+</code></pre></div></li>
+</ol>
+<p>Here, <code>template</code> is the template key for a template in <code>org-roam-capture-ref-templates</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (setq org-roam-capture-ref-templates
+        <span style=color:#f92672>&#39;</span>((<span style=color:#e6db74>&#34;r&#34;</span> <span style=color:#e6db74>&#34;ref&#34;</span> plain (function org-roam-capture--get-point)
+           <span style=color:#e6db74>&#34;%?&#34;</span>
+           :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+           :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n#+roam_key: ${ref}&#34;</span>
+           :unnarrowed <span style=color:#66d9ef>t</span>)
+          (<span style=color:#e6db74>&#34;w&#34;</span> <span style=color:#e6db74>&#34;webpage&#34;</span> plain (function org-roam--capture-get-point)
+           <span style=color:#e6db74>&#34;/${body}/&#34;</span>
+           :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+           :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n#+roam_key: ${ref}\n\n&#34;</span>
+           :unnarrowed <span style=color:#66d9ef>t</span>)
+          ))
+
+</code></pre></div><p>Now, I can simply click on this bookmarklet from whatever website/article I am looking at, to directly create a note in emacs using org-roam. With the <code>webpage</code> template, I write down the selected text from the browser into the top of the body of the note, in italics.</p>
+<h2 id=daily-notes>Daily-notes<a href=#daily-notes class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Org-roam provides functions similar to org-journal. I decided to stick to org-roam for the daily notes too, to keep all the notes under one umbrella. To configure daily notes, there are 2 main variables: <code>org-roam-dailies-directory</code> and <code>org-roam-dailies-capture-templates</code>. They are the path to the daily-notes and the capture templates for daily notes respectively. A sane default config taken directly from the manual is</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (setq org-roam-dailies-directory <span style=color:#e6db74>&#34;daily/&#34;</span>)
+  (setq org-roam-dailies-capture-templates
+        <span style=color:#f92672>&#39;</span>((<span style=color:#e6db74>&#34;d&#34;</span> <span style=color:#e6db74>&#34;default&#34;</span> entry (function org-roam--capture-get-point)
+           <span style=color:#e6db74>&#34;* #?&#34;</span>
+           :file-name <span style=color:#e6db74>&#34;daily/%&lt;%Y-%m-%d&gt;&#34;</span>
+           :head <span style=color:#e6db74>&#34;#+TITLE: %&lt;%Y-%m-%d&gt;\n\n&#34;</span>)))
+</code></pre></div><p>The <code>org-roam-dailies-directory</code> should appear in the <code>:file-name</code> for the notes to be recognized as daily-notes.</p>
+<p>To start writing daily-notes, call the <code>org-roam-dailies-capture-today</code> function. It creates an entry in the notes for today. <code>org-roam-dailies-find-today</code> finds the note for today, creating it if necessary. Another important function that can be used for searching is the <code>org-roam-dailies-find-date</code> which will open the note for the particular date using a calendar.</p>
+<p>Other functions to keep in mind:</p>
+<ul>
+<li><code>org-roam-dailies-find-directory</code></li>
+<li><code>org-roam-dailies-find-previous-note</code></li>
+<li><code>org-roam-dailies-find-next-note</code></li>
+</ul>
+<h2 id=diagnosing-and-repairing-files>Diagnosing and Repairing Files<a href=#diagnosing-and-repairing-files class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Once in a while, it would be a good idea to check for the correctness of the links. To do this easily, org-roam provides the <code>org-roam-doctor</code> function. This function checks the links in the current org-roam buffer. To run it on all files, use <code>C-u M-x org-roam-doctor</code> but this might take some time.</p>
+<h2 id=finding-unlinked-references>Finding Unlinked References<a href=#finding-unlinked-references class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>It is difficult, and pointless to an extent, to try and remember all the notes to link to. For some such cases, org-roam has the <code>org-roam-unlinked-references</code>. It tries to find strings in the current buffer that match the title or aliases of any existing note in the org-roam database. These can then be converted to new links.</p>
+<p><strong>PS</strong>: Using this requires <a href=https://github.com/BurntSushi/ripgrep>ripgrep</a> with PCRE support installed on the system.</p>
+<h2 id=deft-org-noter-org-roam-bibtex>NEXT Deft, org-noter, org-roam-bibtex<a href=#deft-org-noter-org-roam-bibtex class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<h3 id=deft>Deft<a href=#deft class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p><code>deft</code> is an interface for enhanced searching and filtering of notes. This provides a better interface to quickly go to a required note as it searches both, title and body of the note. It can be installed directly from MELPA and is fairly easy to get started with.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package deft
+    :straight <span style=color:#66d9ef>t</span>
+    :bind
+    (<span style=color:#e6db74>&#34;&lt;f8&gt;&#34;</span> <span style=color:#f92672>.</span> deft)
+    :config
+    (setq deft-directory <span style=color:#e6db74>&#34;~/org-roam&#34;</span>)
+    (setq deft-extensions <span style=color:#f92672>&#39;</span>(<span style=color:#e6db74>&#34;org&#34;</span> <span style=color:#e6db74>&#34;md&#34;</span>))
+    )
+</code></pre></div><h2 id=keybindings-for-org-roam-functions>Keybindings for <code>org-roam</code> functions<a href=#keybindings-for-org-roam-functions class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I decided to create a keymap for org-roam, and I had heard about the <code>general</code> package on David Wilson&rsquo;s Emacs-from-scratch series so I decided to give that a shot.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package general
+    :straight <span style=color:#66d9ef>t</span>
+    :config
+    (general-create-definer cm/leader-keys
+      :prefix <span style=color:#e6db74>&#34;M-o&#34;</span>)
+
+    (cm/leader-keys
+     <span style=color:#e6db74>&#34;f&#34;</span> <span style=color:#e6db74>&#39;org-roam-find-file</span>
+     <span style=color:#e6db74>&#34;c&#34;</span> <span style=color:#e6db74>&#39;org-roam-capture</span>
+     <span style=color:#e6db74>&#34;i&#34;</span> <span style=color:#e6db74>&#39;org-roam-insert</span>
+     <span style=color:#e6db74>&#34;o&#34;</span> <span style=color:#e6db74>&#39;org-roam</span>
+     <span style=color:#e6db74>&#34;M-t&#34;</span> <span style=color:#e6db74>&#39;org-roam-dailies-find-today</span>
+     <span style=color:#e6db74>&#34;t&#34;</span> <span style=color:#e6db74>&#39;org-roam-dailies-capture-today</span>
+     <span style=color:#e6db74>&#34;u&#34;</span> <span style=color:#e6db74>&#39;org-roam-unlinked-references</span>)
+    )
+</code></pre></div><h2 id=use-package-code-block><code>use-package</code> code block<a href=#use-package-code-block class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>  (use-package org-roam
+    :straight <span style=color:#66d9ef>t</span>
+    :config
+    (setq org-roam-directory <span style=color:#e6db74>&#34;~/org-roam&#34;</span>)
+    (setq org-roam-capture-templates
+          <span style=color:#f92672>&#39;</span>((<span style=color:#e6db74>&#34;d&#34;</span> <span style=color:#e6db74>&#34;default&#34;</span> plain (function org-roam--capture-get-point)
+             <span style=color:#e6db74>&#34;%?&#34;</span>
+             :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+             :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n&#34;</span>
+             :unnarrowed <span style=color:#66d9ef>t</span>)
+            (<span style=color:#e6db74>&#34;p&#34;</span> <span style=color:#e6db74>&#34;paper&#34;</span> entry (function org-roam--capture-get-point)
+             <span style=color:#e6db74>&#34;%?&#34;</span>
+             :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+             :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n#+AUTHOR: ${authors}\n&#34;</span>
+             :unnarrowed <span style=color:#66d9ef>t</span>)
+            ))
+    )
+
+  (use-package org-roam-protocol
+    :after org-roam
+    :config
+    (setq org-roam-capture-ref-templates
+          <span style=color:#f92672>&#39;</span>((<span style=color:#e6db74>&#34;r&#34;</span> <span style=color:#e6db74>&#34;ref&#34;</span> plain (function org-roam-capture--get-point)
+             <span style=color:#e6db74>&#34;%?&#34;</span>
+             :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+             :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n#+roam_key: ${ref}&#34;</span>
+             :unnarrowed <span style=color:#66d9ef>t</span>)
+            (<span style=color:#e6db74>&#34;w&#34;</span> <span style=color:#e6db74>&#34;webpage&#34;</span> plain (function org-roam--capture-get-point)
+             <span style=color:#e6db74>&#34;/${body}/&#34;</span>
+             :file-name <span style=color:#e6db74>&#34;%&lt;%Y%m%d%H%M%S&gt;-${slug}&#34;</span>
+             :head <span style=color:#e6db74>&#34;#+TITLE: ${title}\n#+roam_key: ${ref}\n\n&#34;</span>
+             :unnarrowed <span style=color:#66d9ef>t</span>)
+            ))
+    )
+
+  (use-package org-roam-server
+    :straight <span style=color:#66d9ef>t</span>
+    :config
+    (setq org-roam-server-host <span style=color:#e6db74>&#34;127.0.0.1&#34;</span>)
+    (setq org-roam-server-port <span style=color:#ae81ff>8080</span>)
+    (setq org-roam-server-authenticate <span style=color:#66d9ef>nil</span>)
+    (setq org-roam-server-export-inline-images <span style=color:#66d9ef>t</span>)
+    (setq org-roam-server-serve-files <span style=color:#66d9ef>nil</span>)
+    (setq org-roam-server-served-file-extensions <span style=color:#f92672>&#39;</span>(<span style=color:#e6db74>&#34;pdf&#34;</span> <span style=color:#e6db74>&#34;mp4&#34;</span> <span style=color:#e6db74>&#34;ogv&#34;</span>))
+    (setq org-roam-server-network-poll <span style=color:#66d9ef>t</span>)
+    (setq org-roam-server-network-arrows <span style=color:#66d9ef>nil</span>)
+    (setq org-roam-server-network-label-truncate <span style=color:#66d9ef>t</span>)
+    (setq org-roam-server-network-label-truncate-length <span style=color:#ae81ff>60</span>)
+    (setq org-roam-server-network-label-wrap-length <span style=color:#ae81ff>20</span>)
+    (org-roam-server-mode)
+    )
+
+  (use-package deft
+    :straight <span style=color:#66d9ef>t</span>
+    :bind
+    (<span style=color:#e6db74>&#34;&lt;f8&gt;&#34;</span> <span style=color:#f92672>.</span> deft)
+    :config
+    (setq deft-directory <span style=color:#e6db74>&#34;~/org-roam&#34;</span>)
+    (setq deft-extensions <span style=color:#f92672>&#39;</span>(<span style=color:#e6db74>&#34;org&#34;</span> <span style=color:#e6db74>&#34;md&#34;</span>))
+    )
+
+</code></pre></div>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/python/>
+<span class=button__icon>←</span>
+<span class=button__text>python</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/stampede2_user_guide_tacc_user_portal/>
+<span class=button__text>Stampede2 User Guide - TACC User Portal</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

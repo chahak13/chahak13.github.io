@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>roam, on Musings</title><link>https://chahak13.github.io/tags/roam/</link><description>Recent content in roam, on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://chahak13.github.io/tags/roam/index.xml" rel="self" type="application/rss+xml"/><item><title>Migrating to org-roam v2</title><link>https://chahak13.github.io/posts/migrating_to_org_roam_v2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/migrating_to_org_roam_v2/</guid><description>org-roam recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for org-roam configuration. I&amp;rsquo;m going to try and implement a workflow similar to Jethro&amp;rsquo;s, as a starting step.
+Installing All the package repository recipies have been updated to install the newer version of org so a simple installation should be good enough to get the newer version.
+(use-package org-roam :straight t) On installing v2 for the first time, there&amp;rsquo;ll be warning showing the change of the version.</description><content>&lt;p>&lt;code>org-roam&lt;/code> recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for &lt;code>org-roam&lt;/code> configuration. I&amp;rsquo;m going to try and implement a workflow similar to Jethro&amp;rsquo;s, as a starting step.&lt;/p>
+&lt;h2 id="installing">Installing&lt;/h2>
+&lt;p>All the package repository recipies have been updated to install the newer version of org so a simple installation should be good enough to get the newer version.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package org-roam
+:straight &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>On installing v2 for the first time, there&amp;rsquo;ll be warning showing the change of the version. It shows the steps to migrate an existing roam database to the newer version but I think I&amp;rsquo;ll be doing a completely new setup. For reference, the warning would be&lt;/p>
+&lt;blockquote>
+&lt;hr>
+&lt;p>WARNING: You’re now on Org-roam v2!&lt;/p>
+&lt;hr>
+&lt;p>You may have arrived here from a package upgrade. Please read the
+wiki entry at
+&lt;a href="https://github.com/org-roam/org-roam/wiki/Hitchhiker%E2%80%99s-Rough-Guide-to-Org-roam-V2">https://github.com/org-roam/org-roam/wiki/Hitchhiker%E2%80%99s-Rough-Guide-to-Org-roam-V2&lt;/a>
+for an overview of the major changes.&lt;/p>
+&lt;p>Notes taken in v1 are incompatible with v2, but you can upgrade
+them to the v2 format via a simple command. To migrate your
+notes, first make sure you’re on at least Org 9.4 (check with
+C-h v org-version) and set your org-roam-directory to your notes:&lt;/p>
+&lt;p>(setq org-roam-directory &amp;ldquo;path/to/org/files&amp;rdquo;)&lt;/p>
+&lt;p>then, run:&lt;/p>
+&lt;p>M-x org-roam-migrate-wizard&lt;/p>
+&lt;p>If you wish to stay on v1, v1 is unfortunately not distributed on
+MELPA. See org-roam/org-roam-v1 on GitHub on how to install v1.&lt;/p>
+&lt;p>If you’ve gone through the migration steps (if necessary), and
+know what you’re doing set ‘org-roam-v2-ack’ to ‘t’ to disable
+this warning. You can do so by adding:&lt;/p>
+&lt;p>(setq org-roam-v2-ack t)&lt;/p>
+&lt;p>To your init file.&lt;/p>
+&lt;/blockquote>
+&lt;p>To acknowledge that we do want the newer version, we&amp;rsquo;ll add the variable as suggested in the warning.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq org-roam-v2-ack &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="setup">Setup&lt;/h2>
+&lt;p>The biggest change in the newer version is that now instead of files, the smallest independent entity is a &lt;code>node&lt;/code> which is defined as &lt;em>any headline or top level file with an ID&lt;/em>. The ids can be created by using the &lt;code>org-id-get-create&lt;/code> function.&lt;/p>
+&lt;p>Each link between the nodes use the Org&amp;rsquo;s standard ID link feature.&lt;/p>
+&lt;p>First of all, we have to create the directory for roam to create the notes in.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(make-directory &lt;span style="color:#e6db74">&amp;#34;~/org/roam&amp;#34;&lt;/span> &lt;span style="color:#66d9ef">t&lt;/span>)
+(setq org-roam-directory (file-truename &lt;span style="color:#e6db74">&amp;#34;~/org/roam&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>org-roam&lt;/code> doesn&amp;rsquo;t have a major mode anymore. Instead, &lt;code>org-roam-setup&lt;/code> is to be used to start roam.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(org-roam-setup)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="creating-and-linking-nodes">Creating and Linking Nodes&lt;/h2>
+&lt;p>There are 3 main functions for creating/linking the nodes in v2.&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>org-roam-node-insert&lt;/code> :: Creates a node if it doesn&amp;rsquo;t exist, and inserts a link to he node at point.&lt;/li>
+&lt;li>&lt;code>org-roam-node-find&lt;/code> :: Creates a node if it doesn&amp;rsquo;t exist, and visits the node.&lt;/li>
+&lt;li>&lt;code>org-roam-capture&lt;/code> :: Creates a node if it doesn&amp;rsquo;t exist, and restores the current window configuration upon completion.&lt;/li>
+&lt;/ol>
+&lt;p>org-roam builds up on the &lt;code>org-capture&lt;/code> templating system. The default template simply adds a property drawer with an ID and a title to the new file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">:PROPERTIES:
+:ID: 9102114b-61c3-4cce-857d-53bd72d3044a
+:END:
+#+title: Hello roam v2!
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="org-roam-buffer">Org-roam buffer&lt;/h2>
+&lt;p>Instead of the side window, backlinks are now shown in a dedicated org-roam buffer. &lt;code>org-roam-buffer-toggle&lt;/code> launches an org-roam buffer that tracks the node currently at point. The content of this buffer changes depending on the node under point.&lt;/p>
+&lt;h2 id="tags">Tags&lt;/h2>
+&lt;p>Org-roam uses the same tagging system that org uses. This means that the tags are set by the &lt;code>#+filetags&lt;/code> keyword for the file and as regular org tags for headline level nodes.&lt;/p>
+&lt;h2 id="org-roam-protocol">Org-roam protocol&lt;/h2>
+&lt;p>&lt;code>org-protocol&lt;/code> provides a way to capture content from external applications like browser. It does it by extending the &lt;code>org-protocol&lt;/code> with 2 protocols: the &lt;code>roam-node&lt;/code> and &lt;code>roam-ref&lt;/code> protocol.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package org-roam-protocol
+:after org-roam)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="org-protocol-on-linux">org-protocol on Linux&lt;/h3>
+&lt;p>First of all, we need to install the &lt;code>org-protocol&lt;/code>. To do that, we first need to create a desktop appplication in &lt;code>~/.local/share/applications/org-protocol.desktop&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">[Desktop Entry]
+Name=Org-Protocol
+Exec=emacsclient %u
+Icon=emacs-icon
+Type=Application
+Terminal=false
+MimeType=x-scheme-handler/org-protocol
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We then associate the &lt;code>org-protocol://&lt;/code> links with the desktop application by running the following command in the shell:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">xdg-mime default org-protocol.desktop x-scheme-handler/org-protocol
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="roam-node-protocol">roam-node protocol&lt;/h3>
+&lt;p>The roam-node protocol opens the node with the ID specified &lt;code>node&lt;/code> key (eg. &lt;code>org-protocol://roam-node://roam-node?node=node-id&lt;/code>). &lt;code>org-roam-graph&lt;/code> uses this to make the graph navigable.&lt;/p>
+&lt;h3 id="roam-ref-protocol">roam-ref protocol&lt;/h3>
+&lt;p>This protocol find or creates a new note with a given &lt;code>roam_key&lt;/code>. This can be used with a javascript bookmarklet in the browser.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-javascript" data-lang="javascript">&lt;span style="color:#a6e22e">javascript&lt;/span>&lt;span style="color:#f92672">:&lt;/span>&lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">href&lt;/span> &lt;span style="color:#f92672">=&lt;/span>
+&lt;span style="color:#e6db74">&amp;#39;org-protocool://roam-ref?template=r&amp;amp;ref=&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(&lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">href&lt;/span>)
+&lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;amp;title=&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(document.&lt;span style="color:#a6e22e">title&lt;/span>)
+&lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;amp;body=&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">+&lt;/span> encodeURIComponent(window.&lt;span style="color:#a6e22e">getSelection&lt;/span>())
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>where &lt;code>template&lt;/code> is the template key for a template in &lt;code>org-roam-capture-ref-templates&lt;/code>. These templates should contain a &lt;code>#+roam_key: ${ref}&lt;/code> in it.&lt;/p>
+&lt;h2 id="templating-system">Templating system&lt;/h2>
+&lt;p>For templates, the first step is to create a normal org capture template.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq cm/org-agenda-directory (file-truename &lt;span style="color:#e6db74">&amp;#34;~/org/gtd&amp;#34;&lt;/span>))
+(setq org-agenda-files cm/org-agenda-directory)
+(setq org-capture-templates
+&lt;span style="color:#f92672">`&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;i&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Inbox&amp;#34;&lt;/span> entry (file &lt;span style="color:#f92672">,&lt;/span>(&lt;span style="color:#a6e22e">expand-file-name&lt;/span> &lt;span style="color:#e6db74">&amp;#34;inbox.org&amp;#34;&lt;/span> cm/org-agenda-directory))
+&lt;span style="color:#f92672">,&lt;/span>(&lt;span style="color:#a6e22e">concat&lt;/span> &lt;span style="color:#e6db74">&amp;#34;* TODO %?\n&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;/Entered on/ %u&amp;#34;&lt;/span>))
+(&lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;org-protocol-capture&amp;#34;&lt;/span> entry (file+olp &lt;span style="color:#f92672">,&lt;/span>(&lt;span style="color:#a6e22e">expand-file-name&lt;/span> &lt;span style="color:#e6db74">&amp;#34;reading_and_writing_inbox.org&amp;#34;&lt;/span> org-roam-directory) &lt;span style="color:#e6db74">&amp;#34;The List&amp;#34;&lt;/span>)
+&lt;span style="color:#e6db74">&amp;#34;* TO-READ [[%:link][%:description]]&amp;#34;&lt;/span>
+:immediate-finish &lt;span style="color:#66d9ef">t&lt;/span>)))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>For org-roam templates,&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq org-roam-capture-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;d&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;default&amp;#34;&lt;/span> plain
+&lt;span style="color:#e6db74">&amp;#34;%?&amp;#34;&lt;/span>
+:if-new (file+head &lt;span style="color:#e6db74">&amp;#34;${slug}.org&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;#+TITLE: ${title}\n&amp;#34;&lt;/span>)
+:immediate-finish &lt;span style="color:#66d9ef">t&lt;/span>
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)))
+(setq org-roam-capture-ref-templates
+&lt;span style="color:#f92672">&amp;#39;&lt;/span>((&lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ref&amp;#34;&lt;/span> plain &lt;span style="color:#e6db74">&amp;#34;/${body}/&amp;#34;&lt;/span>
+:if-new (file+head &lt;span style="color:#e6db74">&amp;#34;${slug}.org&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;+TITLE: ${title}\n&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;+ROAM_KEY: ${ref}\n&amp;#34;&lt;/span>)
+:unnarrowed &lt;span style="color:#66d9ef">t&lt;/span>)))
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="using-general-dot-el-to-set-keybindings">Using general.el to set keybindings&lt;/h2>
+&lt;p>To add new keymaps and bindings, I&amp;rsquo;m going to use &lt;code>general.el&lt;/code> to create new keybindings.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package general
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:config
+(general-create-definer cm/roam-leader
+:prefix &lt;span style="color:#e6db74">&amp;#34;M-o&amp;#34;&lt;/span>)
+(cm/roam-leader
+&lt;span style="color:#e6db74">&amp;#34;f&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-node-find&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-capture&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;i&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-node-insert&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;o&amp;#34;&lt;/span> &lt;span style="color:#e6db74">&amp;#39;org-roam-buffer-toggle&lt;/span>)
+)
+&lt;/code>&lt;/pre>&lt;/div></content></item></channel></rss>

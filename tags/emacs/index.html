@@ -1,0 +1,245 @@
+<!doctype html><html lang=en>
+<head>
+<title>emacs :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/tags/emacs/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="emacs">
+<meta property="og:description" content>
+<meta property="og:url" content="https://chahak13.github.io/tags/emacs/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<link href=/tags/emacs/index.xml rel=alternate type=application/rss+xml title=Musings>
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=posts>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/completion_in_emacs/>Completion in Emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+Trying out different completion frameworks for Emacs instead of simply Ivy, just for the heck of it.
+(use-package vertico :straight t :init (vertico-mode) :config (setq vertico-cycle t)) (use-package vertico-buffer :after vertico) Also use the orderless completion style to improve the completion methods for vertico/selectrum etc. This also allows using space as delimeter in vertico, since it reads space as a character to match otherwise.
+(use-package orderless :straight t :init (setq completion-styles '(orderless)) (setq completion-category-defaults nil) (setq completion-category-overrides '((file (styles partial-completion))))) To persist history over Emacs restarts, vertico uses the savehist-mode that is built into emacs by default.
+</div>
+<div>
+<a class="read-more button" href=/posts/completion_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/change_font_size_in_emacs/>Change font size in emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-25
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/change_font_size_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/mail_in_emacs_mu4e/>Mail in emacs - mu4e</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-05-30
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+mu4e (mu-for-emacs) is an e-mail client for GNU Emacs version 24.4 or higher, built on top of the mu(1) e-mail search engine. mu4e is optimized for quickly processing large amounts of e-mail.
+As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like mbsync, offlineimap etc.
+</div>
+<div>
+<a class="read-more button" href=/posts/mail_in_emacs_mu4e/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/emacs_jupyter/>emacs-jupyter and inline images in org-mode</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+emacs-jupyter is an emacs interface for jupyter kernels. It can be installed using
+(use-package jupyter :straight t) If ob-async is installed, then jupyter-python needs to be added to the list of languages that are not run asychronously. (Refer this issue). This can be done by
+(setq ob-async-no-async-languages-alist '("jupyter-python")) An example python block:
+print("ab") ab emacs-jupyter works doesn&rsquo;t work in server When I first installed emacs-jupyter I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon.
+</div>
+<div>
+<a class="read-more button" href=/posts/emacs_jupyter/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/migrating_to_org_roam_v2/>Migrating to org-roam v2</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/roam/>roam,</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+org-roam recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for org-roam configuration. I&rsquo;m going to try and implement a workflow similar to Jethro&rsquo;s, as a starting step.
+Installing All the package repository recipies have been updated to install the newer version of org so a simple installation should be good enough to get the newer version.
+(use-package org-roam :straight t) On installing v2 for the first time, there&rsquo;ll be warning showing the change of the version.
+</div>
+<div>
+<a class="read-more button" href=/posts/migrating_to_org_roam_v2/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/most_used_keybindings_in_emacs/>Most used keybindings in Emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/most_used_keybindings_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/pipenv_in_emacs/>Pipenv in emacs</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+</span>
+<div class=post-content>
+org-mode is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode.
+</div>
+<div>
+<a class="read-more button" href=/posts/pipenv_in_emacs/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/org_roam/>Setup for org-roam and its compatriots</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+0001-01-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-roam/>org-roam</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+</span>
+<div class=post-content>
+org-roam is an Emacs package that improves note-taking process in org-mode. Per the manual, Org-roam is a tool for network thought. I&rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.
+Zettelkasten Zettelkasten is a German word, and the name of a note taking system that was developed by a German sociologist Niklas Luhmann who used to take notes on cards and then put them into a slip-box.
+</div>
+<div>
+<a class="read-more button" href=/posts/org_roam/>Read more →</a>
+</div>
+</div>
+<div class=pagination>
+<div class=pagination__buttons>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

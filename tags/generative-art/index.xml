@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>generative-art on Musings</title><link>https://chahak13.github.io/tags/generative-art/</link><description>Recent content in generative-art on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 26 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chahak13.github.io/tags/generative-art/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create art from math</title><link>https://chahak13.github.io/posts/how_to_create_art_from_math/</link><pubDate>Sat, 26 Jun 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/how_to_create_art_from_math/</guid><description>We&amp;rsquo;ll be using the numpy and matplotlib modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.
+import numpy as np import matplotlib.pyplot as plt # %matplotlib inline First, some auxiliary functions to setup figures using matplotlib.
+def create_fig(facecolor=&amp;quot;#fee4a6&amp;quot;, **kwargs): fig, ax = plt.subplots(figsize=(7,7), **kwargs) ax.set_facecolor(facecolor) for spine in ax.spines.keys(): ax.spines[spine].set_color(facecolor) ax.set_xticks([]) ax.set_yticks([]) return fig, ax We want to see what happens when you provide mathematical transformations to seemingly simple set of points.</description><content>&lt;p>We&amp;rsquo;ll be using the &lt;code>numpy&lt;/code> and &lt;code>matplotlib&lt;/code> modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">import numpy as np
+import matplotlib.pyplot as plt
+# %matplotlib inline
+&lt;/code>&lt;/pre>&lt;p>First, some auxiliary functions to setup figures using matplotlib.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def create_fig(facecolor=&amp;quot;#fee4a6&amp;quot;, **kwargs):
+fig, ax = plt.subplots(figsize=(7,7), **kwargs)
+ax.set_facecolor(facecolor)
+for spine in ax.spines.keys():
+ax.spines[spine].set_color(facecolor)
+ax.set_xticks([])
+ax.set_yticks([])
+return fig, ax
+&lt;/code>&lt;/pre>&lt;p>We want to see what happens when you provide mathematical transformations to seemingly simple set of points. To do so, let us start with a line.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">x = np.pi
+y = np.arange(-np.pi, np.pi, 0.1)
+X, Y = np.meshgrid(x, y)
+fig, ax = create_fig()
+ax.scatter(X, Y, c='k', s=0.3)
+fig.savefig(&amp;quot;./images/straight-line.png&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/straight-line.png" />
+&lt;/figure>
+&lt;p>This is a simple vertical line on the cartesian plane. We will now see what happens when we apply a simple transformation using sine and cosine functions.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">X_new = X + np.cos(Y)
+Y_new = Y + np.sin(Y)**2
+fig, ax = create_fig()
+ax.scatter(X_new, Y_new, c='k', s=0.3)
+fig.savefig(&amp;quot;./images/perturbed-line.png&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/perturbed-line.png" />
+&lt;/figure>
+&lt;p>As we can see, a simple sinusoidal transformation is enough to give a straight line an interesting form. What if we do the same transformation on multiple such lines? We can do this by using a grid of points. We start out with a grid of points that we want to use to create &lt;em>something&lt;/em>. I italicized something because I don&amp;rsquo;t know what we will end up with.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">x, y = np.arange(-np.pi, np.pi, 0.1), np.arange(-np.pi, np.pi, 0.1)
+X, Y = np.meshgrid(x, y)
+X_new = X + np.cos(Y)
+Y_new = Y + np.sin(Y)**2
+fig, ax = create_fig()
+ax.scatter(X_new, Y_new, c='k', s=0.3)
+fig.savefig(&amp;quot;./images/multiline-pattern.png&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/multiline-pattern.png" />
+&lt;/figure>
+&lt;p>Heyy! That looks almost like a curtain flap. Fairly interesting, if someone was to ask me. All this is well and good. It&amp;rsquo;s simply plotting a function on the cartesian plane. We can also use a projection to the polar coordinate system to transform this pattern into a circular figure.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">fig_p, ax_p = create_fig(facecolor=&amp;quot;#fee4a6&amp;quot;, **{&amp;quot;subplot_kw&amp;quot;: {&amp;quot;projection&amp;quot;: &amp;quot;polar&amp;quot;}})
+ax_p.scatter(X_new, Y_new, c='k', s=0.3)
+fig_p.savefig(&amp;quot;./images/multiline-pattern-polar.png&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/multiline-pattern-polar.png" />
+&lt;/figure>
+&lt;p>Now, now, now! That&amp;rsquo;s some pretty looking pattern right here. I&amp;rsquo;d say just this pattern by itself is pretty good but we should also add some noise to it, just to see the effect of randomness. The most simple way of doing this is to mutiply a random number to each of the computed value. We can do this easily using the &lt;code>np.random&lt;/code> module of numpy.&lt;/p>
+&lt;p>We will first see the effect it has in the cartesian system.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">x, y = np.arange(-np.pi, np.pi, 0.1), np.arange(-np.pi, np.pi, 0.1)
+X, Y = np.meshgrid(x, y)
+rng = np.random.default_rng(seed=1)
+X_new = X + rng.uniform(1, -1, Y.shape[0]) * np.cos(Y)
+Y_new = Y + rng.uniform(1, -1, Y.shape[0]) * np.sin(Y)**2
+fig, ax = create_fig()
+ax.scatter(X_new, Y_new, c='k', s=0.3)
+fig.savefig(&amp;quot;./images/multiline-random-cartesian.png&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/multiline-random-cartesian.png" />
+&lt;/figure>
+&lt;p>Right, that looks almost like a nervous system or a cluster of wiring, depending on the viewers imagination - a la beauty lies in the eye of the &lt;a href="https://5e.tools/bestiary/beholder-mm.html">beholder&lt;/a>. I&amp;rsquo;m curious how this turns out in the polar coordinate system.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">fig_p, ax_p = create_fig(facecolor=&amp;quot;#fee4a6&amp;quot;, **{&amp;quot;subplot_kw&amp;quot;: {&amp;quot;projection&amp;quot;: &amp;quot;polar&amp;quot;}})
+ax_p.scatter(X_new, Y_new, c='k', s=0.3)
+fig_p.savefig(&amp;quot;./images/multiline-random-polar.png&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/multiline-random-polar.png" />
+&lt;/figure>
+&lt;p>&lt;em>Wow&lt;/em>. If the original polar coordinate plot was a beauty of a pattern, this one is a beauty of chaos. I can see so many things in this plot, I&amp;rsquo;m not even sure if I can list them. If anyone saw the link in the beholder word above, this definitely looks like some version of that to me. Or an insane web. I might go mad just by looking at it for long, trying to visualise stuff.&lt;/p>
+&lt;p>Anyway, so this is the beginning of generating some curious generative art. Hopefully I&amp;rsquo;ll get to animating these too. It would be fun to some day reach the level of &lt;a href="https://github.com/aaronpenne/generative%5Fart">aaronpenne - A collection of my generative artwork, mostly with Processing in Python mod&lt;/a>e and &lt;a href="https://katharinabrunner.de/software-portfolio/">Generative Art – Katharina Brunner&lt;/a> but for now, ciao!&lt;/p></content></item><item><title>aaronpenne/generative_art: A collection of my generative artwork, mostly with Processing in Python mode</title><link>https://chahak13.github.io/posts/aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode/</guid><description>//</description><content>&lt;p>//&lt;/p></content></item><item><title>Generative Art – Katharina Brunner</title><link>https://chahak13.github.io/posts/software_katharina_brunner/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/software_katharina_brunner/</guid><description>This covers a blog and a github repo that looks at generative art made using R.</description><content>&lt;p>This covers a blog and a github repo that looks at generative art made using R.&lt;/p></content></item></channel></rss>

@@ -1,0 +1,218 @@
+<!doctype html><html lang=en>
+<head>
+<title>PoC: Stackoverflow parser :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Load the requests and BeautifulSoup libraries that will be used for scraping the webpage.
+import sys import re import requests from bs4 import BeautifulSoup as bs As a proof of concept, we will grab a random stackoverflow question that has more than one answers, one accepted answer, and code as a part of the answer to try and cover the major cases (still need to check about images). One such example is - https://stackoverflow.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/stackoverflow_parser/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PoC: Stackoverflow parser">
+<meta property="og:description" content="Load the requests and BeautifulSoup libraries that will be used for scraping the webpage.
+import sys import re import requests from bs4 import BeautifulSoup as bs As a proof of concept, we will grab a random stackoverflow question that has more than one answers, one accepted answer, and code as a part of the answer to try and cover the major cases (still need to check about images). One such example is - https://stackoverflow.">
+<meta property="og:url" content="https://chahak13.github.io/posts/stackoverflow_parser/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-12-08 00:00:00 +0000 UTC">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/stackoverflow_parser/>PoC: Stackoverflow parser</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-12-08
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content><div>
+<p>Load the <code>requests</code> and <code>BeautifulSoup</code> libraries that will be used for scraping the webpage.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> sys
+<span style=color:#f92672>import</span> re
+<span style=color:#f92672>import</span> requests
+<span style=color:#f92672>from</span> bs4 <span style=color:#f92672>import</span> BeautifulSoup <span style=color:#66d9ef>as</span> bs
+</code></pre></div><p>As a proof of concept, we will grab a random stackoverflow question that has more than one answers, one accepted answer, and code as a part of the answer to try and cover the major cases (still need to check about images). One such example is - <a href=https://stackoverflow.com/questions/357307/how-to-call-a-parent-class-function-from-derived-class-function>https://stackoverflow.com/questions/357307/how-to-call-a-parent-class-function-from-derived-class-function</a></p>
+<p>We&rsquo;ll download the webpage for further scrutiny using the <code>requests.get</code> function and then parsing it using <code>BeautifulSoup</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>url <span style=color:#f92672>=</span> sys<span style=color:#f92672>.</span>argv[<span style=color:#ae81ff>1</span>]
+<span style=color:#75715e># url = &#34;https://math.stackexchange.com/questions/1339709/how-to-derive-the-weak-form-of-the-pde&#34;</span>
+base_url <span style=color:#f92672>=</span> url<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#34;/&#34;</span>)[<span style=color:#ae81ff>2</span>]
+response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)
+<span style=color:#66d9ef>if</span> response<span style=color:#f92672>.</span>ok:
+    soup <span style=color:#f92672>=</span> bs(response<span style=color:#f92672>.</span>text, features<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;html.parser&#34;</span>)
+</code></pre></div><p>There are two main classes of objects that are of our interest - 1. Question and 2. Answers (with possibly an accepted marker). Looking at the source code tells us that there are <code>question</code> and <code>answer</code> properties that can be used to filter them out. We&rsquo;ll take a stab at finding the question first.</p>
+<p>A point to note, we cannot directly search for <code>question-hyperlink</code> links because there are other questions on the page too, so we need to first extract the question header from where we can get the required title.</p>
+<p></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>question_header <span style=color:#f92672>=</span> soup<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;id&#39;</span>: <span style=color:#e6db74>&#39;question-header&#39;</span>})
+question_title <span style=color:#f92672>=</span> question_header<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;a&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;question-hyperlink&#39;</span>})<span style=color:#f92672>.</span>text<span style=color:#f92672>.</span>strip()
+question_link <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;https://</span><span style=color:#e6db74>{</span>base_url<span style=color:#e6db74>}{</span>question_header<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;a&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;question-hyperlink&#39;</span>})<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;href&#39;</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+<span style=color:#75715e># print((question_title, question_link))</span>
+</code></pre></div>
+<p>Now that we have the title and the link to the question, we parse for the question content.</p>
+<p></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>prog <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>compile(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;\&lt;a .*?\/a\&gt;&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_post</span>(post_banner):
+    elements <span style=color:#f92672>=</span> post_banner<span style=color:#f92672>.</span>find_all(recursive<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
+    name_set <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;p&#39;</span>, <span style=color:#e6db74>&#39;pre&#39;</span>}
+    full_post <span style=color:#f92672>=</span> []
+    <span style=color:#66d9ef>for</span> element <span style=color:#f92672>in</span> elements:
+        <span style=color:#66d9ef>if</span> element<span style=color:#f92672>.</span>name <span style=color:#f92672>in</span> name_set:
+            <span style=color:#66d9ef>if</span> element<span style=color:#f92672>.</span>name <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;p&#34;</span>:
+                post <span style=color:#f92672>=</span> str(element)
+                post <span style=color:#f92672>=</span> post<span style=color:#f92672>.</span>removeprefix(<span style=color:#e6db74>&#34;&lt;p&gt;&#34;</span>)<span style=color:#f92672>.</span>removesuffix(<span style=color:#e6db74>&#34;&lt;/p&gt;&#34;</span>)
+                <span style=color:#75715e># Wrap code blocks in ~</span>
+                post <span style=color:#f92672>=</span> post<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;&lt;code&gt;&#34;</span>, <span style=color:#e6db74>&#34;~&#34;</span>)<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;&lt;/code&gt;&#34;</span>, <span style=color:#e6db74>&#34;~&#34;</span>)
+                <span style=color:#75715e># Wrap emphasis in /</span>
+                post <span style=color:#f92672>=</span> post<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;&lt;em&gt;&#34;</span>, <span style=color:#e6db74>&#34;/&#34;</span>)<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;&lt;/em&gt;&#34;</span>, <span style=color:#e6db74>&#34;/&#34;</span>)
+                <span style=color:#75715e># Wrap bold in *</span>
+                post <span style=color:#f92672>=</span> post<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;&lt;strong&gt;&#34;</span>, <span style=color:#e6db74>&#34;*&#34;</span>)<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;&lt;/strong&gt;&#34;</span>, <span style=color:#e6db74>&#34;*&#34;</span>)
+                <span style=color:#75715e># Change href links to org links</span>
+                result <span style=color:#f92672>=</span> prog<span style=color:#f92672>.</span>finditer(post)
+                <span style=color:#66d9ef>for</span> res <span style=color:#f92672>in</span> result:
+                    temp <span style=color:#f92672>=</span> bs(res<span style=color:#f92672>.</span>group(<span style=color:#ae81ff>0</span>), features<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;html.parser&#34;</span>)
+                    href_link <span style=color:#f92672>=</span> temp<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;a&#39;</span>)<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;href&#39;</span>)
+                    href_text <span style=color:#f92672>=</span> temp<span style=color:#f92672>.</span>text
+                    post <span style=color:#f92672>=</span> prog<span style=color:#f92672>.</span>sub(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;[[</span><span style=color:#e6db74>{</span>href_link<span style=color:#e6db74>}</span><span style=color:#e6db74>][</span><span style=color:#e6db74>{</span>href_text<span style=color:#e6db74>}</span><span style=color:#e6db74>]]&#34;</span>, post, count<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+                full_post<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>post<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>)
+            <span style=color:#66d9ef>else</span>:
+                codeblock <span style=color:#f92672>=</span> element<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;code&#39;</span>)
+                lang <span style=color:#f92672>=</span> codeblock<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;class&#39;</span>, <span style=color:#e6db74>&#34;lang-&#34;</span>)<span style=color:#f92672>.</span>rsplit(<span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]
+                begin_tag <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;#+begin_example </span><span style=color:#e6db74>{</span>lang<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+                end_tag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;#+end_example&#34;</span>
+                code <span style=color:#f92672>=</span> codeblock<span style=color:#f92672>.</span>text
+                full_post<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>begin_tag<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>{</span>code<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>{</span>end_tag<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>)
+    post_text <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(full_post)
+    <span style=color:#66d9ef>return</span> post_text
+
+question <span style=color:#f92672>=</span> soup<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;id&#39;</span>: <span style=color:#e6db74>&#39;question&#39;</span>})
+post_banner <span style=color:#f92672>=</span> question<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;s-prose&#39;</span>})
+question_text <span style=color:#f92672>=</span> parse_post(post_banner)
+<span style=color:#75715e># print(question_text)</span>
+</code></pre></div>
+<p>Each question also contains comments that can be really useful, so we will try to parse them too.</p>
+<p></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_comments</span>(cell):
+    comments <span style=color:#f92672>=</span> []
+    <span style=color:#66d9ef>for</span> comment <span style=color:#f92672>in</span> cell<span style=color:#f92672>.</span>find_all(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;comment-body&#39;</span>}):
+        comment_str <span style=color:#f92672>=</span> comment<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;span&#39;</span>)<span style=color:#f92672>.</span>text
+        <span style=color:#66d9ef>try</span>:
+            comment_user <span style=color:#f92672>=</span> comment<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;a&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;comment-user&#39;</span>})<span style=color:#f92672>.</span>text
+        <span style=color:#66d9ef>except</span>:
+            comment_user <span style=color:#f92672>=</span> comment<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;span&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;comment-user&#39;</span>})<span style=color:#f92672>.</span>text
+        comments<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;+ (/</span><span style=color:#e6db74>{</span>comment_user<span style=color:#e6db74>}</span><span style=color:#e6db74>/) </span><span style=color:#e6db74>{</span>comment_str<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+    comments_text <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>join(comments)
+    <span style=color:#66d9ef>return</span> comments_text
+
+question_comments <span style=color:#f92672>=</span> parse_comments(question)
+<span style=color:#75715e># print(question_comments)</span>
+</code></pre></div>
+<p>We can now combine all the parts to create a complete org question string.</p>
+<p></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>question_org_str <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;* [[</span><span style=color:#e6db74>{</span>question_link<span style=color:#e6db74>}</span><span style=color:#e6db74>][</span><span style=color:#e6db74>{</span>question_title<span style=color:#e6db74>}</span><span style=color:#e6db74>]]</span><span style=color:#ae81ff>\n\n</span><span style=color:#e6db74>{</span>question_text<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Comments</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>{</span>question_comments<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+<span style=color:#75715e># print(question_org_str)</span>
+</code></pre></div>
+<p>Now that we have covered most of the question components, we will start parsing the answers.</p>
+<p></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>answers <span style=color:#f92672>=</span> []
+<span style=color:#66d9ef>for</span> i, answer <span style=color:#f92672>in</span> enumerate(soup<span style=color:#f92672>.</span>find_all(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;answer&#39;</span>})):
+    answer_post <span style=color:#f92672>=</span> answer<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;post-layout&#39;</span>})
+    answer_cell <span style=color:#f92672>=</span> answer_post<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;answercell&#39;</span>})<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#39;div&#39;</span>, {<span style=color:#e6db74>&#39;class&#39;</span>: <span style=color:#e6db74>&#39;s-prose&#39;</span>})
+    answer_str <span style=color:#f92672>=</span> parse_post(answer_cell)
+    answer_comments <span style=color:#f92672>=</span> parse_comments(answer_post)
+    answers<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;** Answer </span><span style=color:#e6db74>{</span>i<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span><span style=color:#e6db74>}</span><span style=color:#ae81ff>\n\n</span><span style=color:#e6db74>{</span>answer_str<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74> Comments:</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>{</span>answer_comments<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>)
+
+answer_org_str <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>join(answers)
+<span style=color:#75715e># print(answer_org_str)</span>
+</code></pre></div>
+<p>We now have all the required components to write an org file for the stackoverflow question now. Let&rsquo;s compile everything and write it to a file.</p>
+<p></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>title_lowercase <span style=color:#f92672>=</span> question_title<span style=color:#f92672>.</span>lower()
+filename <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;/Users/cmehta/Documents/org/roam/org/</span><span style=color:#e6db74>{</span><span style=color:#e6db74>&#39;_&#39;</span><span style=color:#f92672>.</span>join(title_lowercase<span style=color:#f92672>.</span>split())<span style=color:#f92672>.</span>removesuffix(<span style=color:#e6db74>&#39;?&#39;</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74>.org&#34;</span>
+full_file_str <span style=color:#f92672>=</span> (<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;:PROPERTIES:</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+                 <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;:ID: </span><span style=color:#e6db74>{</span><span style=color:#e6db74>&#39;-&#39;</span><span style=color:#f92672>.</span>join(title_lowercase<span style=color:#f92672>.</span>split())<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+                 <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;:END:</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+                 <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;#+title: </span><span style=color:#e6db74>{</span>question_title<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n\n</span><span style=color:#e6db74>&#34;</span>
+                 <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>question_org_str<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+                 <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>answer_org_str<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+<span style=color:#66d9ef>with</span> open(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>filename<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>, <span style=color:#e6db74>&#34;w&#34;</span>) <span style=color:#66d9ef>as</span> f:
+    f<span style=color:#f92672>.</span>write(full_file_str)
+</code></pre></div>
+<p>We can now create a bookmarklet that we can install in the browser. Then, we can just click on whatever stackoverflow page we want to save for future reference.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>$.ajax({
+    type: &#34;POST&#34;,
+    url: &#34;/Users/cmehta/Documents/org/roam/org/stackoverflow_parser.py &#34; + document.URL,
+    crossdomain: true,
+}).done(function() {
+    alert(&#34;Saved to roam!&#34;);
+});
+</code></pre></div>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/org_publish_site/>
+<span class=button__icon>←</span>
+<span class=button__text>Org publish site</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/moonlander_notes/>
+<span class=button__text>moonlander notes</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html><html lang=en>
+<head>
+<title>Estimating residence-time matrix :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Extending Notes on: Horne, J. S., Garton, E. O., Krone, S. M., &amp;amp; Lewis, J. S. (2007): Analyzing Animal Movements Using Brownian Bridges, we now want to calculate the residence-time matrix for various polygons (AGEBs). To do this, we will use the geopandas library along with the data from Hermisillo that we have for a set of individuals. We will currently work with the data of just one individual.
+AGEB data The data for the AGEBs was provided by INEGI (National Institute of Statistics and Geography).">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/estimating_residence_time_matrix/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Estimating residence-time matrix">
+<meta property="og:description" content="Extending Notes on: Horne, J. S., Garton, E. O., Krone, S. M., &amp;amp; Lewis, J. S. (2007): Analyzing Animal Movements Using Brownian Bridges, we now want to calculate the residence-time matrix for various polygons (AGEBs). To do this, we will use the geopandas library along with the data from Hermisillo that we have for a set of individuals. We will currently work with the data of just one individual.
+AGEB data The data for the AGEBs was provided by INEGI (National Institute of Statistics and Geography).">
+<meta property="og:url" content="https://chahak13.github.io/posts/estimating_residence_time_matrix/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/estimating_residence_time_matrix/>Estimating residence-time matrix</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/monte-carlo/>monte-carlo</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>Extending Notes on: Horne, J. S., Garton, E. O., Krone, S. M., & Lewis, J. S. (2007): Analyzing Animal Movements Using Brownian Bridges, we now want to calculate the residence-time matrix for various polygons (AGEBs). To do this, we will use the <code>geopandas</code> library along with the data from Hermisillo that we have for a set of individuals. We will currently work with the data of just one individual.</p>
+<h2 id=ageb-data>AGEB data<a href=#ageb-data class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>The data for the AGEBs was provided by INEGI (National Institute of Statistics and Geography). There are a total of 582 AGEBs of which we might discard some that are not of interest. From the data, we particularly care about <code>CVE_AGEB</code> and the geometry - which is a polygon.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> geopandas <span style=color:#66d9ef>as</span> gpd
+
+data <span style=color:#f92672>=</span> gpd<span style=color:#f92672>.</span>read_file(<span style=color:#e6db74>&#34;/home/boticelli/Documents/uta/code/residence-time/bbmm-drive/26a.shp&#34;</span>)
+data<span style=color:#f92672>.</span>head()
+</code></pre></div><p>We can confirm that there are 582 AGEBs by checking the number of rows in the dataframe <code>data</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>  len(data)
+</code></pre></div><p>Each <code>GeoSeries</code> has a corresponding <em>CRS</em> (Coordinate Reference System) that defines the system used for the projection. If a <code>GeoDataFrame</code> has only one column that corresponds to a <code>GeoSeries</code>, then the CRS of that series corresponds to the CRS of the dataframe. A dataframe can also have multiple <code>GeoSeries</code>, each with their own corresponding CRS. In such a case, one of the series is designated as the active geometry column and is used by default for any geometrical operations.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>data<span style=color:#f92672>.</span>crs
+</code></pre></div><p>Here, the data we have is in the &ldquo;MEXICO_ITRF_2008_LCC&rdquo; system. We will now transform the system to a Pseudomercator system for ease of use. This can be done using the <code>geopandas.GeoDataFrame.to_crs</code> function. The EPSG code corresponding to Pseudomercator projection is <em>EPSG:3857</em>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>data<span style=color:#f92672>.</span>to_crs(<span style=color:#e6db74>&#34;EPSG:3857&#34;</span>, inplace<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</code></pre></div><p>We can also visualize this data using plotting functionality in geopandas and matplotlib.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> matplotlib.pyplot <span style=color:#66d9ef>as</span> plt
+
+data<span style=color:#f92672>.</span>plot(figsize<span style=color:#f92672>=</span>(<span style=color:#ae81ff>5</span>,<span style=color:#ae81ff>5</span>))
+plt<span style=color:#f92672>.</span>savefig(<span style=color:#e6db74>&#39;/home/boticelli/Documents/uta/code/residence-time/agebs.png&#39;</span>)
+</code></pre></div>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/emacs_jupyter/>
+<span class=button__icon>←</span>
+<span class=button__text>emacs-jupyter and inline images in org-mode</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/export_source_code_of_tex_file/>
+<span class=button__text>Export source code of tex file</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

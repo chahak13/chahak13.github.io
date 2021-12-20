@@ -1,0 +1,184 @@
+<!doctype html><html lang=en>
+<head>
+<title>How to create art from math :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="We&amp;rsquo;ll be using the numpy and matplotlib modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.
+import numpy as np import matplotlib.pyplot as plt # %matplotlib inline First, some auxiliary functions to setup figures using matplotlib.
+def create_fig(facecolor=&amp;quot;#fee4a6&amp;quot;, **kwargs): fig, ax = plt.subplots(figsize=(7,7), **kwargs) ax.set_facecolor(facecolor) for spine in ax.spines.keys(): ax.spines[spine].set_color(facecolor) ax.set_xticks([]) ax.set_yticks([]) return fig, ax We want to see what happens when you provide mathematical transformations to seemingly simple set of points.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/how_to_create_art_from_math/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to create art from math">
+<meta property="og:description" content="We&amp;rsquo;ll be using the numpy and matplotlib modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.
+import numpy as np import matplotlib.pyplot as plt # %matplotlib inline First, some auxiliary functions to setup figures using matplotlib.
+def create_fig(facecolor=&amp;quot;#fee4a6&amp;quot;, **kwargs): fig, ax = plt.subplots(figsize=(7,7), **kwargs) ax.set_facecolor(facecolor) for spine in ax.spines.keys(): ax.spines[spine].set_color(facecolor) ax.set_xticks([]) ax.set_yticks([]) return fig, ax We want to see what happens when you provide mathematical transformations to seemingly simple set of points.">
+<meta property="og:url" content="https://chahak13.github.io/posts/how_to_create_art_from_math/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-06-26 00:00:00 +0000 UTC">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/how_to_create_art_from_math/>How to create art from math</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-06-26
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/generative-art/>generative-art</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>We&rsquo;ll be using the <code>numpy</code> and <code>matplotlib</code> modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>import numpy as np
+import matplotlib.pyplot as plt
+# %matplotlib inline
+</code></pre><p>First, some auxiliary functions to setup figures using matplotlib.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>def create_fig(facecolor=&quot;#fee4a6&quot;, **kwargs):
+    fig, ax = plt.subplots(figsize=(7,7), **kwargs)
+    ax.set_facecolor(facecolor)
+    for spine in ax.spines.keys():
+        ax.spines[spine].set_color(facecolor)
+        ax.set_xticks([])
+        ax.set_yticks([])
+    return fig, ax
+</code></pre><p>We want to see what happens when you provide mathematical transformations to seemingly simple set of points. To do so, let us start with a line.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>x = np.pi
+y = np.arange(-np.pi, np.pi, 0.1)
+X, Y = np.meshgrid(x, y)
+
+fig, ax = create_fig()
+ax.scatter(X, Y, c='k', s=0.3)
+fig.savefig(&quot;./images/straight-line.png&quot;)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/straight-line.png>
+</figure>
+<p>This is a simple vertical line on the cartesian plane. We will now see what happens when we apply a simple transformation using sine and cosine functions.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>X_new = X + np.cos(Y)
+Y_new = Y + np.sin(Y)**2
+fig, ax = create_fig()
+ax.scatter(X_new, Y_new, c='k', s=0.3)
+fig.savefig(&quot;./images/perturbed-line.png&quot;)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/perturbed-line.png>
+</figure>
+<p>As we can see, a simple sinusoidal transformation is enough to give a straight line an interesting form. What if we do the same transformation on multiple such lines? We can do this by using a grid of points. We start out with a grid of points that we want to use to create <em>something</em>. I italicized something because I don&rsquo;t know what we will end up with.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>x, y = np.arange(-np.pi, np.pi, 0.1), np.arange(-np.pi, np.pi, 0.1)
+X, Y = np.meshgrid(x, y)
+X_new = X + np.cos(Y)
+Y_new = Y + np.sin(Y)**2
+fig, ax = create_fig()
+ax.scatter(X_new, Y_new, c='k', s=0.3)
+fig.savefig(&quot;./images/multiline-pattern.png&quot;)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/multiline-pattern.png>
+</figure>
+<p>Heyy! That looks almost like a curtain flap. Fairly interesting, if someone was to ask me. All this is well and good. It&rsquo;s simply plotting a function on the cartesian plane. We can also use a projection to the polar coordinate system to transform this pattern into a circular figure.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>fig_p, ax_p = create_fig(facecolor=&quot;#fee4a6&quot;, **{&quot;subplot_kw&quot;: {&quot;projection&quot;: &quot;polar&quot;}})
+ax_p.scatter(X_new, Y_new, c='k', s=0.3)
+fig_p.savefig(&quot;./images/multiline-pattern-polar.png&quot;)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/multiline-pattern-polar.png>
+</figure>
+<p>Now, now, now! That&rsquo;s some pretty looking pattern right here. I&rsquo;d say just this pattern by itself is pretty good but we should also add some noise to it, just to see the effect of randomness. The most simple way of doing this is to mutiply a random number to each of the computed value. We can do this easily using the <code>np.random</code> module of numpy.</p>
+<p>We will first see the effect it has in the cartesian system.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>x, y = np.arange(-np.pi, np.pi, 0.1), np.arange(-np.pi, np.pi, 0.1)
+X, Y = np.meshgrid(x, y)
+rng = np.random.default_rng(seed=1)
+
+X_new = X + rng.uniform(1, -1, Y.shape[0]) * np.cos(Y)
+Y_new = Y + rng.uniform(1, -1, Y.shape[0]) * np.sin(Y)**2
+fig, ax = create_fig()
+ax.scatter(X_new, Y_new, c='k', s=0.3)
+fig.savefig(&quot;./images/multiline-random-cartesian.png&quot;)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/multiline-random-cartesian.png>
+</figure>
+<p>Right, that looks almost like a nervous system or a cluster of wiring, depending on the viewers imagination - a la beauty lies in the eye of the <a href=https://5e.tools/bestiary/beholder-mm.html>beholder</a>. I&rsquo;m curious how this turns out in the polar coordinate system.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>fig_p, ax_p = create_fig(facecolor=&quot;#fee4a6&quot;, **{&quot;subplot_kw&quot;: {&quot;projection&quot;: &quot;polar&quot;}})
+ax_p.scatter(X_new, Y_new, c='k', s=0.3)
+fig_p.savefig(&quot;./images/multiline-random-polar.png&quot;)
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/multiline-random-polar.png>
+</figure>
+<p><em>Wow</em>. If the original polar coordinate plot was a beauty of a pattern, this one is a beauty of chaos. I can see so many things in this plot, I&rsquo;m not even sure if I can list them. If anyone saw the link in the beholder word above, this definitely looks like some version of that to me. Or an insane web. I might go mad just by looking at it for long, trying to visualise stuff.</p>
+<p>Anyway, so this is the beginning of generating some curious generative art. Hopefully I&rsquo;ll get to animating these too. It would be fun to some day reach the level of <a href=https://github.com/aaronpenne/generative%5Fart>aaronpenne - A collection of my generative artwork, mostly with Processing in Python mod</a>e and <a href=https://katharinabrunner.de/software-portfolio/>Generative Art – Katharina Brunner</a> but for now, ciao!</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/workspace_setup_ideas/>
+<span class=button__icon>←</span>
+<span class=button__text>Workspace setup ideas</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/change_font_size_in_emacs/>
+<span class=button__text>Change font size in emacs</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

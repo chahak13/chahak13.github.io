@@ -1,0 +1,266 @@
+<!doctype html><html lang=en>
+<head>
+<title>Posts :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:url" content="https://chahak13.github.io/posts/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<link href=/posts/index.xml rel=alternate type=application/rss+xml title=Musings>
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=posts>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/org_publish_site/>Org publish site</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-12-09
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+org-publish-project-alist is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.
+This can be used to publish the org-roam entries.
+(setq org-publish-project-alist '(("hugo" :base-directory "~/Documents/org/roam/org/" :publishing-directory "~/Documents/chahak13.github.io/" :section-numbers nil :table-of-contents nil :publishing-function org-hugo-export-to-md :base-extension "org" ))) (defvar blog-src-dir "/Users/cmehta/Dropbox/Mac/Documents/org/roam/org") (setq org-hugo-base-dir "/Users/cmehta/Documents/chahak13.github.io/") (defun cm/publish-blog () "Export all org file entries to hugo markdown in the blog content dir.
+</div>
+<div>
+<a class="read-more button" href=/posts/org_publish_site/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/stackoverflow_parser/>PoC: Stackoverflow parser</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-12-08
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+Load the requests and BeautifulSoup libraries that will be used for scraping the webpage.
+import sys import re import requests from bs4 import BeautifulSoup as bs As a proof of concept, we will grab a random stackoverflow question that has more than one answers, one accepted answer, and code as a part of the answer to try and cover the major cases (still need to check about images). One such example is - https://stackoverflow.
+</div>
+<div>
+<a class="read-more button" href=/posts/stackoverflow_parser/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/moonlander_notes/>moonlander notes</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-12-01
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/moonlander_notes/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/org_speed_commands/>Org speed commands</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-11-18
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+(("Outline Navigation") ("n" org-speed-move-safe 'org-next-visible-heading) ("p" org-speed-move-safe 'org-previous-visible-heading) ("f" org-speed-move-safe 'org-forward-heading-same-level) ("b" org-speed-move-safe 'org-backward-heading-same-level) ("F" . org-next-block) ("B" . org-previous-block) ("u" org-speed-move-safe 'outline-up-heading) ("j" . org-goto) ("g" org-refile '(4)) ("Outline Visibility") ("c" . org-cycle) ("C" . org-shifttab) (" " . org-display-outline-path) ("s" . org-toggle-narrow-to-subtree) ("k" . org-cut-subtree) ("=" . org-columns) ("Outline Structure Editing") ("U" . org-metaup) ("D" . org-metadown) ("r" . org-metaright) ("l" . org-metaleft) ("R" . org-shiftmetaright) ("L" . org-shiftmetaleft) ("i" progn (forward-char 1) (call-interactively 'org-insert-heading-respect-content)) ("^" .
+</div>
+<div>
+<a class="read-more button" href=/posts/org_speed_commands/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/20211117151012-mbsync/>Mbsync</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-11-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+# marks comments. Strings with spaces should be enclosed in double quotes (") Two basic object classes: Stores and Channels. Two auxiliary objects Accounts and Groups Store: Defines a collection of mailboxes; basically a folder, either local or remote. Channel: Connects two Stores, describing the way the two are synchronized. Accound: Describes the connection part of network Stores, so server configureations can be shared between multiple Stores. Group: Aggregates multiple Channels to save typing on the command line.
+</div>
+<div>
+<a class="read-more button" href=/posts/20211117151012-mbsync/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/mbsync/>Mbsync</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-11-11
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<div class=post-content>
+# marks comments. Strings with spaces should be enclosed in double quotes (") Two basic object classes: Stores and Channels. Two auxiliary objects Accounts and Groups Store: Defines a collection of mailboxes; basically a folder, either local or remote. Channel: Connects two Stores, describing the way the two are synchronized. Accound: Describes the connection part of network Stores, so server configureations can be shared between multiple Stores. Group: Aggregates multiple Channels to save typing on the command line.
+</div>
+<div>
+<a class="read-more button" href=/posts/mbsync/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/gaussian_quadrature_in_scipy/>Gaussian quadrature in scipy</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-14
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/maths/>maths</a>&nbsp;
+</span>
+<div class=post-content>
+Scipy has an gaussian quadrature integration built-in in the integrate module as the integrate.quadrature function.
+import numpy as np from scipy import integrate A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.
+f = lambda x: 2*x print("Quadrature integration:", integrate.quadrature(f, 0, 2)) print("Analytical solution:", 2**2) A more complex function can also be passed to the quadrature function.
+</div>
+<div>
+<a class="read-more button" href=/posts/gaussian_quadrature_in_scipy/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/status_bar_in_rust/>Status bar in Rust</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-14
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/rust/>rust</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/random/>random</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/misc/>misc</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/status_bar_in_rust/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/suppress_warnings_in_python/>Suppress warnings in python</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-14
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+While working with packages like numpy and scipy, python can possibly give a lot of warnings. These warnings can be suppressed easily by using the warnings module in the python library.
+import warnings warnings.filterwarnings("ignore") And done. This should suppress all the warnings your code produces.
+NOTE OF CAUTION: Do this only if you know what you&rsquo;re doing and what warnings are being suppressed. Most of the times, having a warning means that something in your code can be improved.
+</div>
+<div>
+<a class="read-more button" href=/posts/suppress_warnings_in_python/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/resampling_in_pandas/>Resampling in Pandas</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-12
+</span>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/posts/resampling_in_pandas/>Read more →</a>
+</div>
+</div>
+<div class=pagination>
+<div class=pagination__buttons>
+<span class="button next">
+<a href=/posts/page/2/>
+<span class=button__text>Older posts</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

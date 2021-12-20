@@ -1,0 +1,127 @@
+<!doctype html><html lang=en>
+<head>
+<title>emacs-jupyter and inline images in org-mode :: Musings</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="emacs-jupyter is an emacs interface for jupyter kernels. It can be installed using
+(use-package jupyter :straight t) If ob-async is installed, then jupyter-python needs to be added to the list of languages that are not run asychronously. (Refer this issue). This can be done by
+(setq ob-async-no-async-languages-alist &amp;#39;(&amp;#34;jupyter-python&amp;#34;)) An example python block:
+print(&amp;quot;ab&amp;quot;) ab emacs-jupyter works doesn&amp;rsquo;t work in server When I first installed emacs-jupyter I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://chahak13.github.io/posts/emacs_jupyter/>
+<link rel=stylesheet href=https://chahak13.github.io/assets/style.css>
+<link rel=apple-touch-icon href=https://chahak13.github.io/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://chahak13.github.io/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content>
+<meta name=twitter:creator content="[Chahak Mehta]">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="emacs-jupyter and inline images in org-mode">
+<meta property="og:description" content="emacs-jupyter is an emacs interface for jupyter kernels. It can be installed using
+(use-package jupyter :straight t) If ob-async is installed, then jupyter-python needs to be added to the list of languages that are not run asychronously. (Refer this issue). This can be done by
+(setq ob-async-no-async-languages-alist &amp;#39;(&amp;#34;jupyter-python&amp;#34;)) An example python block:
+print(&amp;quot;ab&amp;quot;) ab emacs-jupyter works doesn&amp;rsquo;t work in server When I first installed emacs-jupyter I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon.">
+<meta property="og:url" content="https://chahak13.github.io/posts/emacs_jupyter/">
+<meta property="og:site_name" content="Musings">
+<meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+</head>
+<body class=orange>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Musings
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/posts>Index</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://chahak13.github.io/posts/emacs_jupyter/>emacs-jupyter and inline images in org-mode</a></h1>
+<div class=post-meta>
+<span class=post-author>:: [Chahak Mehta]</span>
+</div>
+<span class=post-tags>
+#<a href=https://chahak13.github.io/tags/emacs/>emacs</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/org-mode/>org-mode</a>&nbsp;
+#<a href=https://chahak13.github.io/tags/python/>python</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p><code>emacs-jupyter</code> is an emacs interface for jupyter kernels. It can be installed using</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>(use-package jupyter
+  :straight <span style=color:#66d9ef>t</span>)
+</code></pre></div><p>If <code>ob-async</code> is installed, then <code>jupyter-python</code> needs to be added to the list of languages that are not run asychronously. (Refer <a href=https://github.com/astahlman/ob-async/pull/71>this issue</a>). This can be done by</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>(setq ob-async-no-async-languages-alist <span style=color:#f92672>&#39;</span>(<span style=color:#e6db74>&#34;jupyter-python&#34;</span>))
+</code></pre></div><p>An example python block:</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>print(&quot;ab&quot;)
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>ab
+</code></pre></div><h2 id=emacs-jupyter-works-doesn-t-work-in-server>emacs-jupyter works doesn&rsquo;t work in server<a href=#emacs-jupyter-works-doesn-t-work-in-server class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>When I first installed <code>emacs-jupyter</code> I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon. On the other hand, if it was started separately as a window, everything ran fine. The issue was that I was adding <code>/home/boticelli/.local/bin/</code> (path to jupyter executable) to <code>exec-path</code> at the end of the config files. When opening emacs from a terminal as an independent session, it was considering this added path somehow, maybe by inheriting it from the shell itself, but it was. I moved that line to near the beginning of the <code>init.el</code> file itself and this seemed to solve the issue. This issue was very similar to the <a href=/posts/pipenv_in_emacs/>Pipenv in emacs</a> issue that I had recently.</p>
+<h2 id=why-emacs-jupyter>Why emacs-jupyter<a href=#why-emacs-jupyter class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Running python code in normal org-mode source block is nice and easy. But using them to plot images was a bit painful/difficult. Since <code>emacs-jupyter</code> uses <code>ipython</code> kernel, it allows some magic commands like <code>%matplotlib inline</code> etc to make this easier. It also gives <code>%timeit</code> which is really useful.</p>
+<p>Now, with <code>emacs-jupyter</code>, I can do imports like this and make plotting easier for myself.</p>
+<pre tabindex=0><code class=language-jupyter-python data-lang=jupyter-python>%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.hist(np.random.default_rng().normal(0, 1, 50000), bins=100);
+</code></pre>
+<figure class=left>
+<img src=/ox-hugo/normal_dist.png>
+</figure>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/emacs/>
+<span class=button__icon>←</span>
+<span class=button__text>emacs</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://chahak13.github.io/posts/estimating_residence_time_matrix/>
+<span class=button__text>Estimating residence-time matrix</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://chahak13.github.io/assets/main.js></script>
+<script src=https://chahak13.github.io/assets/prism.js></script>
+</div>
+</body>
+</html>

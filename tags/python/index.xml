@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>python on Musings</title><link>https://chahak13.github.io/tags/python/</link><description>Recent content in python on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 14 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chahak13.github.io/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>Gaussian quadrature in scipy</title><link>https://chahak13.github.io/posts/gaussian_quadrature_in_scipy/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/gaussian_quadrature_in_scipy/</guid><description>Scipy has an gaussian quadrature integration built-in in the integrate module as the integrate.quadrature function.
+import numpy as np from scipy import integrate A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.
+f = lambda x: 2*x print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(f, 0, 2)) print(&amp;quot;Analytical solution:&amp;quot;, 2**2) A more complex function can also be passed to the quadrature function.</description><content>&lt;p>Scipy has an gaussian quadrature integration built-in in the &lt;code>integrate&lt;/code> module as the &lt;code>integrate.quadrature&lt;/code> function.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">import numpy as np
+from scipy import integrate
+&lt;/code>&lt;/pre>&lt;p>A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">f = lambda x: 2*x
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(f, 0, 2))
+print(&amp;quot;Analytical solution:&amp;quot;, 2**2)
+&lt;/code>&lt;/pre>&lt;p>A more complex function can also be passed to the &lt;code>quadrature&lt;/code> function.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def func(x):
+return x**2 + 2*x + 3
+a = 2
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(func, 0, 2))
+print(&amp;quot;Analytical solution:&amp;quot;, a**3/3 + a**2 + 3*a)
+&lt;/code>&lt;/pre>&lt;p>Now, to take into consideration functions that are dependent on more than just the integrating variable.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def func_2(t, z):
+return z*t + z**2 + 2*t
+a = 2
+z = 2
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(func_2, 0, 2, args=(z,)))
+print(&amp;quot;Analytical solution:&amp;quot;, z*a**2/2 + a*z**2 + a**2)
+&lt;/code>&lt;/pre>&lt;p>If the function to integrate depends on more variables and even other functions, then we can pass those functions as parameters to the integrating function and solve the quadrature integration.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def func_3(t, z, f1, f2):
+return f1(t) + z*t + f2(t)**2
+f1 = lambda x: x**2
+f2 = lambda x: x**3
+a, z = 2, 2
+print(&amp;quot;Quadrature integration:&amp;quot;, integrate.quadrature(func_3, 0, 2, args=(z, f1, f2)))
+print(&amp;quot;Analytical solution:&amp;quot;, a**3/3 + z*a**2/2 + a**7/7)
+&lt;/code>&lt;/pre>&lt;p>Functions with vector output need to provide the &lt;code>vec_func&lt;/code> argument as &lt;code>True&lt;/code>.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def f(x):
+# print(&amp;quot;x:&amp;quot;, x)
+# print(&amp;quot;z:&amp;quot;, z)
+return z*x*2
+z = np.array([2, 3])
+integrate.quad_vec(f, 0, 2)
+&lt;/code>&lt;/pre>&lt;p>For fixed order Gaussian quadrature integration&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">f = lambda x, a: np.sin(np.kron(a, x)).reshape(-1, x.shape[0])
+x = np.array([1,2,3])
+a = np.array([1,2])
+print(f(x, a).shape)
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">np.kron(a, x)
+&lt;/code>&lt;/pre>&lt;p>:results:&lt;/p>
+&lt;p>Writing gaussian quadrature integration from scratch using numpy&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def norm_pdf(x, mu, sigma):
+mu, sigma = mu.reshape(-1, 1), sigma.reshape(-1, 1)
+x = x.reshape(-1, 1)
+variance = sigma**2
+numerator = x - mu
+denominator = 2 * variance
+pdf = ((1/(np.sqrt(2 * np.pi) * sigma)) * np.exp(-(numerator**2) / denominator))
+return pdf
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">def h_z(a, b, T_i, x, y, sigma_m2, delta_a, delta_b, indicator, n_time_samples=1000):
+mc_sum = np.zeros(x.shape)
+t = rng.uniform(0, T_i, size=n_time_samples)
+alpha = t/T_i
+mu_x = a.x + alpha * (b.x - a.x)
+mu_y = a.y + alpha * (b.y - a.y)
+sigma = np.sqrt(t * (1 - alpha) * sigma_m2
++ (1 - alpha)**2 * (delta_a**2)
++ (alpha**2) * (delta_b**2))
+pdf_x = norm_pdf(x, mu_x, sigma)
+pdf_y = norm_pdf(y, mu_y, sigma)
+mc_sum += indicator * pdf_x * pdf_y
+return mc_sum
+&lt;/code>&lt;/pre></content></item><item><title>Suppress warnings in python</title><link>https://chahak13.github.io/posts/suppress_warnings_in_python/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/suppress_warnings_in_python/</guid><description>While working with packages like numpy and scipy, python can possibly give a lot of warnings. These warnings can be suppressed easily by using the warnings module in the python library.
+import warnings warnings.filterwarnings(&amp;#34;ignore&amp;#34;) And done. This should suppress all the warnings your code produces.
+NOTE OF CAUTION: Do this only if you know what you&amp;rsquo;re doing and what warnings are being suppressed. Most of the times, having a warning means that something in your code can be improved.</description><content>&lt;p>While working with packages like numpy and scipy, python can possibly give a lot of warnings. These warnings can be suppressed easily by using the warnings module in the python library.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> warnings
+warnings&lt;span style="color:#f92672">.&lt;/span>filterwarnings(&lt;span style="color:#e6db74">&amp;#34;ignore&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And done. This should suppress all the warnings your code produces.&lt;/p>
+&lt;p>&lt;strong>NOTE OF CAUTION:&lt;/strong> Do this &lt;em>only&lt;/em> if you know what you&amp;rsquo;re doing and what warnings are being suppressed. Most of the times, having a warning means that something in your code can be improved. Hence, warnings should only be suppressed when there is enough information about the warning and it is an informed decision to suppress it.&lt;/p></content></item><item><title>Resampling in Pandas</title><link>https://chahak13.github.io/posts/resampling_in_pandas/</link><pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/resampling_in_pandas/</guid><description>pd.DataFrame.resample can be immensely useful in changing the frequency of a timeseries data.</description><content>&lt;p>&lt;code>pd.DataFrame.resample&lt;/code> can be immensely useful in changing the frequency of a timeseries data.&lt;/p></content></item><item><title>Chunky Pandas - Read CSV in chunks</title><link>https://chahak13.github.io/posts/chunky_pandas_read_csv_in_chunks/</link><pubDate>Fri, 11 Jun 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/chunky_pandas_read_csv_in_chunks/</guid><description>Huge CSV files are a pain to read as they start overloading RAM a lot. The read_csv function provides the ability to read a file in chunks. This is potentially helpful to perform operations on such large files in parts. I&amp;rsquo;d like to look more into what all can be done using chunking.</description><content>&lt;p>Huge CSV files are a pain to read as they start overloading RAM a lot. The &lt;code>read_csv&lt;/code> function provides the ability to read a file in chunks. This is potentially helpful to perform operations on such large files in parts. I&amp;rsquo;d like to look more into what all can be done using chunking.&lt;/p></content></item><item><title>emacs-jupyter and inline images in org-mode</title><link>https://chahak13.github.io/posts/emacs_jupyter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/emacs_jupyter/</guid><description>emacs-jupyter is an emacs interface for jupyter kernels. It can be installed using
+(use-package jupyter :straight t) If ob-async is installed, then jupyter-python needs to be added to the list of languages that are not run asychronously. (Refer this issue). This can be done by
+(setq ob-async-no-async-languages-alist &amp;#39;(&amp;#34;jupyter-python&amp;#34;)) An example python block:
+print(&amp;quot;ab&amp;quot;) ab emacs-jupyter works doesn&amp;rsquo;t work in server When I first installed emacs-jupyter I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon.</description><content>&lt;p>&lt;code>emacs-jupyter&lt;/code> is an emacs interface for jupyter kernels. It can be installed using&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(use-package jupyter
+:straight &lt;span style="color:#66d9ef">t&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>If &lt;code>ob-async&lt;/code> is installed, then &lt;code>jupyter-python&lt;/code> needs to be added to the list of languages that are not run asychronously. (Refer &lt;a href="https://github.com/astahlman/ob-async/pull/71">this issue&lt;/a>). This can be done by&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(setq ob-async-no-async-languages-alist &lt;span style="color:#f92672">&amp;#39;&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;jupyter-python&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>An example python block:&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">print(&amp;quot;ab&amp;quot;)
+&lt;/code>&lt;/pre>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">ab
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="emacs-jupyter-works-doesn-t-work-in-server">emacs-jupyter works doesn&amp;rsquo;t work in server&lt;/h2>
+&lt;p>When I first installed &lt;code>emacs-jupyter&lt;/code> I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon. On the other hand, if it was started separately as a window, everything ran fine. The issue was that I was adding &lt;code>/home/boticelli/.local/bin/&lt;/code> (path to jupyter executable) to &lt;code>exec-path&lt;/code> at the end of the config files. When opening emacs from a terminal as an independent session, it was considering this added path somehow, maybe by inheriting it from the shell itself, but it was. I moved that line to near the beginning of the &lt;code>init.el&lt;/code> file itself and this seemed to solve the issue. This issue was very similar to the &lt;a href="https://chahak13.github.io/posts/pipenv_in_emacs/">Pipenv in emacs&lt;/a> issue that I had recently.&lt;/p>
+&lt;h2 id="why-emacs-jupyter">Why emacs-jupyter&lt;/h2>
+&lt;p>Running python code in normal org-mode source block is nice and easy. But using them to plot images was a bit painful/difficult. Since &lt;code>emacs-jupyter&lt;/code> uses &lt;code>ipython&lt;/code> kernel, it allows some magic commands like &lt;code>%matplotlib inline&lt;/code> etc to make this easier. It also gives &lt;code>%timeit&lt;/code> which is really useful.&lt;/p>
+&lt;p>Now, with &lt;code>emacs-jupyter&lt;/code>, I can do imports like this and make plotting easier for myself.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.hist(np.random.default_rng().normal(0, 1, 50000), bins=100);
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/normal_dist.png" />
+&lt;/figure></content></item><item><title>Hillshading in matplotlib</title><link>https://chahak13.github.io/posts/hillshading_in_matplotlib/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/hillshading_in_matplotlib/</guid><description>Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see this Twitter post by James Beattie or this visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (here).
+Let us first import the required libraries.</description><content>&lt;p>Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see &lt;a href="https://twitter.com/astro%5Fturb/status/1392315741177671682?s=09">this&lt;/a> Twitter post by James Beattie or &lt;a href="https://twitter.com/noam%5Fvv/status/1392960446391623683">this&lt;/a> visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (&lt;a href="https://matplotlib.org/stable/gallery/mplot3d/custom%5Fshaded%5F3d%5Fsurface.html#sphx-glr-gallery-mplot3d-custom-shaded-3d-surface-py">here&lt;/a>).&lt;/p>
+&lt;p>Let us first import the required libraries.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm, cbook
+from matplotlib.colors import LightSource
+&lt;/code>&lt;/pre>&lt;p>Now that we have the libraries, we need to set up the data that we will use for plotting. We will use the sample data provided in matplotlib.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">dem = cbook.get_sample_data(&amp;quot;jacksboro_fault_dem.npz&amp;quot;, np_load=True)
+z = dem['elevation']
+nrows, ncols = z.shape
+x = np.linspace(dem[&amp;quot;xmin&amp;quot;], dem[&amp;quot;xmax&amp;quot;], ncols)
+y = np.linspace(dem[&amp;quot;ymin&amp;quot;], dem[&amp;quot;ymax&amp;quot;], nrows)
+x, y = np.meshgrid(x, y)
+region = np.s_[5:50, 5:50]
+x, y, z = x[region], y[region], z[region]
+&lt;/code>&lt;/pre>&lt;p>We will first use this data to plot a simple surface plot without any light sources to see what it adds.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">fig, ax = plt.subplots(subplot_kw=dict(projection='3d'), figsize=(8,8))
+surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, linewidth=0, antialiased=False, shade=False, cmap=plt.get_cmap('gist_earth'))
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_zticks([])
+fig.savefig(&amp;quot;./images/plain_surface.png&amp;quot;)
+&lt;/code>&lt;/pre>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">[]
+&lt;/code>&lt;/pre>&lt;/div>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/plain_surface.png" />
+&lt;/figure>
+&lt;p>Now, if we add a lightsource to this, we should be able to see the differences in the plot in a much better way.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">fig_l, ax_l = plt.subplots(subplot_kw=dict(projection='3d'), figsize=(8,8))
+ls = LightSource(0, 45)
+rgb = ls.shade(z, cmap=cm.gist_earth, vert_exag=0.1, blend_mode='soft')
+ax_l.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb, linewidth=0, antialiased=False, shade=False)
+ax_l.set_xticks([])
+ax_l.set_yticks([])
+ax_l.set_zticks([])
+fig_l.savefig('./images/light_surface.png')
+&lt;/code>&lt;/pre>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">[]
+&lt;/code>&lt;/pre>&lt;/div>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/light_surface.png" />
+&lt;/figure>
+&lt;p>We will try and animate this lightsource to make its presence more visible.&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-jupyter-python" data-lang="jupyter-python">from matplotlib.animation import FuncAnimation
+def update(frame):
+ax_l.collections = []
+ls = LightSource(frame%360, 45)
+rgb = ls.shade(z, cmap=cm.gist_earth, vert_exag=0.1, blend_mode='soft')
+ax_l.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb, linewidth=0, antialiased=False, shade=False)
+anim = FuncAnimation(fig_l, update, frames=360)
+anim.save(&amp;quot;./images/lightsource.gif&amp;quot;, writer=&amp;quot;imagemagick&amp;quot;, fps=60)
+# anim.save(&amp;quot;./images/lightsource.mp4&amp;quot;, writer=&amp;quot;ffmpeg&amp;quot;, fps=60)
+&lt;/code>&lt;/pre>
+&lt;figure class="left" >
+&lt;img src="https://chahak13.github.io/ox-hugo/lightsource.gif" />
+&lt;/figure></content></item><item><title>Pipenv in emacs</title><link>https://chahak13.github.io/posts/pipenv_in_emacs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/pipenv_in_emacs/</guid><description>org-mode is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&amp;rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode.</description><content>&lt;p>&lt;code>org-mode&lt;/code> is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&amp;rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode. I use &lt;a href="https://pipenv.pypa.io/en/latest/">pipenv&lt;/a> for managing my virtual environments. To use that in emacs, I found the &lt;a href="https://github.com/pwalsh/pipenv.el">pipenv.el&lt;/a> package that seems to provide all the necessary functionalities to use pipenv in emacs. It can be installed using &lt;code>straight.el&lt;/code> directly&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (use-package pipenv
+:straight &lt;span style="color:#66d9ef">t&lt;/span>
+:hook ((python-mode-hook &lt;span style="color:#f92672">.&lt;/span> pipenv-mode)
+(org-mode-hook &lt;span style="color:#f92672">.&lt;/span> pipenv-mode))
+)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This enables the &lt;code>pipenv-mode&lt;/code> minor mode while using &lt;code>python-mode&lt;/code> or &lt;code>org-mode&lt;/code>. This should provide functions like &lt;code>pipenv-activate&lt;/code> and &lt;code>pipenv-deactivate&lt;/code> to activate the required virtual environment and &lt;code>pipenv-install&lt;/code> to install any package and add it to the &lt;code>Pipfile&lt;/code>.&lt;/p>
+&lt;p>When I enabled the &lt;code>pipenv-mode&lt;/code> minor mode and ran &lt;code>M-x pipenv-activate&lt;/code> in a directory that contained a &lt;code>Pipfile&lt;/code>, it showed me an error &lt;code>Searching for program: No such file or directory, pipenv&lt;/code>. I tried restarting the emacs session but it did not work.&lt;/p>
+&lt;h2 id="getting-pipenv-to-work">Getting pipenv to work&lt;/h2>
+&lt;p>After running into the issue, I decided going into the source code to see what&amp;rsquo;s going wrong. First important thing that I noticed was that the function &lt;code>pipenv-activate&lt;/code> checks if the current directory or any of its parent directory is a pipenv project via the &lt;code>pipenv-project?&lt;/code> function. This is done using the &lt;code>locate-dominating-file&lt;/code> function and returns the path to the first found directory that contains &lt;code>Pipfile&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (defun pipenv-project? ()
+&lt;span style="color:#e6db74">&amp;#34;Are we in a Pipenv project?&amp;#34;&lt;/span>
+(locate-dominating-file default-directory &lt;span style="color:#e6db74">&amp;#34;Pipfile&amp;#34;&lt;/span>))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>pipenv-activate&lt;/code> then waits for the &lt;code>pipenv-venv&lt;/code> function to return the path to the virtual environment for the current project. On trying this function on a file in a pipenv project, I found out that it was this function that was throwing the error. This also made the error more clear as I realised that it is trying to run the &lt;code>pipenv --venv&lt;/code> command and couldn&amp;rsquo;t find the &lt;code>pipenv&lt;/code> executable. On further inspection, I found out that the &lt;code>pipenv&lt;/code> executable was in &lt;code>~/.local/bin/&lt;/code> which was not in the emacs &lt;code>exec-path&lt;/code> variable. So, adding this path should potentially resolve this issue.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp"> (add-to-list &lt;span style="color:#e6db74">&amp;#39;exec-path&lt;/span> &lt;span style="color:#e6db74">&amp;#34;~/.local/bin&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Yay! &lt;code>pipenv-activate&lt;/code> works now :)&lt;/p></content></item></channel></rss>
