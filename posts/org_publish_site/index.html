@@ -3,9 +3,8 @@
 <title>Org publish site :: Musings</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="org-publish-project-alist is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.
-This can be used to publish the org-roam entries.
-(setq org-publish-project-alist &amp;#39;((&amp;#34;hugo&amp;#34; :base-directory &amp;#34;~/Documents/org/roam/org/&amp;#34; :publishing-directory &amp;#34;~/Documents/chahak13.github.io/&amp;#34; :section-numbers nil :table-of-contents nil :publishing-function org-hugo-export-to-md :base-extension &amp;#34;org&amp;#34; ))) (defvar blog-src-dir &amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;) (setq org-hugo-base-dir &amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;) (defun cm/publish-blog () &amp;#34;Export all org file entries to hugo markdown in the blog content dir.">
+<meta name=description content="(defvar blog-src-dir &amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;) (setq org-hugo-base-dir &amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;) (defun cm/publish-blog () &amp;#34;Export all org file entries to hugo markdown in the blog content dir.&amp;#34; (interactive) (setq blog-posts (directory-files blog-src-dir t &amp;#34;\.org$&amp;#34;)) (dolist (file blog-posts) (org-hugo--export-file-to-md file t) ;; (print file) )) (cm/publish-blog) Publishing single file using ox-hugo.
+(require &amp;#39;find-lisp) (with-current-buffer (find-file-noselect (expand-file-name &amp;#34;moonlander-notes.org&amp;#34; blog-src-dir)) (setq org-agenda-text-search-extra-files (find-lisp-find-files blog-src-dir &amp;#34;\.org$&amp;#34;)) (org-hugo-export-wim-to-md)) ">
 <meta name=keywords content>
 <meta name=robots content="noodp">
 <link rel=canonical href=https://chahak13.github.io/posts/org_publish_site/>
@@ -18,9 +17,8 @@ This can be used to publish the org-roam entries.
 <meta property="og:locale" content="en">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Org publish site">
-<meta property="og:description" content="org-publish-project-alist is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.
-This can be used to publish the org-roam entries.
-(setq org-publish-project-alist &amp;#39;((&amp;#34;hugo&amp;#34; :base-directory &amp;#34;~/Documents/org/roam/org/&amp;#34; :publishing-directory &amp;#34;~/Documents/chahak13.github.io/&amp;#34; :section-numbers nil :table-of-contents nil :publishing-function org-hugo-export-to-md :base-extension &amp;#34;org&amp;#34; ))) (defvar blog-src-dir &amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;) (setq org-hugo-base-dir &amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;) (defun cm/publish-blog () &amp;#34;Export all org file entries to hugo markdown in the blog content dir.">
+<meta property="og:description" content="(defvar blog-src-dir &amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;) (setq org-hugo-base-dir &amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;) (defun cm/publish-blog () &amp;#34;Export all org file entries to hugo markdown in the blog content dir.&amp;#34; (interactive) (setq blog-posts (directory-files blog-src-dir t &amp;#34;\.org$&amp;#34;)) (dolist (file blog-posts) (org-hugo--export-file-to-md file t) ;; (print file) )) (cm/publish-blog) Publishing single file using ox-hugo.
+(require &amp;#39;find-lisp) (with-current-buffer (find-file-noselect (expand-file-name &amp;#34;moonlander-notes.org&amp;#34; blog-src-dir)) (setq org-agenda-text-search-extra-files (find-lisp-find-files blog-src-dir &amp;#34;\.org$&amp;#34;)) (org-hugo-export-wim-to-md)) ">
 <meta property="og:url" content="https://chahak13.github.io/posts/org_publish_site/">
 <meta property="og:site_name" content="Musings">
 <meta property="og:image" content="https://chahak13.github.io/img/favicon/orange.png">
@@ -63,19 +61,7 @@ Musings
 <span class=post-author>:: [Chahak Mehta]</span>
 </div>
 <div class=post-content><div>
-<p><code>org-publish-project-alist</code> is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.</p>
-<p>This can be used to publish the org-roam entries.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>(setq org-publish-project-alist
-      &#39;((&#34;hugo&#34;
-         :base-directory &#34;~/Documents/org/roam/org/&#34;
-         :publishing-directory &#34;~/Documents/chahak13.github.io/&#34;
-         :section-numbers nil
-         :table-of-contents nil
-         :publishing-function org-hugo-export-to-md
-         :base-extension &#34;org&#34;
-         )))
-
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>(defvar blog-src-dir <span style=color:#e6db74>&#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&#34;</span>)
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-emacs-lisp data-lang=emacs-lisp>(defvar blog-src-dir <span style=color:#e6db74>&#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&#34;</span>)
 (setq org-hugo-base-dir <span style=color:#e6db74>&#34;/Users/cmehta/Documents/chahak13.github.io/&#34;</span>)
 (defun cm/publish-blog ()
   <span style=color:#e6db74>&#34;Export all org file entries to hugo markdown in the blog content dir.&#34;</span>
@@ -100,6 +86,12 @@ Musings
 <hr>
 </div>
 <div class=pagination__buttons>
+<span class="button previous">
+<a href=https://chahak13.github.io/posts/org_html_export_with_images/>
+<span class=button__icon>←</span>
+<span class=button__text>org html export with images</span>
+</a>
+</span>
 <span class="button next">
 <a href=https://chahak13.github.io/posts/stackoverflow_parser/>
 <span class=button__text>PoC: Stackoverflow parser</span>

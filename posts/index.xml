@@ -1,17 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Musings</title><link>https://chahak13.github.io/posts/</link><description>Recent content in Posts on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 09 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chahak13.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Org publish site</title><link>https://chahak13.github.io/posts/org_publish_site/</link><pubDate>Thu, 09 Dec 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/org_publish_site/</guid><description>org-publish-project-alist is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.
-This can be used to publish the org-roam entries.
-(setq org-publish-project-alist &amp;#39;((&amp;#34;hugo&amp;#34; :base-directory &amp;#34;~/Documents/org/roam/org/&amp;#34; :publishing-directory &amp;#34;~/Documents/chahak13.github.io/&amp;#34; :section-numbers nil :table-of-contents nil :publishing-function org-hugo-export-to-md :base-extension &amp;#34;org&amp;#34; ))) (defvar blog-src-dir &amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;) (setq org-hugo-base-dir &amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;) (defun cm/publish-blog () &amp;#34;Export all org file entries to hugo markdown in the blog content dir.</description><content>&lt;p>&lt;code>org-publish-project-alist&lt;/code> is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.&lt;/p>
-&lt;p>This can be used to publish the org-roam entries.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">(setq org-publish-project-alist
-&amp;#39;((&amp;#34;hugo&amp;#34;
-:base-directory &amp;#34;~/Documents/org/roam/org/&amp;#34;
-:publishing-directory &amp;#34;~/Documents/chahak13.github.io/&amp;#34;
-:section-numbers nil
-:table-of-contents nil
-:publishing-function org-hugo-export-to-md
-:base-extension &amp;#34;org&amp;#34;
-)))
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(defvar blog-src-dir &lt;span style="color:#e6db74">&amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;&lt;/span>)
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Musings</title><link>https://chahak13.github.io/posts/</link><description>Recent content in Posts on Musings</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chahak13.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>org html export with images</title><link>https://chahak13.github.io/posts/org_html_export_with_images/</link><pubDate>Tue, 21 Dec 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/org_html_export_with_images/</guid><description>When we use org-html-export-to-html through the org-export interface, we generate html files for the corresponding org file. I use this feature fairly regularly, along with latex export, to share my research work and assignments. One hiccup I almost always face while sharing the html files is that the html file adds relative links to the image files that are a part of the org file which then requires me to share the images separately.</description><content>&lt;p>When we use &lt;code>org-html-export-to-html&lt;/code> through the org-export interface, we generate html files for the corresponding org file. I use this feature fairly regularly, along with latex export, to share my research work and assignments. One hiccup I almost always face while sharing the html files is that the html file adds relative links to the image files that are a part of the org file which then requires me to share the images separately. Instead, if I can embed the images directly in the html file, then sharing just a self-contained file makes it much easier for me and my collaborators. To achieve this, I update the &lt;code>org-html--format-image&lt;/code> function to put in the base64 coded string for the image in the image source link instead of adding a link to the image file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(defun tob64 (filename)
+(&lt;span style="color:#a6e22e">base64-encode-string&lt;/span>
+(with-temp-buffer
+(&lt;span style="color:#a6e22e">insert-file-contents&lt;/span> filename)
+(&lt;span style="color:#a6e22e">buffer-string&lt;/span>))))
+(defun org-html--format-image (source attributes info)
+(org-html-close-tag
+&lt;span style="color:#e6db74">&amp;#34;img&amp;#34;&lt;/span>
+(org-html--make-attribute-string
+(org-combine-plists
+(&lt;span style="color:#a6e22e">list&lt;/span> :src (&lt;span style="color:#a6e22e">format&lt;/span> &lt;span style="color:#e6db74">&amp;#34;data:image/png;base64,%s&amp;#34;&lt;/span>
+(tob64 source))
+:alt (if (string-match-p
+(&lt;span style="color:#a6e22e">concat&lt;/span> &lt;span style="color:#e6db74">&amp;#34;^&amp;#34;&lt;/span> org-preview-latex-image-directory) source)
+(org-html-encode-plain-text
+(org-find-text-property-in-string &lt;span style="color:#e6db74">&amp;#39;org-latex-src&lt;/span> source))
+(&lt;span style="color:#a6e22e">file-name-nondirectory&lt;/span> source)))
+(if (string= &lt;span style="color:#e6db74">&amp;#34;svg&amp;#34;&lt;/span> (file-name-extension source))
+(org-combine-plists &lt;span style="color:#f92672">&amp;#39;&lt;/span>(:class &lt;span style="color:#e6db74">&amp;#34;org-svg&amp;#34;&lt;/span>) attributes &lt;span style="color:#f92672">&amp;#39;&lt;/span>(:fallback &lt;span style="color:#66d9ef">nil&lt;/span>))
+attributes)))
+info))
+&lt;/code>&lt;/pre>&lt;/div></content></item><item><title>Org publish site</title><link>https://chahak13.github.io/posts/org_publish_site/</link><pubDate>Thu, 09 Dec 2021 00:00:00 +0000</pubDate><guid>https://chahak13.github.io/posts/org_publish_site/</guid><description>(defvar blog-src-dir &amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;) (setq org-hugo-base-dir &amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;) (defun cm/publish-blog () &amp;#34;Export all org file entries to hugo markdown in the blog content dir.&amp;#34; (interactive) (setq blog-posts (directory-files blog-src-dir t &amp;#34;\.org$&amp;#34;)) (dolist (file blog-posts) (org-hugo--export-file-to-md file t) ;; (print file) )) (cm/publish-blog) Publishing single file using ox-hugo.
+(require &amp;#39;find-lisp) (with-current-buffer (find-file-noselect (expand-file-name &amp;#34;moonlander-notes.org&amp;#34; blog-src-dir)) (setq org-agenda-text-search-extra-files (find-lisp-find-files blog-src-dir &amp;#34;\.org$&amp;#34;)) (org-hugo-export-wim-to-md))</description><content>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-emacs-lisp" data-lang="emacs-lisp">(defvar blog-src-dir &lt;span style="color:#e6db74">&amp;#34;/Users/cmehta/Dropbox/Mac/Documents/org/roam/org&amp;#34;&lt;/span>)
 (setq org-hugo-base-dir &lt;span style="color:#e6db74">&amp;#34;/Users/cmehta/Documents/chahak13.github.io/&amp;#34;&lt;/span>)
 (defun cm/publish-blog ()
 &lt;span style="color:#e6db74">&amp;#34;Export all org file entries to hugo markdown in the blog content dir.&amp;#34;&lt;/span>
