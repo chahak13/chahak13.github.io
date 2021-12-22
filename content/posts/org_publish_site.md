@@ -5,23 +5,6 @@ date = 2021-12-09
 draft = false
 +++
 
-`org-publish-project-alist` is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.
-
-This can be used to publish the org-roam entries.
-
-```text
-(setq org-publish-project-alist
-      '(("hugo"
-         :base-directory "~/Documents/org/roam/org/"
-         :publishing-directory "~/Documents/chahak13.github.io/"
-         :section-numbers nil
-         :table-of-contents nil
-         :publishing-function org-hugo-export-to-md
-         :base-extension "org"
-         )))
-
-```
-
 ```emacs-lisp
 (defvar blog-src-dir "/Users/cmehta/Dropbox/Mac/Documents/org/roam/org")
 (setq org-hugo-base-dir "/Users/cmehta/Documents/chahak13.github.io/")
