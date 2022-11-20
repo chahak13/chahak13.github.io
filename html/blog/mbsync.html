@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mbsync</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Mbsync</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org4644569">1. Stores</a></li>
+</ul>
+</div>
+</nav>
+<ul class="org-ul">
+<li><code>#</code> marks comments.</li>
+<li>Strings with spaces should be enclosed in double quotes (<code>"</code>)</li>
+<li>Two basic object classes: <code>Stores</code> and <code>Channels</code>. Two auxiliary objects <code>Accounts</code> and <code>Groups</code>
+<ul class="org-ul">
+<li><code>Store</code>: Defines a collection of mailboxes; basically a folder, either local or remote.</li>
+<li><code>Channel</code>: Connects two Stores, describing the way the two are synchronized.</li>
+<li><code>Accound</code>: Describes the connection part of network Stores, so server configureations can be shared between multiple Stores.</li>
+<li><code>Group</code>: Aggregates multiple Channels to save typing on the command line.</li>
+</ul></li>
+<li>File system locations (in particular, <code>Path</code> and <code>Inbox</code>) use the <code>Store</code>&rsquo;s internal path separators, which may be slashes, periods, etc., or even combinations thereof.</li>
+<li>Mailbox names, OTOH, always use canonical path separators, which are Unix-like forward slashes.</li>
+</ul>
+<div id="outline-container-org4644569" class="outline-2">
+<h2 id="org4644569"><span class="section-number-2">1.</span> Stores</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

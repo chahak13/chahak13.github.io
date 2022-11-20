@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>org html export with images</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">org html export with images</h1>
+</header><p>
+When we use <code>org-html-export-to-html</code> through the org-export interface, we generate html files for the corresponding org file. I use this feature fairly regularly, along with latex export, to share my research work and assignments. One hiccup I almost always face while sharing the html files is that the html file adds relative links to the image files that are a part of the org file which then requires me to share the images separately. Instead, if I can embed the images directly in the html file, then sharing just a self-contained file makes it much easier for me and my collaborators. To achieve this, I update the <code>org-html--format-image</code> function to put in the base64 coded string for the image in the image source link instead of adding a link to the image file.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">defun</span> <span style="color: #c678dd;">tob64</span> <span style="color: #c678dd;">(</span>filename<span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">base64-encode-string</span>
+   <span style="color: #98be65;">(</span><span style="color: #51afef;">with-temp-buffer</span>
+     <span style="color: #a9a1e1;">(</span><span style="color: #a9a1e1;">insert-file-contents</span> filename<span style="color: #a9a1e1;">)</span>
+     <span style="color: #a9a1e1;">(</span><span style="color: #a9a1e1;">buffer-string</span><span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+
+<span style="color: #51afef;">(</span><span style="color: #51afef;">defun</span> <span style="color: #c678dd;">org-html--format-image</span> <span style="color: #c678dd;">(</span>source attributes info<span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">org-html-close-tag</span>
+   <span style="color: #98be65;">"img"</span>
+   <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">org-html--make-attribute-string</span>
+    <span style="color: #a9a1e1;">(</span><span style="color: #a9a1e1;">org-combine-plists</span>
+     <span style="color: #51afef;">(</span><span style="color: #a9a1e1;">list</span> <span style="color: #c678dd;">:src</span> <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">format</span> <span style="color: #98be65;">"data:image/png;base64,%s"</span>
+                        <span style="color: #98be65;">(</span>tob64 source<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+           <span style="color: #c678dd;">:alt</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span><span style="color: #c678dd;">string-match-p</span>
+                     <span style="color: #a9a1e1;">(</span><span style="color: #a9a1e1;">concat</span> <span style="color: #98be65;">"^"</span> <span style="color: #dcaeea;">org-preview-latex-image-directory</span><span style="color: #a9a1e1;">)</span> source<span style="color: #98be65;">)</span>
+                    <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">org-html-encode-plain-text</span>
+                     <span style="color: #a9a1e1;">(</span><span style="color: #a9a1e1;">org-find-text-property-in-string</span> <span style="color: #51afef;">'</span><span style="color: #ECBE7B;">org-latex-src</span> source<span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span>
+                  <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">file-name-nondirectory</span> source<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+     <span style="color: #51afef;">(</span><span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">string=</span> <span style="color: #98be65;">"svg"</span> <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">file-name-extension</span> source<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+         <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">org-combine-plists</span> <span style="color: #51afef;">'</span><span style="color: #98be65;">(</span><span style="color: #c678dd;">:class</span> <span style="color: #98be65;">"org-svg"</span><span style="color: #98be65;">)</span> attributes <span style="color: #51afef;">'</span><span style="color: #98be65;">(</span><span style="color: #c678dd;">:fallback</span> nil<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+       attributes<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span>
+   info<span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

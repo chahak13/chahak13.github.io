@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Export tikz as image file</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Export tikz as image file</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgbe35719">1. Export tikz as image file</a>
+<ul>
+<li><a href="#org0cc1973">1.1. Answer 1</a></li>
+<li><a href="#org190bf4d">1.2. Answer 2</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgbe35719" class="outline-2">
+<h2 id="orgbe35719"><span class="section-number-2">1.</span> <a href="https://tex.stackexchange.com/questions/275023/export-tikz-as-image-file">Export tikz as image file</a></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I have created a tikz picture as a standalone.
+Can I export the tex file as an image instead of as a pdf?
+</p>
+
+<p>
+Comments
+</p>
+<ul class="org-ul">
+<li>(<i>Johannes<sub>B</sub></i>) No, but you can easily convert the pdf to jpg or png.</li>
+<li>(<i>Arun Debray</i>) A couple possible solutions are discussed in tex.stackexchange.com/a/11880/55879.</li>
+<li>(<i>user11232</i>) standalone provides convert option. For this you will need imagemagick installed.</li>
+<li>(<i>user11232</i>) Or you can directly convert it using imagemagick → convert -density 300 yourfile.pdf yourfile.png (or .jpg whatever)</li>
+<li>(<i>vaettchen</i>) QTikZ is a nice editor cum preview pane and offers export to PNG</li>
+</ul>
+</div>
+<div id="outline-container-org0cc1973" class="outline-3">
+<h3 id="org0cc1973"><span class="section-number-3">1.1.</span> Answer 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+I achieved the best results with <code>pdftoppm</code>, the anti-aliasing is much better than imagemagicks <code>convert</code>.
+Just do:
+</p>
+<pre class="example" id="orgb985cae">
+$ pdftoppm -png -r &lt;dpi&gt; document.pdf &gt; document.png
+
+</pre>
+<p>
+I usually use 300 or 600 dpi.
+<code>pdftoppm</code> comes with <code>poppler</code> (package <code>poppler-utils</code> on Ubuntu).
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org190bf4d" class="outline-3">
+<h3 id="org190bf4d"><span class="section-number-3">1.2.</span> Answer 2</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+If you are using Texmaker, right-click on the pdf, then choose <code>convert page to png image</code> choice. <b>Note:</b> if you intend to include this image in your tex file, then you can include the pdf directly. As a matter of fact, the quality of the pdf is better than converting the pdf to an image. 
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

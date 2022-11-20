@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Completion in Emacs</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Completion in Emacs</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org8fd56d4">1. <span class="todo TODO">TODO</span> Embark</a></li>
+<li><a href="#org47af788">2. <span class="todo TODO">TODO</span> Marginalia</a></li>
+<li><a href="#orgfb682e7">3. <span class="todo TODO">TODO</span> Consult</a></li>
+</ul>
+</div>
+</nav>
+<p>
+Trying out different completion frameworks for Emacs instead of simply Ivy, just for the heck of it.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> vertico
+  <span style="color: #c678dd;">:straight</span> t
+  <span style="color: #c678dd;">:init</span>
+  <span style="color: #c678dd;">(</span><span style="color: #dcaeea;">vertico-mode</span><span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">:config</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">setq</span> <span style="color: #dcaeea;">vertico-cycle</span> t<span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+
+<span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> vertico-buffer
+  <span style="color: #c678dd;">:after</span> vertico<span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+Also use the <code>orderless</code> completion style to improve the completion methods for vertico/selectrum etc. This also allows using space as delimeter in vertico, since it reads space as a character to match otherwise.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> orderless
+  <span style="color: #c678dd;">:straight</span> t
+  <span style="color: #c678dd;">:init</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">setq</span> <span style="color: #dcaeea;">completion-styles</span> <span style="color: #51afef;">'</span><span style="color: #98be65;">(</span>orderless<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">setq</span> <span style="color: #dcaeea;">completion-category-defaults</span> nil<span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">setq</span> <span style="color: #dcaeea;">completion-category-overrides</span> <span style="color: #51afef;">'</span><span style="color: #98be65;">(</span><span style="color: #a9a1e1;">(</span>file <span style="color: #51afef;">(</span>styles partial-completion<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+
+<p>
+To persist history over Emacs restarts, vertico uses the <code>savehist-mode</code> that is built into emacs by default.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> savehist
+  <span style="color: #c678dd;">:straight</span> nil
+  <span style="color: #c678dd;">:init</span>
+  <span style="color: #c678dd;">(</span><span style="color: #dcaeea;">savehist-mode</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+
+<div id="outline-container-org8fd56d4" class="outline-2">
+<h2 id="org8fd56d4"><span class="section-number-2">1.</span> <span class="todo TODO">TODO</span> Embark</h2>
+</div>
+
+<div id="outline-container-org47af788" class="outline-2">
+<h2 id="org47af788"><span class="section-number-2">2.</span> <span class="todo TODO">TODO</span> Marginalia</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Marginalia provides extra metadata depending on the context and type of object being actioned upon. This provides an <code>ivy-rich</code> type interface for vertico.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> marginalia
+  <span style="color: #c678dd;">:straight</span> t
+  <span style="color: #c678dd;">:init</span>
+  <span style="color: #c678dd;">(</span><span style="color: #dcaeea;">marginalia-mode</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfb682e7" class="outline-2">
+<h2 id="orgfb682e7"><span class="section-number-2">3.</span> <span class="todo TODO">TODO</span> Consult</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

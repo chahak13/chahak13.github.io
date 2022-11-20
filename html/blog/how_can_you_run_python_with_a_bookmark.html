@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How can you run python with a bookmark?</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">How can you run python with a bookmark?</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org42699ab">1. How can you run python with a bookmark?</a>
+<ul>
+<li><a href="#orga50f117">1.1. Answer 1</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org42699ab" class="outline-2">
+<h2 id="org42699ab"><span class="section-number-2">1.</span> <a href="https://stackoverflow.com/questions/53882628/how-can-you-run-python-with-a-bookmark">How can you run python with a bookmark?</a></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I am writing a script to log into web pages (I know it&rsquo;s a bad idea, and I don&rsquo;t care), but I need to run it with a bookmark from Firefox. Does anyone know how to help me?
+</p>
+
+<p>
+Comments
+</p>
+<ul class="org-ul">
+<li>(<i>jarst</i>) Save yourself a hassle and create a javascript bookmarklet.</li>
+<li>(<i>Glazbee</i>) Following on @jarst&rsquo;s comment, why not just create an extention?</li>
+<li>(<i>orangeInk</i>) stackoverflow.com/questions/2034373/…</li>
+</ul>
+</div>
+<div id="outline-container-orga50f117" class="outline-3">
+<h3 id="orga50f117"><span class="section-number-3">1.1.</span> Answer 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+There is no pre-made solution and as it stands, you left part of your question ambiguous.  
+But here is one possible outline on how you could accomplish what you want from completely inside firefox. 
+First off you need to get python in the browser, but it is normally compiled into machine code.  The solution is the <a href="http://www.transcrypt.org">Transcrypt project</a>, which is Python is transcompiled into javascript and that script is then loaded into your browser. This allows you to run python code.
+Extensions to python are made so it can access the DOM in a similiar way you can from javascript.
+The transcrypt website has some examples, and some more can be found at a <a href="https://developer.mozilla.org/en-US/docs/Learn/Drafts/Python">draft page at Mozilla</a>. 
+Your bookmarklet would be to load a script to load transcrypt and feed it your python code, something like 
+javascript:(function(){var el=document.createElement(&rsquo;script&rsquo;);el.src=&rsquo;file:///something/something/transcript<sub>loader</sub><sub>and</sub><sub>my</sub><sub>python</sub><sub>code.js</sub>&rsquo;;document.body.appendChild(el);})(); 
+But the exact bookmarklet would depend on how you go about things.  Writing transcript<sub>loader</sub><sub>and</sub><sub>my</sub><sub>python</sub><sub>code.js</sub> is on your own, but if you get the examples from the links above working it should be trivial.
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Org publish site</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Org publish site</h1>
+</header><p>
+<code>org-publish-project-alist</code> is the main variable to configure to set up the publishing of projects. It can be configured as a well formed property list with alternating keys and values.
+</p>
+
+<p>
+This can be used to publish the org-roam entries.
+</p>
+
+<pre class="example" id="org0623fff">
+(setq org-publish-project-alist
+      '(("hugo"
+         :base-directory "~/Documents/org/roam/org/"
+         :publishing-directory "~/Documents/chahak13.github.io/"
+         :section-numbers nil
+         :table-of-contents nil
+         :publishing-function org-hugo-export-to-md
+         :base-extension "org"
+         )))
+
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">defvar</span> <span style="color: #dcaeea;">blog-src-dir</span> <span style="color: #98be65;">"/Users/cmehta/Dropbox/Mac/Documents/org/roam/org"</span><span style="color: #51afef;">)</span>
+<span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> <span style="color: #dcaeea;">org-hugo-base-dir</span> <span style="color: #98be65;">"/Users/cmehta/Documents/chahak13.github.io/"</span><span style="color: #51afef;">)</span>
+<span style="color: #51afef;">(</span><span style="color: #51afef;">defun</span> <span style="color: #c678dd;">cm/publish-blog</span> <span style="color: #c678dd;">()</span>
+  <span style="color: #83898d;">"Export all org file entries to hugo markdown in the blog content dir."</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">interactive</span><span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">setq</span> blog-posts <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">directory-files</span> blog-src-dir t <span style="color: #98be65;">"</span><span style="color: #ECBE7B;">\</span><span style="color: #98be65;">.org$"</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">dolist</span> <span style="color: #98be65;">(</span>file blog-posts<span style="color: #98be65;">)</span>
+    <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">org-hugo--export-file-to-md</span> file t<span style="color: #98be65;">)</span>
+    <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">(print file)</span>
+    <span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+
+<span style="color: #51afef;">(</span>cm/publish-blog<span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+Publishing single file using <code>ox-hugo</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">require</span> <span style="color: #51afef;">'</span><span style="color: #a9a1e1;">find-lisp</span><span style="color: #51afef;">)</span>
+<span style="color: #51afef;">(</span><span style="color: #51afef;">with-current-buffer</span> <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">find-file-noselect</span> <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">expand-file-name</span> <span style="color: #98be65;">"moonlander-notes.org"</span> blog-src-dir<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #51afef;">setq</span> <span style="color: #dcaeea;">org-agenda-text-search-extra-files</span> <span style="color: #98be65;">(</span>find-lisp-find-files blog-src-dir <span style="color: #98be65;">"</span><span style="color: #ECBE7B;">\</span><span style="color: #98be65;">.org$"</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+  <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">org-hugo-export-wim-to-md</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

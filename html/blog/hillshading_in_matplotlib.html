@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hillshading in matplotlib</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Hillshading in matplotlib</h1>
+</header><p>
+Matplotlib provides a light source and shading library. This can be used to create some extremely great and pleasing visualizations - for examples see <a href="https://twitter.com/astro_turb/status/1392315741177671682?s=09">this</a> Twitter post by James Beattie or <a href="https://twitter.com/noam_vv/status/1392960446391623683">this</a> visualization by Noam Vogt-Vincent. This has increased my curiousity about what and how to use this shading module of matplotlib. This particular post will be based on the simple example shown on the matplotlib page (<a href="https://matplotlib.org/stable/gallery/mplot3d/custom_shaded_3d_surface.html#sphx-glr-gallery-mplot3d-custom-shaded-3d-surface-py">here</a>).
+</p>
+
+<p>
+Let us first import the required libraries.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">import</span> numpy <span style="color: #51afef;">as</span> np
+<span style="color: #51afef;">import</span> matplotlib.pyplot <span style="color: #51afef;">as</span> plt
+<span style="color: #51afef;">from</span> matplotlib <span style="color: #51afef;">import</span> cm, cbook
+<span style="color: #51afef;">from</span> matplotlib.colors <span style="color: #51afef;">import</span> <span style="color: #ECBE7B;">LightSource</span>
+</pre>
+</div>
+
+<p>
+Now that we have the libraries, we need to set up the data that we will use for plotting. We will use the sample data provided in matplotlib.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">dem</span> <span style="color: #51afef;">=</span> cbook.<span style="color: #51afef; font-weight: bold; font-style: italic;">get_sample_data</span>(<span style="color: #98be65;">"jacksboro_fault_dem.npz"</span>, <span style="color: #51afef; font-weight: bold;">np_load</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">True</span>)
+<span style="color: #dcaeea;">z</span> <span style="color: #51afef;">=</span> dem[<span style="color: #98be65;">'elevation'</span>]
+<span style="color: #dcaeea;">nrows</span>, <span style="color: #dcaeea;">ncols</span> <span style="color: #51afef;">=</span> z.<span style="color: #a9a1e1; font-style: italic;">shape</span>
+<span style="color: #dcaeea;">x</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">linspace</span>(dem[<span style="color: #98be65;">"xmin"</span>], dem[<span style="color: #98be65;">"xmax"</span>], ncols)
+<span style="color: #dcaeea;">y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">linspace</span>(dem[<span style="color: #98be65;">"ymin"</span>], dem[<span style="color: #98be65;">"ymax"</span>], nrows)
+<span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">meshgrid</span>(x, y)
+
+<span style="color: #dcaeea;">region</span> <span style="color: #51afef;">=</span> np.<span style="color: #a9a1e1; font-style: italic;">s_</span>[<span style="color: #a9a1e1;">5</span>:<span style="color: #a9a1e1;">50</span>, <span style="color: #a9a1e1;">5</span>:<span style="color: #a9a1e1;">50</span>]
+<span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">y</span>, <span style="color: #dcaeea;">z</span> <span style="color: #51afef;">=</span> x[region], y[region], z[region]
+</pre>
+</div>
+
+<p>
+We will first use this data to plot a simple surface plot without any light sources to see what it adds.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> plt.<span style="color: #51afef; font-weight: bold; font-style: italic;">subplots</span>(<span style="color: #51afef; font-weight: bold;">subplot_kw</span><span style="color: #51afef;">=</span><span style="color: #c678dd; font-weight: bold;">dict</span>(<span style="color: #51afef; font-weight: bold;">projection</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'3d'</span>), <span style="color: #51afef; font-weight: bold;">figsize</span><span style="color: #51afef;">=</span>(<span style="color: #a9a1e1;">8</span>,<span style="color: #a9a1e1;">8</span>))
+<span style="color: #dcaeea;">surf</span> <span style="color: #51afef;">=</span> ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">plot_surface</span>(x, y, z, <span style="color: #51afef; font-weight: bold;">rstride</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>, <span style="color: #51afef; font-weight: bold;">cstride</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>, <span style="color: #51afef; font-weight: bold;">linewidth</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0</span>, <span style="color: #51afef; font-weight: bold;">antialiased</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">False</span>, <span style="color: #51afef; font-weight: bold;">shade</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">False</span>, <span style="color: #51afef; font-weight: bold;">cmap</span><span style="color: #51afef;">=</span>plt.<span style="color: #51afef; font-weight: bold; font-style: italic;">get_cmap</span>(<span style="color: #98be65;">'gist_earth'</span>))
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_xticks</span>([])
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_yticks</span>([])
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_zticks</span>([])
+fig.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/plain_surface.png"</span>)
+</pre>
+</div>
+
+<pre class="example">
+[]
+</pre>
+
+
+<figure id="orga995b98">
+<img src="./images/plain_surface.png" alt="plain_surface.png">
+
+</figure>
+
+
+<p>
+Now, if we add a lightsource to this, we should be able to see the differences in the plot in a much better way.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">fig_l</span>, <span style="color: #dcaeea;">ax_l</span> <span style="color: #51afef;">=</span> plt.<span style="color: #51afef; font-weight: bold; font-style: italic;">subplots</span>(<span style="color: #51afef; font-weight: bold;">subplot_kw</span><span style="color: #51afef;">=</span><span style="color: #c678dd; font-weight: bold;">dict</span>(<span style="color: #51afef; font-weight: bold;">projection</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'3d'</span>), <span style="color: #51afef; font-weight: bold;">figsize</span><span style="color: #51afef;">=</span>(<span style="color: #a9a1e1;">8</span>,<span style="color: #a9a1e1;">8</span>))
+<span style="color: #dcaeea;">ls</span> <span style="color: #51afef;">=</span> <span style="color: #ECBE7B; font-weight: bold;">LightSource</span>(<span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">45</span>)
+<span style="color: #dcaeea;">rgb</span> <span style="color: #51afef;">=</span> ls.<span style="color: #51afef; font-weight: bold; font-style: italic;">shade</span>(z, <span style="color: #51afef; font-weight: bold;">cmap</span><span style="color: #51afef;">=</span>cm.<span style="color: #a9a1e1; font-style: italic;">gist_earth</span>, <span style="color: #51afef; font-weight: bold;">vert_exag</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.1</span>, <span style="color: #51afef; font-weight: bold;">blend_mode</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'soft'</span>)
+ax_l.<span style="color: #51afef; font-weight: bold; font-style: italic;">plot_surface</span>(x, y, z, <span style="color: #51afef; font-weight: bold;">rstride</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>, <span style="color: #51afef; font-weight: bold;">cstride</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>, <span style="color: #51afef; font-weight: bold;">facecolors</span><span style="color: #51afef;">=</span>rgb, <span style="color: #51afef; font-weight: bold;">linewidth</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0</span>, <span style="color: #51afef; font-weight: bold;">antialiased</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">False</span>, <span style="color: #51afef; font-weight: bold;">shade</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">False</span>)
+ax_l.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_xticks</span>([])
+ax_l.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_yticks</span>([])
+ax_l.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_zticks</span>([])
+fig_l.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">'./images/light_surface.png'</span>)
+</pre>
+</div>
+
+<pre class="example">
+[]
+</pre>
+
+
+<figure id="org2c2931f">
+<img src="./images/light_surface.png" alt="light_surface.png">
+
+</figure>
+
+<p>
+We will try and animate this lightsource to make its presence more visible.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">from</span> matplotlib.animation <span style="color: #51afef;">import</span> <span style="color: #ECBE7B;">FuncAnimation</span>
+
+<span style="color: #51afef;">def</span> <span style="color: #c678dd;">update</span>(<span style="color: #dcaeea;">frame</span>):
+    ax_l.<span style="color: #dcaeea; font-style: italic;">collections</span> <span style="color: #51afef;">=</span> []
+    <span style="color: #dcaeea;">ls</span> <span style="color: #51afef;">=</span> <span style="color: #ECBE7B; font-weight: bold;">LightSource</span>(frame<span style="color: #51afef;">%</span><span style="color: #a9a1e1;">360</span>, <span style="color: #a9a1e1;">45</span>)
+    <span style="color: #dcaeea;">rgb</span> <span style="color: #51afef;">=</span> ls.<span style="color: #51afef; font-weight: bold; font-style: italic;">shade</span>(z, <span style="color: #51afef; font-weight: bold;">cmap</span><span style="color: #51afef;">=</span>cm.<span style="color: #a9a1e1; font-style: italic;">gist_earth</span>, <span style="color: #51afef; font-weight: bold;">vert_exag</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.1</span>, <span style="color: #51afef; font-weight: bold;">blend_mode</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'soft'</span>)
+    ax_l.<span style="color: #51afef; font-weight: bold; font-style: italic;">plot_surface</span>(x, y, z, <span style="color: #51afef; font-weight: bold;">rstride</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>, <span style="color: #51afef; font-weight: bold;">cstride</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>, <span style="color: #51afef; font-weight: bold;">facecolors</span><span style="color: #51afef;">=</span>rgb, <span style="color: #51afef; font-weight: bold;">linewidth</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0</span>, <span style="color: #51afef; font-weight: bold;">antialiased</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">False</span>, <span style="color: #51afef; font-weight: bold;">shade</span><span style="color: #51afef;">=</span><span style="color: #c678dd;">False</span>)
+
+<span style="color: #dcaeea;">anim</span> <span style="color: #51afef;">=</span> <span style="color: #ECBE7B; font-weight: bold;">FuncAnimation</span>(fig_l, update, <span style="color: #51afef; font-weight: bold;">frames</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">360</span>)
+anim.<span style="color: #51afef; font-weight: bold; font-style: italic;">save</span>(<span style="color: #98be65;">"./images/lightsource.gif"</span>, <span style="color: #51afef; font-weight: bold;">writer</span><span style="color: #51afef;">=</span><span style="color: #98be65;">"imagemagick"</span>, <span style="color: #51afef; font-weight: bold;">fps</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">60</span>)
+<span style="color: #5B6268;"># anim.save("./images/lightsource.mp4", writer="ffmpeg", fps=60)</span>
+</pre>
+</div>
+
+
+<figure id="org477128f">
+<img src="./images/lightsource.gif" alt="lightsource.gif">
+
+</figure>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

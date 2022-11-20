@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to derive the weak form of the PDE？</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">How to derive the weak form of the PDE？</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb7f4998">1. How to derive the weak form of the PDE？</a>
+<ul>
+<li><a href="#orgaf226d5">1.1. Answer 1</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgb7f4998" class="outline-2">
+<h2 id="orgb7f4998"><span class="section-number-2">1.</span> <a href="https://math.stackexchange.com/questions/1339709/how-to-derive-the-weak-form-of-the-pde">How to derive the weak form of the PDE？</a></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I have some difficulties solving the weak form of the PDE：
+The proof of the preceding statement is elementary. The weak form of the PDE
+\(\nabla \cdot (A(x) \nabla u) + \omega^2 q(x) u = 0\)
+for all \(\phi\) that vanish at \(\partial \Omega\). Could you suggest some approaches to solve this?
+Thank you very much for helping me out！！
+</p>
+
+<p>
+Comments
+</p>
+<ul class="org-ul">
+<li>(<i>user147263</i>) \(\begingroup\)</li>
+<li>(<i>Chee Han</i>) \(\begingroup\)</li>
+<li>(<i>Robert Lewis</i>) \(\begingroup\)</li>
+<li>(<i>Robert Lewis</i>) \(\begingroup\)</li>
+</ul>
+</div>
+<div id="outline-container-orgaf226d5" class="outline-3">
+<h3 id="orgaf226d5"><span class="section-number-3">1.1.</span> Answer 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+A general way to derive a weak form is to multiply a test function on both sides of the equation and then integrate them. The second step is to use some kind of divergence theorems to derive the weak solution such that the solution is some what not so smooth as in the strong form. For your question here, we can derive the weak form as follows:
+Let the equation multiply a \(\phi\in C_0^\infty\) on both sides and then integrate them, we get
+</p>
+\begin{equation}
+\int_\Omega-\nabla\cdot (A(x)\nabla u)\phi dx=\int_\Omega\omega^2q(x)u\phi dx.
+\end{equation}
+<p>
+Using the divergence theorem and the condition that \(\phi\) vanishes on bdry, the LHS becoms
+</p>
+\begin{equation}
+\int_\Omega (A(x)\nabla u)\cdot\nabla\phi dx.
+\end{equation}
+<p>
+And we have the weak form
+</p>
+\begin{equation}
+\int_\Omega (A(x)\nabla u)\cdot\nabla\phi dx=\int_\Omega\omega^2q(x)u\phi dx.
+\end{equation}
+<p>
+for all \(\phi\in C_0^\infty\).
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Suppress warnings in python</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Suppress warnings in python</h1>
+</header><p>
+While working with packages like numpy and scipy, python can possibly give a lot of warnings. These warnings can be suppressed easily by using the warnings module in the python library.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #51afef;">import</span> warnings
+warnings.<span style="color: #51afef; font-weight: bold; font-style: italic;">filterwarnings</span>(<span style="color: #98be65;">"ignore"</span>)
+</pre>
+</div>
+
+<p>
+And done. This should suppress all the warnings your code produces.
+</p>
+
+<p>
+<b>NOTE OF CAUTION:</b> Do this <i>only</i> if you know what you&rsquo;re doing and what warnings are being suppressed. Most of the times, having a warning means that something in your code can be improved. Hence, warnings should only be suppressed when there is enough information about the warning and it is an informed decision to suppress it.
+</p>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

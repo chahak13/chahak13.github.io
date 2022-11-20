@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gaussian quadrature in scipy</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Gaussian quadrature in scipy</h1>
+</header><p>
+Scipy has an gaussian quadrature integration built-in in the <code>integrate</code> module as the <code>integrate.quadrature</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">import</span> numpy <span style="color: #51afef;">as</span> np
+<span style="color: #51afef;">from</span> scipy <span style="color: #51afef;">import</span> integrate
+</pre>
+</div>
+
+<p>
+A simple example of quadrature integration can be seen as follows, where we integrate the simple function \(f(x) = 2x\) from limits 0 to 2.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">f</span> <span style="color: #51afef;">=</span> <span style="color: #51afef;">lambda</span> <span style="color: #dcaeea;">x</span>: <span style="color: #a9a1e1;">2</span><span style="color: #51afef;">*</span>x
+
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Quadrature integration:"</span>, integrate.<span style="color: #51afef; font-weight: bold; font-style: italic;">quadrature</span>(f, <span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">2</span>))
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Analytical solution:"</span>, <span style="color: #a9a1e1;">2</span><span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>)
+</pre>
+</div>
+
+<p>
+A more complex function can also be passed to the <code>quadrature</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">func</span>(<span style="color: #dcaeea;">x</span>):
+    <span style="color: #51afef;">return</span> x<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">+</span> <span style="color: #a9a1e1;">2</span><span style="color: #51afef;">*</span>x <span style="color: #51afef;">+</span> <span style="color: #a9a1e1;">3</span>
+
+<span style="color: #dcaeea;">a</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">2</span>
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Quadrature integration:"</span>, integrate.<span style="color: #51afef; font-weight: bold; font-style: italic;">quadrature</span>(func, <span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">2</span>))
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Analytical solution:"</span>, a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">3</span><span style="color: #51afef;">/</span><span style="color: #a9a1e1;">3</span> <span style="color: #51afef;">+</span> a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">+</span> <span style="color: #a9a1e1;">3</span><span style="color: #51afef;">*</span>a)
+</pre>
+</div>
+
+<p>
+Now, to take into consideration functions that are dependent on more than just the integrating variable.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">func_2</span>(<span style="color: #dcaeea;">t</span>, <span style="color: #dcaeea;">z</span>):
+    <span style="color: #51afef;">return</span> z<span style="color: #51afef;">*</span>t <span style="color: #51afef;">+</span> z<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">+</span> <span style="color: #a9a1e1;">2</span><span style="color: #51afef;">*</span>t
+
+<span style="color: #dcaeea;">a</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">2</span>
+<span style="color: #dcaeea;">z</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">2</span>
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Quadrature integration:"</span>, integrate.<span style="color: #51afef; font-weight: bold; font-style: italic;">quadrature</span>(func_2, <span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">2</span>, <span style="color: #51afef; font-weight: bold;">args</span><span style="color: #51afef;">=</span>(z,)))
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Analytical solution:"</span>, z<span style="color: #51afef;">*</span>a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span><span style="color: #51afef;">/</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">+</span> a<span style="color: #51afef;">*</span>z<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">+</span> a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>)
+</pre>
+</div>
+
+<p>
+If the function to integrate depends on more variables and even other functions, then we can pass those functions as parameters to the integrating function and solve the quadrature integration.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">func_3</span>(<span style="color: #dcaeea;">t</span>, <span style="color: #dcaeea;">z</span>, <span style="color: #dcaeea;">f1</span>, <span style="color: #dcaeea;">f2</span>):
+    <span style="color: #51afef;">return</span> <span style="color: #51afef; font-weight: bold;">f1</span>(t) <span style="color: #51afef;">+</span> z<span style="color: #51afef;">*</span>t <span style="color: #51afef;">+</span> <span style="color: #51afef; font-weight: bold;">f2</span>(t)<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>
+
+<span style="color: #dcaeea;">f1</span> <span style="color: #51afef;">=</span> <span style="color: #51afef;">lambda</span> <span style="color: #dcaeea;">x</span>: x<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>
+<span style="color: #dcaeea;">f2</span> <span style="color: #51afef;">=</span> <span style="color: #51afef;">lambda</span> <span style="color: #dcaeea;">x</span>: x<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">3</span>
+
+<span style="color: #dcaeea;">a</span>, <span style="color: #dcaeea;">z</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">2</span>, <span style="color: #a9a1e1;">2</span>
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Quadrature integration:"</span>, integrate.<span style="color: #51afef; font-weight: bold; font-style: italic;">quadrature</span>(func_3, <span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">2</span>, <span style="color: #51afef; font-weight: bold;">args</span><span style="color: #51afef;">=</span>(z, f1, f2)))
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"Analytical solution:"</span>, a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">3</span><span style="color: #51afef;">/</span><span style="color: #a9a1e1;">3</span> <span style="color: #51afef;">+</span> z<span style="color: #51afef;">*</span>a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span><span style="color: #51afef;">/</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">+</span> a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">7</span><span style="color: #51afef;">/</span><span style="color: #a9a1e1;">7</span>)
+</pre>
+</div>
+
+<p>
+Functions with vector output need to provide the <code>vec_func</code> argument as <code>True</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">f</span>(<span style="color: #dcaeea;">x</span>):
+    <span style="color: #5B6268;"># print("x:", x)</span>
+    <span style="color: #5B6268;"># print("z:", z)</span>
+    <span style="color: #51afef;">return</span> z<span style="color: #51afef;">*</span>x<span style="color: #51afef;">*</span><span style="color: #a9a1e1;">2</span>
+
+<span style="color: #dcaeea;">z</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">array</span>([<span style="color: #a9a1e1;">2</span>, <span style="color: #a9a1e1;">3</span>])
+integrate.<span style="color: #51afef; font-weight: bold; font-style: italic;">quad_vec</span>(f, <span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">2</span>)
+</pre>
+</div>
+
+<p>
+For fixed order Gaussian quadrature integration
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">f</span> <span style="color: #51afef;">=</span> <span style="color: #51afef;">lambda</span> <span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">a</span>: np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sin</span>(np.<span style="color: #51afef; font-weight: bold; font-style: italic;">kron</span>(a, x)).<span style="color: #51afef; font-weight: bold; font-style: italic;">reshape</span>(<span style="color: #51afef;">-</span><span style="color: #a9a1e1;">1</span>, x.<span style="color: #a9a1e1; font-style: italic;">shape</span>[<span style="color: #a9a1e1;">0</span>])
+<span style="color: #dcaeea;">x</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">array</span>([<span style="color: #a9a1e1;">1</span>,<span style="color: #a9a1e1;">2</span>,<span style="color: #a9a1e1;">3</span>])
+<span style="color: #dcaeea;">a</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">array</span>([<span style="color: #a9a1e1;">1</span>,<span style="color: #a9a1e1;">2</span>])
+<span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #51afef; font-weight: bold;">f</span>(x, a).<span style="color: #a9a1e1; font-style: italic;">shape</span>)
+</pre>
+</div>
+<p>
+
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">np.<span style="color: #51afef; font-weight: bold; font-style: italic;">kron</span>(a, x)
+</pre>
+</div>
+<p>
+:results:
+</p>
+
+<p>
+Writing gaussian quadrature integration from scratch using numpy
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">norm_pdf</span>(<span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">mu</span>, <span style="color: #dcaeea;">sigma</span>):
+    <span style="color: #dcaeea;">mu</span>, <span style="color: #dcaeea;">sigma</span> <span style="color: #51afef;">=</span> mu.<span style="color: #51afef; font-weight: bold; font-style: italic;">reshape</span>(<span style="color: #51afef;">-</span><span style="color: #a9a1e1;">1</span>, <span style="color: #a9a1e1;">1</span>), sigma.<span style="color: #51afef; font-weight: bold; font-style: italic;">reshape</span>(<span style="color: #51afef;">-</span><span style="color: #a9a1e1;">1</span>, <span style="color: #a9a1e1;">1</span>)
+    <span style="color: #dcaeea;">x</span> <span style="color: #51afef;">=</span> x.<span style="color: #51afef; font-weight: bold; font-style: italic;">reshape</span>(<span style="color: #51afef;">-</span><span style="color: #a9a1e1;">1</span>, <span style="color: #a9a1e1;">1</span>)
+    <span style="color: #dcaeea;">variance</span> <span style="color: #51afef;">=</span> sigma<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>
+    <span style="color: #dcaeea;">numerator</span> <span style="color: #51afef;">=</span> x <span style="color: #51afef;">-</span> mu
+    <span style="color: #dcaeea;">denominator</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">*</span> variance
+    <span style="color: #dcaeea;">pdf</span> <span style="color: #51afef;">=</span> ((<span style="color: #a9a1e1;">1</span><span style="color: #51afef;">/</span>(np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sqrt</span>(<span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">*</span> np.<span style="color: #a9a1e1; font-style: italic;">pi</span>) <span style="color: #51afef;">*</span> sigma)) <span style="color: #51afef;">*</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">exp</span>(<span style="color: #51afef;">-</span>(numerator<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>) <span style="color: #51afef;">/</span> denominator))
+    <span style="color: #51afef;">return</span> pdf
+
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">h_z</span>(<span style="color: #dcaeea;">a</span>, <span style="color: #dcaeea;">b</span>, <span style="color: #dcaeea;">T_i</span>, <span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">y</span>, <span style="color: #dcaeea;">sigma_m2</span>, <span style="color: #dcaeea;">delta_a</span>, <span style="color: #dcaeea;">delta_b</span>, <span style="color: #dcaeea;">indicator</span>, <span style="color: #dcaeea;">n_time_samples</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1000</span>):
+    <span style="color: #dcaeea;">mc_sum</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">zeros</span>(x.<span style="color: #a9a1e1; font-style: italic;">shape</span>)
+    <span style="color: #dcaeea;">t</span> <span style="color: #51afef;">=</span> rng.<span style="color: #51afef; font-weight: bold; font-style: italic;">uniform</span>(<span style="color: #a9a1e1;">0</span>, <span style="color: #ECBE7B;">T_i</span>, <span style="color: #51afef; font-weight: bold;">size</span><span style="color: #51afef;">=</span>n_time_samples)
+    <span style="color: #dcaeea;">alpha</span> <span style="color: #51afef;">=</span> t<span style="color: #51afef;">/</span><span style="color: #ECBE7B;">T_i</span>
+    <span style="color: #dcaeea;">mu_x</span> <span style="color: #51afef;">=</span> a.<span style="color: #a9a1e1; font-style: italic;">x</span> <span style="color: #51afef;">+</span> alpha <span style="color: #51afef;">*</span> (b.<span style="color: #a9a1e1; font-style: italic;">x</span> <span style="color: #51afef;">-</span> a.<span style="color: #a9a1e1; font-style: italic;">x</span>)
+    <span style="color: #dcaeea;">mu_y</span> <span style="color: #51afef;">=</span> a.<span style="color: #a9a1e1; font-style: italic;">y</span> <span style="color: #51afef;">+</span> alpha <span style="color: #51afef;">*</span> (b.<span style="color: #a9a1e1; font-style: italic;">y</span> <span style="color: #51afef;">-</span> a.<span style="color: #a9a1e1; font-style: italic;">y</span>)
+    <span style="color: #dcaeea;">sigma</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sqrt</span>(t <span style="color: #51afef;">*</span> (<span style="color: #a9a1e1;">1</span> <span style="color: #51afef;">-</span> alpha) <span style="color: #51afef;">*</span> sigma_m2
+                    <span style="color: #51afef;">+</span> (<span style="color: #a9a1e1;">1</span> <span style="color: #51afef;">-</span> alpha)<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span> <span style="color: #51afef;">*</span> (delta_a<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>)
+                    <span style="color: #51afef;">+</span> (alpha<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>) <span style="color: #51afef;">*</span> (delta_b<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>))
+    
+    <span style="color: #dcaeea;">pdf_x</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">norm_pdf</span>(x, mu_x, sigma)
+    <span style="color: #dcaeea;">pdf_y</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">norm_pdf</span>(y, mu_y, sigma)
+    <span style="color: #dcaeea;">mc_sum</span> <span style="color: #51afef;">+=</span> indicator <span style="color: #51afef;">*</span> pdf_x <span style="color: #51afef;">*</span> pdf_y
+
+    <span style="color: #51afef;">return</span> mc_sum
+</pre>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

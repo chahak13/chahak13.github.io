@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pyro - A Universal Deep Probabilistic Programming language</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Pyro - A Universal Deep Probabilistic Programming language</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orge8f6717">1. Introduction</a>
+<ul>
+<li><a href="#orgd91d23c">1.1. Why Deep, Probabilistic Programming, and Universal?</a></li>
+</ul>
+</li>
+<li><a href="#orgd336041">2. Basic Concepts</a>
+<ul>
+<li><a href="#org826ef5b">2.1. Parameters and Samples</a></li>
+<li><a href="#org97c565e">2.2. Inference methods</a>
+<ul>
+<li><a href="#orgf0dc8bf">2.2.1. SVI</a></li>
+<li><a href="#orgeec7707">2.2.2. HMC</a></li>
+<li><a href="#org272e736">2.2.3. SVGD</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org8aa4f0e">3. Simple Examples</a>
+<ul>
+<li><a href="#orgd7091dc">3.1. Basic Framework</a></li>
+<li><a href="#orgf5941c1">3.2. Gaussian distribution</a></li>
+<li><a href="#org565b172">3.3. Poisson distribution</a></li>
+<li><a href="#orgadc096a">3.4. Bernoulli&rsquo;s distribution</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orge8f6717" class="outline-2">
+<h2 id="orge8f6717"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="https://pyro.ai/">Pyro</a> is a python library that, as per the website, can be used to perform <i>&ldquo;Deep Probabilistic Programming&rdquo;</i> tasks. It was developed by UberAI and then open-sourced back in 2017.
+</p>
+</div>
+<div id="outline-container-orgd91d23c" class="outline-3">
+<h3 id="orgd91d23c"><span class="section-number-3">1.1.</span> Why Deep, Probabilistic Programming, and Universal?</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Pyro is built up on PyTorch, which is one of the two major deep learning libraries in Python (second being Tensorflow by Google). This allows it to leverage all the PyTorch abilities to perform deep learning tasks while working in the probilistic realm. This brings us to the <b><i>Probabilistic Programming</i></b> part of the title. Without going into much depth about what bayesian inference, pyro provides a framework to work on such problems instead of just estimating point values. By being a &ldquo;Probabilistic Programming Language&rdquo;, we can use these interfaces of Pyro to transform the mathematical models into a learnable model. And since it can be used to represent almost any computable probability distribution, it&rsquo;s called as a &ldquo;Universal&rdquo; language.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd336041" class="outline-2">
+<h2 id="orgd336041"><span class="section-number-2">2.</span> Basic Concepts</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org826ef5b" class="outline-3">
+<h3 id="org826ef5b"><span class="section-number-3">2.1.</span> Parameters and Samples</h3>
+</div>
+<div id="outline-container-org97c565e" class="outline-3">
+<h3 id="org97c565e"><span class="section-number-3">2.2.</span> Inference methods</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-orgf0dc8bf" class="outline-4">
+<h4 id="orgf0dc8bf"><span class="section-number-4">2.2.1.</span> SVI</h4>
+</div>
+<div id="outline-container-orgeec7707" class="outline-4">
+<h4 id="orgeec7707"><span class="section-number-4">2.2.2.</span> HMC</h4>
+</div>
+<div id="outline-container-org272e736" class="outline-4">
+<h4 id="org272e736"><span class="section-number-4">2.2.3.</span> SVGD</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org8aa4f0e" class="outline-2">
+<h2 id="org8aa4f0e"><span class="section-number-2">3.</span> Simple Examples</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgd7091dc" class="outline-3">
+<h3 id="orgd7091dc"><span class="section-number-3">3.1.</span> Basic Framework</h3>
+</div>
+<div id="outline-container-orgf5941c1" class="outline-3">
+<h3 id="orgf5941c1"><span class="section-number-3">3.2.</span> Gaussian distribution</h3>
+</div>
+<div id="outline-container-org565b172" class="outline-3">
+<h3 id="org565b172"><span class="section-number-3">3.3.</span> Poisson distribution</h3>
+</div>
+<div id="outline-container-orgadc096a" class="outline-3">
+<h3 id="orgadc096a"><span class="section-number-3">3.4.</span> Bernoulli&rsquo;s distribution</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

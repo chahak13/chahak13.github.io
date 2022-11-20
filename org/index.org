@@ -13,5 +13,5 @@ Hello, I'm Chahak! I am a Masters student at UT Austin in the Computational Scie
 
 * Posts
 #+html: <div class="entries">
-#+include: "blog/sitemap.org" :lines "3-"
+#+include: "blog/sitemap.org" :lines "2-8"
 #+html: </div>

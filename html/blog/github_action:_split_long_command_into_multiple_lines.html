@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Github Action: Split Long Command into Multiple Lines</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Github Action: Split Long Command into Multiple Lines</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org57d95d1">1. Github Action: Split Long Command into Multiple Lines</a>
+<ul>
+<li><a href="#orgad02db5">1.1. Answer 1</a></li>
+<li><a href="#orgf789522">1.2. Answer 2</a></li>
+<li><a href="#org3f706eb">1.3. Answer 3</a></li>
+<li><a href="#org0ad594b">1.4. Answer 4</a></li>
+<li><a href="#org23ff166">1.5. Answer 5</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org57d95d1" class="outline-2">
+<h2 id="org57d95d1"><span class="section-number-2">1.</span> <a href="https://stackoverflow.com/questions/59954185/github-action-split-long-command-into-multiple-lines">Github Action: Split Long Command into Multiple Lines</a></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I have a Github action command that is really long:
+</p>
+<pre class="example" id="org20120b4">
+name: build
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-18.04
+        steps:
+            - uses: actions/checkout@v1
+            - name: Install Prerequisites
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y --no-install-recommends "a very very long list of prerequisites"
+
+</pre>
+<p>
+May I know whether it is possible to split the long command into multiple lines for better readability? I have tried the separator &rsquo;\&rsquo; but it does not work. Thanks in advance.
+</p>
+
+<p>
+Comments
+</p>
+</div>
+
+<div id="outline-container-orgad02db5" class="outline-3">
+<h3 id="orgad02db5"><span class="section-number-3">1.1.</span> Answer 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+I have a multi line command using backslash to separate the lines as follows:
+</p>
+<pre class="example" id="orgfc8c1ed">
+- name: Configure functions
+  run: |
+    firebase functions:config:set \
+      some.key1="${{ secrets.SOME_KEY_1 }}" \
+      some.key2="${{ secrets.SOME_KEY_2 }}" \
+    ...    
+
+
+</pre>
+<p>
+Note the preceding &rsquo;|&rsquo; character.
+</p>
+
+<p>
+Comments:
+</p>
+<ul class="org-ul">
+<li>(<i>tom</i>) This is the correct answer and would be a better accepted answer. The backslashes work the same as a multiline command in bash. (I&rsquo;d recommend a hanging indent for readability though.)</li>
+<li>(<i>dan1st</i>) Does anyone know since when this is possible? (I think it was not possible when I wrote my answer but I fully agree with that answer being accepted, now)</li>
+<li>(<i>Bojian Zheng</i>) @dan1st I also do not think this is possible by the time I asked this, but it seems that Github people have added the support for backslash.</li>
+<li>(<i>mcserep</i>) I don&rsquo;t know how did it work previously for anyone, but adding a backslash does not work right now with GitHub Actions. This shouldn&rsquo;t be the accepted answer.</li>
+<li>(<i>IvanD</i>) I confirm: this does not work on GitHub Actions as of now. You need to use &ldquo;&gt;&rdquo; instead of &ldquo;I&rdquo; (see other answers)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf789522" class="outline-3">
+<h3 id="orgf789522"><span class="section-number-3">1.2.</span> Answer 2</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+You can use the YAML <b>folded style</b> with <code>&amp;gt;</code> which is supported by GitHub Actions.
+For example,
+</p>
+<pre class="example" id="orgf50c1e6">
+run: &gt;
+  xvfb-run
+  ./mvnw -f my/pom.xml
+  clean verify
+  -DskipTests
+
+</pre>
+<p>
+newlines will be replaced with spaces so the above is equivalent to
+</p>
+<pre class="example" id="org7925f7b">
+run: xvfb-run ./mvnw -f my/pom.xml clean verify -DskipTests
+
+</pre>
+
+<p>
+Comments:
+</p>
+<ul class="org-ul">
+<li>(<i>sschuberth</i>) Also see yaml-multiline.info to play around with the different scalar / chomping styles.</li>
+<li>(<i>Johnny Oshika</i>) This works, thank you! Important note: per yml spec, white space is important here, so any extra tabs before the lines will cause problems.</li>
+<li>(<i>OZZIE</i>) It seems to work but it doesn&rsquo;t fail on any errors, same with | also.. so it becomes kind of pointless..</li>
+<li>(<i>ruohola</i>) @JohnnyOshika Thank you for that comment! It cleared a long standing misunderstanding for me.</li>
+<li>(<i>Waldir Leoncio</i>) Just a quick note about this being for the default shell. For example, my YML file had some bits running R code with shell: Rscript {0}, and line breaking in those cases don&rsquo;t need any special characters (just like in R).</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3f706eb" class="outline-3">
+<h3 id="org3f706eb"><span class="section-number-3">1.3.</span> Answer 3</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Going to share this in since it has not been mentioned.
+You can use:
+I found the site <a href="https://yaml-multiline.info/">yaml-multiline.info</a> useful for understanding how yaml strings are interpreted.
+For my use case, I ended up doing the following:
+</p>
+<pre class="example" id="orgc161aef">
+run: &gt;-
+  for i in $(find . -type f -name "*.log");
+  do
+   echo "File: ${i} \n";
+   cat $i;
+   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -;
+  done
+
+</pre>
+
+<p>
+Comments:
+</p>
+<ul class="org-ul">
+<li>(<i>silkfire</i>) What does the hyphen in &gt;- do?</li>
+<li>(<i>Arclite</i>) @silkfire According to the linked website, it appears to strip newlines from the end of the block, so that there&rsquo;s not an extra trailing \n at the end.</li>
+<li>(<i>Arclite</i>) That said, this is not supported by GitHub Actions: github.com/actions/runner/issues/418</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0ad594b" class="outline-3">
+<h3 id="org0ad594b"><span class="section-number-3">1.4.</span> Answer 4</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+This was not possible using backslashes, earlier. See the accepted answer on how to do it now.
+As far as I know, GitHub Actions does not support that.
+However, you can use environment variables for that.
+For example, this script splits your command in 3 lines of code and executes it as one line.
+</p>
+<pre class="example" id="org46e2213">
+steps:
+  - name: Install Prerequisites
+    run: |
+      sudo apt-get update
+      bash -c "$line1 $line2 $line3"
+    env:
+    - line1='sudo apt-get install -y --no-install-recommends '
+    - line2='a very very long list'
+    - line3='of prerequisites'
+
+</pre>
+<p>
+It creates the environment variables <code>line1</code>, <code>line2</code> and <code>line3</code> and concats and executes them in a bash session.
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org23ff166" class="outline-3">
+<h3 id="org23ff166"><span class="section-number-3">1.5.</span> Answer 5</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+Note also the <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#join">join</a> and <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#format">format</a> functions for expressions: 
+</p>
+<pre class="example" id="org385c2b7">
+HELLO_WORLD = ${{ join('Hello', 'world!') }}
+HELLO_WORLD = ${{ format('{{Hello {0}}}', 'World') }}
+
+</pre>
+<p>
+Presumably these could be combined with env variables.
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

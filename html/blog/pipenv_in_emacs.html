@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pipenv in emacs</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Pipenv in emacs</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org20b1645">1. Getting pipenv to work</a></li>
+</ul>
+</div>
+</nav>
+<p>
+<code>org-mode</code> is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode. I use <a href="https://pipenv.pypa.io/en/latest/">pipenv</a> for managing my virtual environments. To use that in emacs, I found the <a href="https://github.com/pwalsh/pipenv.el">pipenv.el</a> package that seems to provide all the necessary functionalities to use pipenv in emacs. It can be installed using <code>straight.el</code> directly
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">    <span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> pipenv
+      <span style="color: #c678dd;">:straight</span> t
+      <span style="color: #c678dd;">:hook</span> <span style="color: #c678dd;">(</span><span style="color: #98be65;">(</span><span style="color: #dcaeea;">python-mode-hook</span> . <span style="color: #dcaeea;">pipenv-mode</span><span style="color: #98be65;">)</span>
+             <span style="color: #98be65;">(</span><span style="color: #dcaeea;">org-mode-hook</span> . <span style="color: #dcaeea;">pipenv-mode</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+      <span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+This enables the <code>pipenv-mode</code> minor mode while using <code>python-mode</code> or <code>org-mode</code>. This should provide functions like <code>pipenv-activate</code> and <code>pipenv-deactivate</code> to activate the required virtual environment and <code>pipenv-install</code> to install any package and add it to the <code>Pipfile</code>.
+</p>
+
+<p>
+When I enabled the <code>pipenv-mode</code> minor mode and ran <code>M-x pipenv-activate</code> in a directory that contained a <code>Pipfile</code>, it showed me an error <code>Searching for program: No such file or directory, pipenv</code>. I tried restarting the emacs session but it did not work.
+</p>
+<div id="outline-container-org20b1645" class="outline-2">
+<h2 id="org20b1645"><span class="section-number-2">1.</span> Getting pipenv to work</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+After running into the issue, I decided going into the source code to see what&rsquo;s going wrong. First important thing that I noticed was that the function <code>pipenv-activate</code> checks if the current directory or any of its parent directory is a pipenv project via the <code>pipenv-project?</code> function. This is done using the <code>locate-dominating-file</code> function and returns the path to the first found directory that contains <code>Pipfile</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">  <span style="color: #51afef;">(</span><span style="color: #51afef;">defun</span> <span style="color: #c678dd;">pipenv-project?</span> <span style="color: #c678dd;">()</span>
+    <span style="color: #83898d;">"Are we in a Pipenv project?"</span>
+    <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">locate-dominating-file</span> <span style="color: #dcaeea;">default-directory</span> <span style="color: #98be65;">"Pipfile"</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+<code>pipenv-activate</code> then waits for the <code>pipenv-venv</code> function to return the path to the virtual environment for the current project. On trying this function on a file in a pipenv project, I found out that it was this function that was throwing the error. This also made the error more clear as I realised that it is trying to run the <code>pipenv --venv</code> command and couldn&rsquo;t find the <code>pipenv</code> executable. On further inspection, I found out that the <code>pipenv</code> executable was in <code>~/.local/bin/</code> which was not in the emacs <code>exec-path</code> variable. So, adding this path should potentially resolve this issue.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">  <span style="color: #51afef;">(</span><span style="color: #a9a1e1;">add-to-list</span> <span style="color: #51afef;">'</span><span style="color: #dcaeea;">exec-path</span> <span style="color: #98be65;">"~/.local/bin"</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+Yay! <code>pipenv-activate</code> works now :)
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

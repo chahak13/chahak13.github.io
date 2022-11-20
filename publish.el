@@ -109,5 +109,13 @@ Created with %c
          :publishing-function org-publish-attachment)
 
         ("chahak13.github.io" :components ("index" "pages" "blog" "static"))))
+
+(if (member "t" command-line-args)
+    (progn
+      (print "force publish all org files")
+      (org-publish-all t))
+    (progn
+      (print "only publish modified org files")
+      (org-publish-all)))
 (provide 'publish)
 ;;; publish.el ends here

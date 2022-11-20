@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Monte Carlo integration - Wikipedia</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Monte Carlo integration - Wikipedia</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc1d3a16">1. Overview</a></li>
+<li><a href="#orga8a01b2">2. Basic Monte Carlo Estimator</a>
+<ul>
+<li><a href="#org0d2a385">2.1. Simulation</a></li>
+</ul>
+</li>
+<li><a href="#org373d4e6">3. Importance Sampling</a></li>
+</ul>
+</div>
+</nav>
+<p>
+Monte Carlo Integration is a technique for numerical integration using random numbers. It is a type of Monte Carlo methods that can be used to numerically compute a definite integral. The main differing point of such integration is that while standard methods use a regular interval to evaluate the integrand, Monte Carlo uses a random set of points to evaluate. This method is particularly useful for higher-dimensional integrals. There are various methods to perform such an integration: Uniform sampling, stratified sampling, importance sampling, sequential Monte Carlo, and mean field particle methods. We&rsquo;ll be taking a look at the uniform sampling, and importance sampling methods in brief.
+</p>
+
+<div id="outline-container-orgc1d3a16" class="outline-2">
+<h2 id="orgc1d3a16"><span class="section-number-2">1.</span> Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+At the core of it, Monte Carlo is an approximation method used to approximate the value of the integral as compared to the deterministic approach of methods like the <a href="trapezoidal_rule.html#ID-bf63e3a3-168a-4f88-b0fc-c851d34b9aa5">trapezoidal-rule</a>. Each simulation of a monte carlo integral provides a different outcome, which can be averaged over multiple simulations.
+</p>
+
+<p>
+Let I be a multidimensional definite integral defined as
+</p>
+
+<p>
+\[
+I=\int_{a}^{b}f(x)dx
+\]
+</p>
+
+<p>
+and a random variable \(X_i ~ p(x)\) where \(p(x)\) must be nonzero for all \(x\) where \(f(x)\) is nonzero. Then, the Monte Carlo estimator is defined as
+</p>
+
+<p>
+\[
+F_{N} = \frac{1}{N}\sum_{i=1}^{N}\frac{f(X_i)}{p(X_i)}
+\]
+</p>
+
+<p>
+The value of \(I\) can be estimated by taking an average of several such Monte Carlo estimator values.
+</p>
+</div>
+</div>
+<div id="outline-container-orga8a01b2" class="outline-2">
+<h2 id="orga8a01b2"><span class="section-number-2">2.</span> Basic Monte Carlo Estimator</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The basic monte carlo estimator is a special case of Importance Sampling Estimator case where we sample the points from a uniform random variable, to calculate the integral. Therefore, \(X_i ~ p(x) = c\). This follows that for interval \((a, b)\), the value of \(c = \frac{1}{b-a}\). Therefore, the Monte Carlo estimator then becomes
+</p>
+
+<p>
+We can also extend this to be N-Dimensional. For example, a 3D basic estimator for an integral
+</p>
+
+<p>
+would be defined as
+</p>
+
+<p>
+Therefore, a general rule can be written as follows. For an n-dimensional integral
+</p>
+
+<p>
+the MC Estimator is defined as
+</p>
+
+<p>
+where \(N\) is the number of samples that are taken from the uniform distribution for evaluation.
+</p>
+</div>
+<div id="outline-container-org0d2a385" class="outline-3">
+<h3 id="org0d2a385"><span class="section-number-3">2.1.</span> Simulation</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+This method can be simulated fairly easily using python. Let us try and integrate the following function for \(0.8 < x < 3\)
+</p>
+
+<p>
+To do this, we&rsquo;ll first have to define a python function using numpy
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">  <span style="color: #51afef;">import</span> numpy <span style="color: #51afef;">as</span> np
+
+  <span style="color: #51afef;">def</span> <span style="color: #c678dd;">f</span>(<span style="color: #dcaeea;">x</span>):
+      <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">1</span><span style="color: #51afef;">/</span>(<span style="color: #a9a1e1;">1</span><span style="color: #51afef;">+</span>np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sinh</span>(<span style="color: #a9a1e1;">2</span><span style="color: #51afef;">*</span>x)<span style="color: #51afef;">*</span>np.<span style="color: #51afef; font-weight: bold; font-style: italic;">log</span>(x)<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>)
+</pre>
+</div>
+
+<p>
+Now that we have a function that calculates the value of \(f(x)\) at a given set of points, let us start with the MC estimator. First we will define the limits of the integral \((a, b)\) and the number of estimators \(N\). We will also define the number of points that are sampled.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">  <span style="color: #dcaeea;">n_estimators</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">100</span>
+  <span style="color: #dcaeea;">N</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">100</span>
+  <span style="color: #dcaeea;">a</span>, <span style="color: #dcaeea;">b</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">0.8</span>, <span style="color: #a9a1e1;">3</span>
+</pre>
+</div>
+
+<p>
+Now, we need to perform the calculation for each MC estimator and find the average. We can do this more efficiently by using numpy&rsquo;s vector operations and random number generator.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">  <span style="color: #dcaeea;">rng</span> <span style="color: #51afef;">=</span> np.<span style="color: #a9a1e1; font-style: italic;">random</span>.<span style="color: #51afef; font-weight: bold; font-style: italic;">default_rng</span>()
+
+  <span style="color: #dcaeea;">r</span> <span style="color: #51afef;">=</span> rng.<span style="color: #51afef; font-weight: bold; font-style: italic;">uniform</span>(a, b, <span style="color: #51afef; font-weight: bold;">size</span><span style="color: #51afef;">=</span>(n_estimators, <span style="color: #a9a1e1;">N</span>))
+  <span style="color: #dcaeea;">result</span> <span style="color: #51afef;">=</span> (<span style="color: #a9a1e1;">1</span><span style="color: #51afef;">/</span>n_estimators)<span style="color: #51afef;">*</span>((b<span style="color: #51afef;">-</span>a)<span style="color: #51afef;">/</span><span style="color: #a9a1e1;">N</span>)<span style="color: #51afef;">*</span>(np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sum</span>(<span style="color: #51afef; font-weight: bold;">f</span>(r)))
+  result
+</pre>
+</div>
+
+<pre class="example">
+0.6786189790691812
+</pre>
+
+
+<p>
+We can check this result by comparing it with the function <code>scipy.integrate.quad</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-python">  <span style="color: #51afef;">from</span> scipy <span style="color: #51afef;">import</span> integrate
+
+  integrate.<span style="color: #51afef; font-weight: bold; font-style: italic;">quad</span>(f, a, b)[<span style="color: #a9a1e1;">0</span>]
+</pre>
+</div>
+
+<pre class="example">
+0.6768400757156462
+</pre>
+
+
+<p>
+As we can see, the two results are fairly similar. Do note that the result due to MC estimators is bound to change but it is still a fairly close estimate to the integration function from scipy.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org373d4e6" class="outline-2">
+<h2 id="org373d4e6"><span class="section-number-2">3.</span> Importance Sampling</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The formula for a MC estimator that we saw above was for an importance sampling estimator. What it means is that, instead of choosing random points over an interval with uniform probability, we try to sample points based on its expected contribution to the integral. This means that instead of a uniform distribution, we use a distribution \(p(x)\) of our choice that we hope makes the calculation more efficient. The intuition behind this is that if a particular point \(x_i\) is picked up with a higher probability, then we weigh it down by a factor of its probability \(p(x_i)\).
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

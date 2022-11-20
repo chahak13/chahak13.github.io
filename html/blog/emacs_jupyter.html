@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>emacs-jupyter and inline images in org-mode</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">emacs-jupyter and inline images in org-mode</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org45f4089">1. emacs-jupyter works doesn&rsquo;t work in server</a></li>
+<li><a href="#org9aeb0a5">2. Why emacs-jupyter</a></li>
+</ul>
+</div>
+</nav>
+<p>
+<code>emacs-jupyter</code> is an emacs interface for jupyter kernels. It can be installed using
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> jupyter
+  <span style="color: #c678dd;">:straight</span> t<span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+If <code>ob-async</code> is installed, then <code>jupyter-python</code> needs to be added to the list of languages that are not run asychronously. (Refer <a href="https://github.com/astahlman/ob-async/pull/71">this issue</a>). This can be done by
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> ob-async-no-async-languages-alist <span style="color: #51afef;">'</span><span style="color: #c678dd;">(</span><span style="color: #98be65;">"jupyter-python"</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+An example python block:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #c678dd; font-weight: bold;">print</span>(<span style="color: #98be65;">"ab"</span>)
+</pre>
+</div>
+
+<pre class="example">
+ab
+</pre>
+
+<div id="outline-container-org45f4089" class="outline-2">
+<h2 id="org45f4089"><span class="section-number-2">1.</span> emacs-jupyter works doesn&rsquo;t work in server</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+When I first installed <code>emacs-jupyter</code> I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon. On the other hand, if it was started separately as a window, everything ran fine. The issue was that I was adding <code>/home/boticelli/.local/bin/</code> (path to jupyter executable) to <code>exec-path</code> at the end of the config files. When opening emacs from a terminal as an independent session, it was considering this added path somehow, maybe by inheriting it from the shell itself, but it was. I moved that line to near the beginning of the <code>init.el</code> file itself and this seemed to solve the issue. This issue was very similar to the <a href="pipenv_in_emacs.html#ID-4b02b261-cca6-4cae-8fc4-02201dbafebf">Pipenv in emacs</a> issue that I had recently.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9aeb0a5" class="outline-2">
+<h2 id="org9aeb0a5"><span class="section-number-2">2.</span> Why emacs-jupyter</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Running python code in normal org-mode source block is nice and easy. But using them to plot images was a bit painful/difficult. Since <code>emacs-jupyter</code> uses <code>ipython</code> kernel, it allows some magic commands like <code>%matplotlib inline</code> etc to make this easier. It also gives <code>%timeit</code> which is really useful.
+</p>
+
+<p>
+Now, with <code>emacs-jupyter</code>, I can do imports like this and make plotting easier for myself.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">%</span>matplotlib inline
+<span style="color: #51afef;">import</span> numpy <span style="color: #51afef;">as</span> np
+<span style="color: #51afef;">import</span> matplotlib.pyplot <span style="color: #51afef;">as</span> plt
+
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> plt.<span style="color: #51afef; font-weight: bold; font-style: italic;">subplots</span>()
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">hist</span>(np.<span style="color: #a9a1e1; font-style: italic;">random</span>.<span style="color: #51afef; font-weight: bold; font-style: italic;">default_rng</span>().<span style="color: #51afef; font-weight: bold; font-style: italic;">normal</span>(<span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">1</span>, <span style="color: #a9a1e1;">50000</span>), <span style="color: #51afef; font-weight: bold;">bins</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">100</span>);
+</pre>
+</div>
+
+
+<figure id="orge262881">
+<img src="./images/normal_dist.png" alt="normal_dist.png">
+
+</figure>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

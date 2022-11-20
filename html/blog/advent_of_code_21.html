@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advent of Code '21</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Advent of Code &rsquo;21</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org7ed9753">1. Day 1: Sonar Sweep</a>
+<ul>
+<li><a href="#org804574c">1.1. Part 1</a>
+<ul>
+<li><a href="#org15b6a5b">1.1.1. Problem</a></li>
+<li><a href="#org1d85f3f">1.1.2. Solution</a></li>
+</ul>
+</li>
+<li><a href="#org4551ba1">1.2. Part 2</a>
+<ul>
+<li><a href="#org686df14">1.2.1. Problem</a></li>
+<li><a href="#orgaa14103">1.2.2. Solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1d50924">2. Day 2: Dive!</a>
+<ul>
+<li><a href="#orgebe5344">2.1. Problem</a></li>
+<li><a href="#orga0402ba">2.2. Solution</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org7ed9753" class="outline-2">
+<h2 id="org7ed9753"><span class="section-number-2">1.</span> <a href="https://adventofcode.com/2021/day/1">Day 1: Sonar Sweep</a></h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org804574c" class="outline-3">
+<h3 id="org804574c"><span class="section-number-3">1.1.</span> Part 1</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-org15b6a5b" class="outline-4">
+<h4 id="org15b6a5b"><span class="section-number-4">1.1.1.</span> Problem</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+You&rsquo;re minding your own business on a ship at sea when the overboard alarm goes off! You rush to see if you can help. Apparently, one of the Elves tripped and accidentally sent the sleigh keys flying into the ocean!
+</p>
+
+<p>
+Before you know it, you&rsquo;re inside a submarine the Elves keep ready for situations like this. It&rsquo;s covered in Christmas lights (because of course it is), and it even has an experimental antenna that should be able to track the keys if you can boost its signal strength high enough; there&rsquo;s a little meter that indicates the antenna&rsquo;s signal strength by displaying 0-50 stars.
+</p>
+
+<p>
+Your instincts tell you that in order to save Christmas, you&rsquo;ll need to get all fifty stars by December 25th.
+</p>
+
+<p>
+Collect stars by solving puzzles. Two puzzles will be made available on each day in the Advent calendar; the second puzzle is unlocked when you complete the first. Each puzzle grants one star. Good luck!
+</p>
+
+<p>
+As the submarine drops below the surface of the ocean, it automatically performs a sonar sweep of the nearby sea floor. On a small screen, the sonar sweep report (your puzzle input) appears: each line is a measurement of the sea floor depth as the sweep looks further and further away from the submarine.
+</p>
+
+<p>
+For example, suppose you had the following report:
+</p>
+
+<pre class="example" id="org304fda6">
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
+</pre>
+
+<p>
+This report indicates that, scanning outward from the submarine, the sonar sweep found depths of 199, 200, 208, 210, and so on.
+</p>
+
+<p>
+The first order of business is to figure out how quickly the depth increases, just so you know what you&rsquo;re dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
+</p>
+
+<p>
+To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.) In the example above, the changes are as follows:
+</p>
+
+<pre class="example" id="org9c94b3c">
+199 (N/A - no previous measurement)
+200 (increased)
+208 (increased)
+210 (increased)
+200 (decreased)
+207 (increased)
+240 (increased)
+269 (increased)
+260 (decreased)
+263 (increased)
+</pre>
+
+<p>
+In this example, there are 7 measurements that are larger than the previous measurement.
+</p>
+
+<p>
+How many measurements are larger than the previous measurement?
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1d85f3f" class="outline-4">
+<h4 id="org1d85f3f"><span class="section-number-4">1.1.2.</span> Solution</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #dcaeea;">count</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">0</span>
+
+<span style="color: #51afef;">with</span> <span style="color: #c678dd; font-weight: bold;">open</span>(<span style="color: #98be65;">"/Users/cmehta/Documents/advent_of_code/inputs/1_solar_sweep.csv"</span>, <span style="color: #98be65;">"r"</span>) <span style="color: #51afef;">as</span> f:
+    <span style="color: #dcaeea;">lines</span> <span style="color: #51afef;">=</span> f.<span style="color: #51afef; font-weight: bold; font-style: italic;">readlines</span>()
+
+<span style="color: #dcaeea;">previous_val</span> <span style="color: #51afef;">=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(lines[<span style="color: #a9a1e1;">0</span>].<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>())
+<span style="color: #51afef;">for</span> <span style="color: #dcaeea;">line</span> <span style="color: #51afef;">in</span> lines:
+    <span style="color: #dcaeea;">number</span> <span style="color: #51afef;">=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(line.<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>())
+    <span style="color: #51afef;">if</span> number <span style="color: #51afef;">&gt;</span> previous_val:
+        <span style="color: #dcaeea;">count</span> <span style="color: #51afef;">+=</span> <span style="color: #a9a1e1;">1</span>
+    <span style="color: #dcaeea;">previous_val</span> <span style="color: #51afef;">=</span> number
+<span style="color: #c678dd; font-weight: bold;">print</span>(count)
+</pre>
+</div>
+
+<pre class="example">
+1583
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4551ba1" class="outline-3">
+<h3 id="org4551ba1"><span class="section-number-3">1.2.</span> Part 2</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-org686df14" class="outline-4">
+<h4 id="org686df14"><span class="section-number-4">1.2.1.</span> Problem</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+Considering every single measurement isn&rsquo;t as useful as you expected: there&rsquo;s just too much noise in the data.
+</p>
+
+<p>
+Instead, consider sums of a three-measurement sliding window. Again considering the above example:
+</p>
+
+<pre class="example" id="orgd73bdf4">
+199  A
+200  A B
+208  A B C
+210    B C D
+200  E   C D
+207  E F   D
+240  E F G
+269    F G H
+260      G H
+263        H
+</pre>
+
+<p>
+Start by comparing the first and second three-measurement windows. The measurements in the first window are marked A (199, 200, 208); their sum is 199 + 200 + 208 = 607. The second window is marked B (200, 208, 210); its sum is 618. The sum of measurements in the second window is larger than the sum of the first, so this first comparison increased.
+</p>
+
+<p>
+Your goal now is to count the number of times the sum of measurements in this sliding window increases from the previous sum. So, compare A with B, then compare B with C, then C with D, and so on. Stop when there aren&rsquo;t enough measurements left to create a new three-measurement sum.
+</p>
+
+<p>
+In the above example, the sum of each three-measurement window is as follows:
+</p>
+
+<pre class="example" id="org06bf07a">
+A: 607 (N/A - no previous sum)
+B: 618 (increased)
+C: 618 (no change)
+D: 617 (decreased)
+E: 647 (increased)
+F: 716 (increased)
+G: 769 (increased)
+H: 792 (increased)
+</pre>
+
+<p>
+In this example, there are 5 sums that are larger than the previous sum.
+</p>
+
+<p>
+Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?
+</p>
+</div>
+</div>
+<div id="outline-container-orgaa14103" class="outline-4">
+<h4 id="orgaa14103"><span class="section-number-4">1.2.2.</span> Solution</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #dcaeea;">count</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">0</span>
+
+<span style="color: #51afef;">with</span> <span style="color: #c678dd; font-weight: bold;">open</span>(<span style="color: #98be65;">"/Users/cmehta/Documents/advent_of_code/inputs/1_solar_sweep.csv"</span>, <span style="color: #98be65;">"r"</span>) <span style="color: #51afef;">as</span> f:
+    <span style="color: #dcaeea;">lines</span> <span style="color: #51afef;">=</span> f.<span style="color: #51afef; font-weight: bold; font-style: italic;">readlines</span>()
+
+<span style="color: #dcaeea;">previous_sum</span> <span style="color: #51afef;">=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(lines[<span style="color: #a9a1e1;">0</span>].<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>()) <span style="color: #51afef;">+</span> <span style="color: #c678dd; font-weight: bold;">int</span>(lines[<span style="color: #a9a1e1;">1</span>].<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>()) <span style="color: #51afef;">+</span> <span style="color: #c678dd; font-weight: bold;">int</span>(lines[<span style="color: #a9a1e1;">2</span>].<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>())
+<span style="color: #51afef;">for</span> <span style="color: #dcaeea;">i</span>, <span style="color: #dcaeea;">line</span> <span style="color: #51afef;">in</span> <span style="color: #c678dd; font-weight: bold;">enumerate</span>(lines[:<span style="color: #51afef;">-</span><span style="color: #a9a1e1;">2</span>]):
+    <span style="color: #dcaeea;">number</span> <span style="color: #51afef;">=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(line.<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>()) <span style="color: #51afef;">+</span> <span style="color: #c678dd; font-weight: bold;">int</span>(lines[i<span style="color: #51afef;">+</span><span style="color: #a9a1e1;">1</span>].<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>()) <span style="color: #51afef;">+</span> <span style="color: #c678dd; font-weight: bold;">int</span>(lines[i<span style="color: #51afef;">+</span><span style="color: #a9a1e1;">2</span>].<span style="color: #51afef; font-weight: bold; font-style: italic;">strip</span>())
+    <span style="color: #51afef;">if</span> number <span style="color: #51afef;">&gt;</span> previous_sum:
+        <span style="color: #dcaeea;">count</span> <span style="color: #51afef;">+=</span> <span style="color: #a9a1e1;">1</span>
+    <span style="color: #dcaeea;">previous_sum</span> <span style="color: #51afef;">=</span> number
+<span style="color: #c678dd; font-weight: bold;">print</span>(count)
+</pre>
+</div>
+
+<pre class="example">
+1627
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org1d50924" class="outline-2">
+<h2 id="org1d50924"><span class="section-number-2">2.</span> <a href="https://adventofcode.com/2021/day/2">Day 2: Dive!</a></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgebe5344" class="outline-3">
+<h3 id="orgebe5344"><span class="section-number-3">2.1.</span> Problem</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Now, you need to figure out how to pilot this thing.
+</p>
+
+<p>
+It seems like the submarine can take a series of commands like forward 1, down 2, or up 3:
+</p>
+
+<pre class="example" id="org733b150">
+    forward X increases the horizontal position by X units.
+    down X increases the depth by X units.
+    up X decreases the depth by X units.
+</pre>
+
+<p>
+Note that since you&rsquo;re on a submarine, down and up affect your depth, and so they have the opposite result of what you might expect.
+</p>
+
+<p>
+The submarine seems to already have a planned course (your puzzle input). You should probably figure out where it&rsquo;s going. For example:
+</p>
+
+<pre class="example" id="org0a651c0">
+forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2
+</pre>
+
+<p>
+Your horizontal position and depth both start at 0. The steps above would then modify them as follows:
+</p>
+
+<pre class="example" id="org40c3149">
+    forward 5 adds 5 to your horizontal position, a total of 5.
+    down 5 adds 5 to your depth, resulting in a value of 5.
+    forward 8 adds 8 to your horizontal position, a total of 13.
+    up 3 decreases your depth by 3, resulting in a value of 2.
+    down 8 adds 8 to your depth, resulting in a value of 10.
+    forward 2 adds 2 to your horizontal position, a total of 15.
+</pre>
+
+<p>
+After following these instructions, you would have a horizontal position of 15 and a depth of 10. (Multiplying these together produces 150.)
+</p>
+
+<p>
+Calculate the horizontal position and depth you would have after following the planned course. What do you get if you multiply your final horizontal position by your final depth?
+</p>
+</div>
+</div>
+<div id="outline-container-orga0402ba" class="outline-3">
+<h3 id="orga0402ba"><span class="section-number-3">2.2.</span> Solution</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #51afef;">import</span> pandas <span style="color: #51afef;">as</span> pd
+
+<span style="color: #dcaeea;">lines</span> <span style="color: #51afef;">=</span> []
+<span style="color: #51afef;">with</span> <span style="color: #c678dd; font-weight: bold;">open</span>(<span style="color: #98be65;">"/Users/cmehta/Documents/advent_of_code/inputs/2_dive.csv"</span>, <span style="color: #98be65;">"r"</span>) <span style="color: #51afef;">as</span> f:
+    <span style="color: #dcaeea;">lines</span> <span style="color: #51afef;">=</span> f.<span style="color: #51afef; font-weight: bold; font-style: italic;">readlines</span>()
+
+<span style="color: #dcaeea;">horizontal</span>, <span style="color: #dcaeea;">depth</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">0</span>, <span style="color: #a9a1e1;">0</span>
+<span style="color: #51afef;">for</span> <span style="color: #dcaeea;">line</span> <span style="color: #51afef;">in</span> lines:
+    <span style="color: #dcaeea;">direction</span>, <span style="color: #dcaeea;">value</span> <span style="color: #51afef;">=</span> line.<span style="color: #51afef; font-weight: bold; font-style: italic;">split</span>()
+    <span style="color: #51afef;">if</span> direction <span style="color: #51afef;">==</span> <span style="color: #98be65;">"forward"</span>:
+        <span style="color: #dcaeea;">horizontal</span> <span style="color: #51afef;">+=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(value)
+    <span style="color: #51afef;">elif</span> direction <span style="color: #51afef;">==</span> <span style="color: #98be65;">"up"</span>:
+        <span style="color: #dcaeea;">depth</span> <span style="color: #51afef;">-=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(value)
+    <span style="color: #51afef;">elif</span> direction <span style="color: #51afef;">==</span> <span style="color: #98be65;">"down"</span>:
+        <span style="color: #dcaeea;">depth</span> <span style="color: #51afef;">+=</span> <span style="color: #c678dd; font-weight: bold;">int</span>(value)
+
+<span style="color: #c678dd; font-weight: bold;">print</span>(horizontal <span style="color: #51afef;">*</span> depth)
+</pre>
+</div>
+
+<pre class="example">
+1962940
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

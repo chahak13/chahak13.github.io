@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Export source code of tex file</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Export source code of tex file</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgaa9c063">1. Export source code of tex file</a>
+<ul>
+<li><a href="#org8a74591">1.1. Answer 1</a></li>
+<li><a href="#orge8f9091">1.2. Answer 2</a></li>
+<li><a href="#org7dfbdd4">1.3. Answer 3</a></li>
+<li><a href="#org137eca4">1.4. Answer 4</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgaa9c063" class="outline-2">
+<h2 id="orgaa9c063"><span class="section-number-2">1.</span> <a href="https://tex.stackexchange.com/questions/296758/export-source-code-of-tex-file">Export source code of tex file</a></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I have to create a training guide for Maple as part of an assignment. Obviously I need to hand in the final PDF document, but I also need to hand in the LaTeX source code to prove that I created the document using LaTeX. Is there a way of exporting the source code with all the colours, indentation etc. still in place?
+</p>
+
+<p>
+Comments
+</p>
+<ul class="org-ul">
+<li>(<i>JP-Ellis</i>) Welcome to LaTeX! Welcome to TeX.SX!  Just to clarify, where are you intending to export the LaTeX source?  Are you looking to embed the TeX file into the PDF? or do you want to pretty-print the LaTeX source?</li>
+<li>(<i>George Wilson</i>) Ideally, the LaTeX source code would follow the actual PDF document.</li>
+<li>(<i>jamesqf</i>) I think you have a major misunderstanding here.  The colors you may see as you write your LaTeX source (I&rsquo;m assuming you mean syntax colorization?) are not part of LaTeX or the source file, they are applied by whatever editor you&rsquo;re using to write the LaTeX code.  Likewise, there&rsquo;s no need to &rsquo;export&rsquo; the LaTeX file, as your editor should already have saved it on your hard drive.  Indentation is a part of that file.  You can, as others have said, include that file in your LaTeX document, or you can simply print it as a plain text file.</li>
+<li>(<i>Bakuriu</i>) When they tell you to provide the sources it means you just hand them the .tex file so that they can compile them and check the output pdf is the same you handed in&#x2026;</li>
+</ul>
+</div>
+<div id="outline-container-org8a74591" class="outline-3">
+<h3 id="org8a74591"><span class="section-number-3">1.1.</span> Answer 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Here is a <code>tcolorbox</code> - <code>listings</code> way of inputting the document itself to the file and displaying the code. 
+</p>
+<pre class="example" id="org27a6185">
+\documentclass{article}
+
+
+\usepackage[most]{tcolorbox}
+
+\begin{document}
+This is my nice \LaTeXe{} file.
+
+It shows the code of itself:
+
+\tcbinputlisting{breakable,listing file=\jobname.tex,listing only,colback=white!40!yellow,sharp corners}
+\end{document}
+
+</pre>
+<p>
+[[<img src="https://i.stack.imgur.com/eApUH.png" alt="eApUH.png">][]]
+For breakable boxes:
+</p>
+<pre class="example" id="org1335801">
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[most]{tcolorbox}
+
+\begin{document}
+This is my nice \LaTeXe{} file.
+
+It shows the code of it self -- and here is some blind text to make the text longer
+
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut 
+
+\tcbinputlisting{breakable,listing file=\jobname.tex,listing only,colback=white!40!yellow,sharp corners}
+\end{document}
+
+</pre>
+<p>
+<a href="https://i.stack.imgur.com/wbGAM.png">]]
+[[https://i.stack.imgur.com/GANeH.png][</a>
+</p>
+
+<p>
+Comments:
+</p>
+<ul class="org-ul">
+<li>(<i>George Wilson</i>) I love that. My source code spans over many pages (over 300 lines at the moment) and this solution seems to not split the code over several pages. How can I solve this?</li>
+<li>(<i>user31729</i>) @Will: Add the breakable option to the \tcbinputlisting options. See the updated code (but i did not add a new screen shot (yet))</li>
+<li>(<i>George Wilson</i>) Just added that argument in. Thanks a lot, looks great!</li>
+<li>(<i>George Wilson</i>) Another question, when the inputted code is in math mode, it goes off the screen. How can I prevent this?</li>
+<li>(<i>user31729</i>) @Will: That&rsquo;s another question ;-)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge8f9091" class="outline-3">
+<h3 id="orge8f9091"><span class="section-number-3">1.2.</span> Answer 2</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+One possibility is to simply input the TeX file in a verbatim environment.  A really neat option is the <a href="http://ctan.org/pkg/minted"><code>minted</code></a> package which has nice syntax highlighting:
+</p>
+<pre class="example" id="org2df7307">
+\documentclass{article}
+
+\usepackage{minted}
+\usepackage{mwe}
+
+\begin{document}
+
+\blinddocument
+
+\clearpage
+
+\inputminted[bgcolor=gray!10]{latex}{will.tex}
+
+\end{document}
+
+</pre>
+<p>
+This places, on the last page, the following:
+[[<img src="https://i.stack.imgur.com/YgIDW.png" alt="YgIDW.png">][]]
+You can customize the appearance of the output in minted.
+If you don&rsquo;t like <code>minted</code>, there are other packages to typeset code as well and you should be able to use them in essentially the same way.  Have a search through this website to see a few other options.
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org7dfbdd4" class="outline-3">
+<h3 id="org7dfbdd4"><span class="section-number-3">1.3.</span> Answer 3</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+I use this construction in the <code>\LaTeX</code> source for exercises for my students
+</p>
+<pre class="example" id="orgd0ad10f">
+\usepackage{verbatim}    
+...
+\newpage
+\emph{
+Here is the \LaTeX{} source for this document. You can cut it from the
+pdf and use it to start your answers. I used the \verb!\jobname! 
+\emph{macro for the source file name, so you can call your file by any
+  name you like.}
+\verbatiminput{\jobname}
+\end{document}
+
+</pre>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org137eca4" class="outline-3">
+<h3 id="org137eca4"><span class="section-number-3">1.4.</span> Answer 4</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+try 
+</p>
+<pre class="example" id="org1e92a2b">
+\begin{verbatimwrite}{myfile}
+
+\end{verbatimwrite}
+
+</pre>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

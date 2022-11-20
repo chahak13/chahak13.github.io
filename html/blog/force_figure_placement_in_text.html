@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Force figure placement in text</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Force figure placement in text</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orged9dc76">1. Force figure placement in text</a>
+<ul>
+<li><a href="#orgbb75a5c">1.1. Answer 1</a></li>
+<li><a href="#org10bdb44">1.2. Answer 2</a></li>
+<li><a href="#org481c202">1.3. Answer 3</a></li>
+<li><a href="#org8d067e7">1.4. Answer 4</a></li>
+<li><a href="#org7e1afa7">1.5. Answer 5</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orged9dc76" class="outline-2">
+<h2 id="orged9dc76"><span class="section-number-2">1.</span> <a href="https://tex.stackexchange.com/questions/8625/force-figure-placement-in-text">Force figure placement in text</a></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I have a problem when a lot of figures are in question. Some figures tend to &ldquo;fly around&rdquo;, that is, be a paragraph below, although I placed them before that paragraph. I use code:
+</p>
+<pre class="example" id="org96ccd4c">
+\begin{figure}[ht]
+\begin{center}
+\advance\leftskip-3cm
+\advance\rightskip-3cm
+\includegraphics[keepaspectratio=true,scale=0.6]{slike/visina8}
+\caption{}
+\label{visina8}
+\end{center}\end{figure}
+
+</pre>
+<p>
+to place my figures. How can I tell latex I REALLY want the figure in that specific place, no matter how much whitespace will be left? 
+</p>
+
+<p>
+Comments
+</p>
+<ul class="org-ul">
+<li>(<i>Martin Scharrer</i>) Sidenote: Don&rsquo;t use the center environment but the \centering command for figures. See Should I use center or centering for figures and tables?</li>
+<li>(<i>codeman48</i>) To definitely place a paragraph after a figure, use the command \FloatBarrier somewhere between the figure and the paragraph. It forces all figures defined before the command to render before that point in text. You will need to add \usepackage{placeins} in the preamble to use the command. Sometimes, I have found this very useful.</li>
+<li>(<i>Benjamin McKay</i>) I gave up using the figure environment, and just use small figures embedded in text or centered between paragraphs. Smaller figures fit better.</li>
+</ul>
+</div>
+<div id="outline-container-orgbb75a5c" class="outline-3">
+<h3 id="orgbb75a5c"><span class="section-number-3">1.1.</span> Answer 1</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<b>The short answer:</b> use the “<a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/float.html">float</a>” package and then the <code>[H]</code> option for your figure.
+</p>
+<pre class="example" id="org47b9e32">
+\usepackage{float}
+
+...
+
+\begin{figure}[H]
+\centering
+\includegraphics{slike/visina8}
+\caption{Write some caption here}\label{visina8}
+\end{figure}
+
+</pre>
+<p>
+<b>The longer answer:</b> The default behaviour of figures is to float, so that LaTeX can find the best way to arrange them in your document and make it look better. If you have a look, this is how books are often typeset. So, usually the best thing to do is just to let LaTeX do its work and don&rsquo;t try to force the placement of figures at specific locations. This also means that you should avoid using phrases such as “~in the following figure:~”, which requires the figure to be set a specific location, and use “~in Figure~\ref{..}~“ instead, taking advantage of LaTeX&rsquo;s cross-references.
+If for some reason you <i>really</i> want some particular figure to be placed “HERE”, and not where LaTeX wants to put it, then use the <code>[H]</code> option of the “<a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/float.html">float</a>” package which basically turns the floating figure into a regular non-float.
+Also note that, if you don&rsquo;t want to add a <code>caption</code> to your figure, then you don&rsquo;t need to use the <code>figure</code> environment at all! You can use the <code>\includegraphics</code> command anywhere in your document to insert an image.
+</p>
+
+<p>
+Comments:
+</p>
+<ul class="org-ul">
+<li>(<i>Juan A. Navarro</i>) thanks for noting this! I wasn&rsquo;t aware of the change. H doesn&rsquo;t seem to work without any packages, but does work loading float. Is H from float the same as !h?</li>
+<li>(<i>user2478</i>) no, [!h] is changed anyway by most documentclasses to [!ht]. And the meaning of h is only: here, if possible, but not absolutely here. The ! allows LaTeX to minimze all counters and lengths which refer to floating environments.</li>
+<li>(<i>Evgeni Sergeev</i>) For documents not intended to be printed, there is no reason to try and save paper, so large areas of whitespace aren&rsquo;t a problem. So it&rsquo;s much better to have the figure breaking the text at the most logical point, rather than floating somewhere else. These awkward conventions will go just like Latin went.</li>
+<li>(<i>Juan A. Navarro</i>) I don&rsquo;t think that the usual concerns are about saving space, rather than stylistically trying to find the best place where to place a figure, table, etc.</li>
+<li>(<i>Henrique Fernandes Cipriano</i>) you save lifes!</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org10bdb44" class="outline-3">
+<h3 id="org10bdb44"><span class="section-number-3">1.2.</span> Answer 2</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+do <i>not</i> use a floating environment if you do not want it float.
+</p>
+<pre class="example" id="orga7a9a85">
+\usepackage{caption}
+...
+\noindent%
+\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics[keepaspectratio=true,scale=0.6]{slike/visina8}}
+\captionof{figure}{...}\label{visina8}%      only if needed  
+\end{minipage}
+
+</pre>
+<p>
+or
+</p>
+<pre class="example" id="orgade8cdd">
+\begin{center}
+  \includegraphics[...]{slike/visina8}}
+\captionof{figure}{...}\label{visina8}%      only if needed  
+\end{center}
+
+</pre>
+
+<p>
+Comments:
+</p>
+<ul class="org-ul">
+<li>(<i>sdaau</i>) Hi @Herbert - thanks a LOT for this answer! I had never before understood that \begin{figure} is a floating environment - while \begin{minipage} is not! I had a problem with wanting to include an image on bottom of page w/ text, and not even [H] helped; only this! I just replaced minipage for figure - and captionof for caption - and finally got what I wanted!! Thanks a lot again, cheers!</li>
+<li>(<i>Tobi</i>) Why do you use a \makebox? Doesn’t it look the same without it?</li>
+<li>(<i>user2478</i>) @Tobi: if the image is not larger than \textwidth yes, otherwise not! \makebox centers the image independently from its width</li>
+<li>(<i>user2820379</i>) This was so super helpful; IMHO this should be the accepted answer as it works more as expected as the currently accepted one.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org481c202" class="outline-3">
+<h3 id="org481c202"><span class="section-number-3">1.3.</span> Answer 3</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+One solution not mentioned by any of the other answers that just sorted me out is to use <code>\clearpage</code>
+No special packages are needed.
+<code>\clearpage</code> forces all figures above it in the <code>.tex</code> file to be printed before continuing with the text. This can leave large white spaces. 
+For me this was the best solution because I did not have to change any of the formatting and it just made sure that all figures were printed before the next bit of text. My issue was a part of the document with lots of figures and not much text. 
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org8d067e7" class="outline-3">
+<h3 id="org8d067e7"><span class="section-number-3">1.4.</span> Answer 4</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+You can now use the <code>adjustbox</code> package to turn your boxed stuff into a non-floating float replacement using the <code>nofloat=&amp;lt;type&amp;gt;</code> key. Caption and label can be added by own keys, <i>before</i> the <code>nofloat</code>. For centering the <code>center</code> key can be used. To add the vertical space use the <code>vspace</code> key. This solution has the benefit, that you can also use all the many other features of <code>adjustbox</code> to modify the content (min/max scaling, framing, etc.)
+Note that if the figure content is just a single image you can just use the same keys on <code>\adjustbox</code> and get a one-liner. If all you want is a tabular then there is the <code>tabular</code> key for <code>{adjustbox}</code>.
+If you later want to change it to a real float just turn <code>nofloat</code> to <code>float</code> and remove the <code>vspace</code> key. <code>adjustbox</code> places the caption on top for <code>table~s and on bottom for ~figure~s. This can be changed by using the keys ~captionbelow</code> or <code>captionabove</code> instead of <code>caption</code>.
+See the <code>adjustox</code> manual for all options. 
+If you don&rsquo;t want to box the content you can still use the <code>adjustbox</code> package as it provides the <code>{adjnofloat}{&amp;lt;type&amp;gt;}</code> environment. It is used internally to implement the <code>nofloat</code> key. Users can either redefine this environment to change or patch the <code>nofloat</code> behavior or use the environment directly.  The environment uses code very similar as in <a href="https://tex.stackexchange.com/a/8631/2975">Herberts answer</a>.
+</p>
+<pre class="example" id="org914c504">
+\documentclass{article}
+\usepackage{blindtext}% for example text here only
+\usepackage{adjustbox}
+\begin{document}
+\blindtext
+
+\begin{adjustbox}{center,caption={some caption},label={somelabel},nofloat=figure,vspace=\bigskipamount}
+% maybe other stuff
+\includegraphics[width=\textwidth]{example-image}% example only, could also be \adjustimage
+% maybe other stuff
+\end{adjustbox}
+
+\blindtext
+
+% For simple images, a one liner is enough
+\adjustimage{width=\textwidth,center,caption={some caption},label={somelabel},nofloat=figure,vspace=\bigskipamount}{example-image}
+
+\blindtext
+
+
+\begin{adjustbox}{center,caption={some caption},label={somelabel},nofloat=table,vspace=\bigskipamount}
+% maybe other stuff
+\begin{tabular}{lll}
+ some &amp; tabular &amp; is\\
+ also &amp; possible &amp; with this \\
+\end{tabular}
+% maybe other stuff
+\end{adjustbox}
+
+\blindtext
+
+% For just a tabular:
+\begin{adjustbox}{tabular=lll,center,caption={some caption},label={somelabel},nofloat=table,vspace=\bigskipamount}
+ some &amp; tabular &amp; is\\
+ also &amp; possible &amp; with this \\
+\end{adjustbox}
+
+\blindtext
+\end{document}
+
+</pre>
+<p>
+Part of the result:
+[[<img src="https://i.stack.imgur.com/ERcI5.png" alt="ERcI5.png">][]]
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org7e1afa7" class="outline-3">
+<h3 id="org7e1afa7"><span class="section-number-3">1.5.</span> Answer 5</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+Use <code>[ht!]</code> to be more emphatic about placement. And, if you want text to follow the figure, instead of beginning before, employ <code>\usepackage{parskip}</code> in your preamble, and allow a space before the text in question.
+I also employ <code>\vspace{}</code> or <code>\vspace*{}</code> before the figure environment in order to manipulate the space between text and figure to give a more balanced look. I don&rsquo;t have any trouble this way, even with more complex multifigure environments employing <code>\subfigure</code>.
+</p>
+
+<p>
+Comments:
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

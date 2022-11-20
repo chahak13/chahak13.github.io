@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:20 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to create art from math</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">How to create art from math</h1>
+</header><p>
+We&rsquo;ll be using the <code>numpy</code> and <code>matplotlib</code> modules for this note. They provide the necessary mathematical and plotting tools required to start, for now.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">import</span> numpy <span style="color: #51afef;">as</span> np
+<span style="color: #51afef;">import</span> matplotlib.pyplot <span style="color: #51afef;">as</span> plt
+<span style="color: #5B6268;"># %matplotlib inline</span>
+</pre>
+</div>
+
+<p>
+First, some auxiliary functions to setup figures using matplotlib.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #51afef;">def</span> <span style="color: #c678dd;">create_fig</span>(<span style="color: #dcaeea;">facecolor</span><span style="color: #51afef;">=</span><span style="color: #98be65;">"#fee4a6"</span>, <span style="color: #51afef;">**</span><span style="color: #dcaeea;">kwargs</span>):
+    <span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> plt.<span style="color: #51afef; font-weight: bold; font-style: italic;">subplots</span>(<span style="color: #51afef; font-weight: bold;">figsize</span><span style="color: #51afef;">=</span>(<span style="color: #a9a1e1;">7</span>,<span style="color: #a9a1e1;">7</span>), <span style="color: #51afef;">**</span>kwargs)
+    ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_facecolor</span>(facecolor)
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">spine</span> <span style="color: #51afef;">in</span> ax.<span style="color: #a9a1e1; font-style: italic;">spines</span>.<span style="color: #51afef; font-weight: bold; font-style: italic;">keys</span>():
+        ax.<span style="color: #a9a1e1; font-style: italic;">spines</span>[spine].<span style="color: #51afef; font-weight: bold; font-style: italic;">set_color</span>(facecolor)
+        ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_xticks</span>([])
+        ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">set_yticks</span>([])
+    <span style="color: #51afef;">return</span> fig, ax    
+</pre>
+</div>
+
+<p>
+We want to see what happens when you provide mathematical transformations to seemingly simple set of points. To do so, let us start with a line.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">x</span> <span style="color: #51afef;">=</span> np.<span style="color: #a9a1e1; font-style: italic;">pi</span>
+<span style="color: #dcaeea;">y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">arange</span>(<span style="color: #51afef;">-</span>np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, <span style="color: #a9a1e1;">0.1</span>)
+<span style="color: #dcaeea;">X</span>, <span style="color: #dcaeea;">Y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">meshgrid</span>(x, y)
+
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">create_fig</span>()
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">scatter</span>(<span style="color: #a9a1e1;">X</span>, <span style="color: #a9a1e1;">Y</span>, <span style="color: #51afef; font-weight: bold;">c</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'k'</span>, <span style="color: #51afef; font-weight: bold;">s</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.3</span>)
+fig.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/straight-line.png"</span>)
+</pre>
+</div>
+
+
+<figure id="orgcdde031">
+<img src="./images/straight-line.png" alt="straight-line.png">
+
+</figure>
+
+<p>
+This is a simple vertical line on the cartesian plane. We will now see what happens when we apply a simple transformation using sine and cosine functions.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">X_new</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">X</span> <span style="color: #51afef;">+</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">cos</span>(<span style="color: #a9a1e1;">Y</span>)
+<span style="color: #dcaeea;">Y_new</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">Y</span> <span style="color: #51afef;">+</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sin</span>(<span style="color: #a9a1e1;">Y</span>)<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">create_fig</span>()
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">scatter</span>(<span style="color: #ECBE7B;">X_new</span>, <span style="color: #ECBE7B;">Y_new</span>, <span style="color: #51afef; font-weight: bold;">c</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'k'</span>, <span style="color: #51afef; font-weight: bold;">s</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.3</span>)
+fig.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/perturbed-line.png"</span>)
+</pre>
+</div>
+
+
+<figure id="orgdcb5aff">
+<img src="./images/perturbed-line.png" alt="perturbed-line.png">
+
+</figure>
+
+<p>
+As we can see, a simple sinusoidal transformation is enough to give a straight line an interesting form. What if we do the same transformation on multiple such lines? We can do this by using a grid of points. We start out with a grid of points that we want to use to create <i>something</i>. I italicized something because I don&rsquo;t know what we will end up with.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">arange</span>(<span style="color: #51afef;">-</span>np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, <span style="color: #a9a1e1;">0.1</span>), np.<span style="color: #51afef; font-weight: bold; font-style: italic;">arange</span>(<span style="color: #51afef;">-</span>np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, <span style="color: #a9a1e1;">0.1</span>)
+<span style="color: #dcaeea;">X</span>, <span style="color: #dcaeea;">Y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">meshgrid</span>(x, y)
+<span style="color: #dcaeea;">X_new</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">X</span> <span style="color: #51afef;">+</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">cos</span>(<span style="color: #a9a1e1;">Y</span>)
+<span style="color: #dcaeea;">Y_new</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">Y</span> <span style="color: #51afef;">+</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sin</span>(<span style="color: #a9a1e1;">Y</span>)<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">create_fig</span>()
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">scatter</span>(<span style="color: #ECBE7B;">X_new</span>, <span style="color: #ECBE7B;">Y_new</span>, <span style="color: #51afef; font-weight: bold;">c</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'k'</span>, <span style="color: #51afef; font-weight: bold;">s</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.3</span>)
+fig.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/multiline-pattern.png"</span>)
+</pre>
+</div>
+
+
+<figure id="org6a2c365">
+<img src="./images/multiline-pattern.png" alt="multiline-pattern.png">
+
+</figure>
+
+<p>
+Heyy! That looks almost like a curtain flap. Fairly interesting, if someone was to ask me. All this is well and good. It&rsquo;s simply plotting a function on the cartesian plane. We can also use a projection to the polar coordinate system to transform this pattern into a circular figure.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">fig_p</span>, <span style="color: #dcaeea;">ax_p</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">create_fig</span>(<span style="color: #51afef; font-weight: bold;">facecolor</span><span style="color: #51afef;">=</span><span style="color: #98be65;">"#fee4a6"</span>, <span style="color: #51afef;">**</span>{<span style="color: #98be65;">"subplot_kw"</span>: {<span style="color: #98be65;">"projection"</span>: <span style="color: #98be65;">"polar"</span>}})
+ax_p.<span style="color: #51afef; font-weight: bold; font-style: italic;">scatter</span>(<span style="color: #ECBE7B;">X_new</span>, <span style="color: #ECBE7B;">Y_new</span>, <span style="color: #51afef; font-weight: bold;">c</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'k'</span>, <span style="color: #51afef; font-weight: bold;">s</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.3</span>)
+fig_p.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/multiline-pattern-polar.png"</span>)
+</pre>
+</div>
+
+
+<figure id="orge9ba3e2">
+<img src="./images/multiline-pattern-polar.png" alt="multiline-pattern-polar.png">
+
+</figure>
+
+<p>
+Now, now, now! That&rsquo;s some pretty looking pattern right here. I&rsquo;d say just this pattern by itself is pretty good but we should also add some noise to it, just to see the effect of randomness. The most simple way of doing this is to mutiply a random number to each of the computed value. We can do this easily using the <code>np.random</code> module of numpy.
+</p>
+
+<p>
+We will first see the effect it has in the cartesian system.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">x</span>, <span style="color: #dcaeea;">y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">arange</span>(<span style="color: #51afef;">-</span>np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, <span style="color: #a9a1e1;">0.1</span>), np.<span style="color: #51afef; font-weight: bold; font-style: italic;">arange</span>(<span style="color: #51afef;">-</span>np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, np.<span style="color: #a9a1e1; font-style: italic;">pi</span>, <span style="color: #a9a1e1;">0.1</span>)
+<span style="color: #dcaeea;">X</span>, <span style="color: #dcaeea;">Y</span> <span style="color: #51afef;">=</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">meshgrid</span>(x, y)
+<span style="color: #dcaeea;">rng</span> <span style="color: #51afef;">=</span> np.<span style="color: #a9a1e1; font-style: italic;">random</span>.<span style="color: #51afef; font-weight: bold; font-style: italic;">default_rng</span>(<span style="color: #51afef; font-weight: bold;">seed</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">1</span>)
+
+<span style="color: #dcaeea;">X_new</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">X</span> <span style="color: #51afef;">+</span> rng.<span style="color: #51afef; font-weight: bold; font-style: italic;">uniform</span>(<span style="color: #a9a1e1;">1</span>, <span style="color: #51afef;">-</span><span style="color: #a9a1e1;">1</span>, <span style="color: #a9a1e1;">Y</span>.<span style="color: #a9a1e1; font-style: italic;">shape</span>[<span style="color: #a9a1e1;">0</span>]) <span style="color: #51afef;">*</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">cos</span>(<span style="color: #a9a1e1;">Y</span>)
+<span style="color: #dcaeea;">Y_new</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">Y</span> <span style="color: #51afef;">+</span> rng.<span style="color: #51afef; font-weight: bold; font-style: italic;">uniform</span>(<span style="color: #a9a1e1;">1</span>, <span style="color: #51afef;">-</span><span style="color: #a9a1e1;">1</span>, <span style="color: #a9a1e1;">Y</span>.<span style="color: #a9a1e1; font-style: italic;">shape</span>[<span style="color: #a9a1e1;">0</span>]) <span style="color: #51afef;">*</span> np.<span style="color: #51afef; font-weight: bold; font-style: italic;">sin</span>(<span style="color: #a9a1e1;">Y</span>)<span style="color: #51afef;">**</span><span style="color: #a9a1e1;">2</span>
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">create_fig</span>()
+ax.<span style="color: #51afef; font-weight: bold; font-style: italic;">scatter</span>(<span style="color: #ECBE7B;">X_new</span>, <span style="color: #ECBE7B;">Y_new</span>, <span style="color: #51afef; font-weight: bold;">c</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'k'</span>, <span style="color: #51afef; font-weight: bold;">s</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.3</span>)
+fig.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/multiline-random-cartesian.png"</span>)
+</pre>
+</div>
+
+
+<figure id="orgdee99b2">
+<img src="./images/multiline-random-cartesian.png" alt="multiline-random-cartesian.png">
+
+</figure>
+
+<p>
+Right, that looks almost like a nervous system or a cluster of wiring, depending on the viewers imagination - a la beauty lies in the eye of the <a href="https://5e.tools/bestiary/beholder-mm.html">beholder</a>. I&rsquo;m curious how this turns out in the polar coordinate system.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">fig_p</span>, <span style="color: #dcaeea;">ax_p</span> <span style="color: #51afef;">=</span> <span style="color: #51afef; font-weight: bold;">create_fig</span>(<span style="color: #51afef; font-weight: bold;">facecolor</span><span style="color: #51afef;">=</span><span style="color: #98be65;">"#fee4a6"</span>, <span style="color: #51afef;">**</span>{<span style="color: #98be65;">"subplot_kw"</span>: {<span style="color: #98be65;">"projection"</span>: <span style="color: #98be65;">"polar"</span>}})
+ax_p.<span style="color: #51afef; font-weight: bold; font-style: italic;">scatter</span>(<span style="color: #ECBE7B;">X_new</span>, <span style="color: #ECBE7B;">Y_new</span>, <span style="color: #51afef; font-weight: bold;">c</span><span style="color: #51afef;">=</span><span style="color: #98be65;">'k'</span>, <span style="color: #51afef; font-weight: bold;">s</span><span style="color: #51afef;">=</span><span style="color: #a9a1e1;">0.3</span>)
+fig_p.<span style="color: #51afef; font-weight: bold; font-style: italic;">savefig</span>(<span style="color: #98be65;">"./images/multiline-random-polar.png"</span>)
+</pre>
+</div>
+
+
+<figure id="org43de79b">
+<img src="./images/multiline-random-polar.png" alt="multiline-random-polar.png">
+
+</figure>
+
+<p>
+<i>Wow</i>. If the original polar coordinate plot was a beauty of a pattern, this one is a beauty of chaos. I can see so many things in this plot, I&rsquo;m not even sure if I can list them. If anyone saw the link in the beholder word above, this definitely looks like some version of that to me. Or an insane web. I might go mad just by looking at it for long, trying to visualise stuff.
+</p>
+
+<p>
+Anyway, so this is the beginning of generating some curious generative art. Hopefully I&rsquo;ll get to animating these too. It would be fun to some day reach the level of <a href="https://github.com/aaronpenne/generative_art">aaronpenne - A collection of my generative artwork, mostly with Processing in Python mod</a>e and <a href="https://katharinabrunner.de/software-portfolio/">Generative Art – Katharina Brunner</a> but for now, ciao!
+</p>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

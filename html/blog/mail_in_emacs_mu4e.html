@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-11-20 Sun 01:21 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mail in emacs - mu4e</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-11-19 Sat 19:42</div>
+<nav>
+<a href="/">&lt; Home</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Mail in emacs - mu4e</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org333556a">1. Installation</a></li>
+<li><a href="#org52eb44e">2. Configuration</a>
+<ul>
+<li><a href="#orgac06a0f">2.1. Retrieval and indexing mails</a></li>
+<li><a href="#org82ff341">2.2. Contexts</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<blockquote>
+<p>
+   mu4e (mu-for-emacs) is an e-mail client for GNU Emacs version 24.4 or
+higher, built on top of the mu(1) e-mail search engine.  mu4e is
+optimized for quickly processing large amounts of e-mail.
+</p>
+</blockquote>
+
+<p>
+As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like <code>mbsync</code>, <code>offlineimap</code> etc. I use <a href="fetching_emails_mbsync.html#ID-96244a3a-d9f5-4570-b9d4-d4faa62b8eb1">Fetching emails - mbsync</a> for getting my mail periodically from gmail.
+</p>
+
+<div id="outline-container-org333556a" class="outline-2">
+<h2 id="org333556a"><span class="section-number-2">1.</span> Installation</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+mu4e comes along with the <code>mu</code> utility that can be downloaded directly from the OS&rsquo;s package manager. For Arch, this can be done via the AUR
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">paru -S mu
+</pre>
+</div>
+<p>
+This installs the <code>mu</code> indexer and its mu4e interface for emacs.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org52eb44e" class="outline-2">
+<h2 id="org52eb44e"><span class="section-number-2">2.</span> Configuration</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+First thing to use mu4e is to load it into emacs. Since mu4e is installed via the package manager, it needs to be loaded into emacs. This can be done via the <code>load-path</code> directive in use-package.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> mu4e
+  <span style="color: #c678dd;">:load-path</span> <span style="color: #98be65;">"/usr/share/emacs/site-lisp/mu4e"</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+This will load mu4e into emacs. We now need to configure mu4e to look at the right paths for loading all the emails. The first variable that we need to set is the mail directory where mu4e will look for mails.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> mu4e-maildir <span style="color: #98be65;">"~/Mail"</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+Now that mu4e knows where to look for all emails, we can start configuring other variables for our liking.
+</p>
+</div>
+
+<div id="outline-container-orgac06a0f" class="outline-3">
+<h3 id="orgac06a0f"><span class="section-number-3">2.1.</span> Retrieval and indexing mails</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+An important thing to note is that mu4e doesn&rsquo;t retrieve emails from the provider itself but it can call other utilities periodically to do so. This can be done by setting the following to variables.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> mu4e-get-mail-command <span style="color: #98be65;">"mbsync -a"</span><span style="color: #51afef;">)</span>
+<span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> mu4e-update-interval <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">*</span> <span style="color: #da8548; font-weight: bold;">10</span> <span style="color: #da8548; font-weight: bold;">60</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+Using these variables, mu4e uses the shell command set in the <code>mu4e-get-mail-command</code> variable every <code>mu4e-update-interval</code> seconds, which is set to 10 mins here. This can be changed as per requirement. To improve the indexing performace, I set the the <code>mu4e-index-lazy-check</code> variable to <code>t</code>. This variable tells the mu indexer to not update index for directories whose last modified time is not after the previous indexing. While this doesn&rsquo;t take into consideration changing/updating of messages, it handles addition and removal of messages. Since most of my operations don&rsquo;t involve changing emails in place, I&rsquo;m going to try and use this to see how it affects my flow.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> mu4e-index-lazy-check t<span style="color: #51afef;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org82ff341" class="outline-3">
+<h3 id="org82ff341"><span class="section-number-3">2.2.</span> Contexts</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Contexts provide the useful ability to switch between various email accounts, based on the right context, or manually. Using this, we can dynamically switch between folders of different email accounts. An <code>mu4e-context</code> is a Lisp object with a few useful members:
+</p>
+<ul class="org-ul">
+<li><code>name</code>: The name of the context. e.g. work or private</li>
+<li><code>vars</code>: An association-list of variable settings for this account.</li>
+<li><code>match-func</code>: A function that takes a MSG message plist as argument and returns non-nil if this context matches the situation. mu4e uses the first context that matches.</li>
+</ul>
+
+<p>
+We can use these variables to set contexts in mu4e as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">setq</span> mu4e-contexts
+      <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">list</span>
+       <span style="color: #98be65;">(</span>make-mu4e-context
+           <span style="color: #c678dd;">:name</span> <span style="color: #98be65;">"Private"</span>
+           <span style="color: #c678dd;">:match-func</span> <span style="color: #a9a1e1;">(</span><span style="color: #51afef;">lambda</span> <span style="color: #51afef;">(</span>msg<span style="color: #51afef;">)</span>
+                         <span style="color: #51afef;">(</span><span style="color: #51afef;">when</span> msg
+                           <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">string-prefix-p</span> <span style="color: #98be65;">"/chahakcr7"</span> <span style="color: #98be65;">(</span>mu4e-message-field msg <span style="color: #c678dd;">:maildir</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>
+           <span style="color: #c678dd;">:vars</span>
+           <span style="color: #51afef;">'</span><span style="color: #a9a1e1;">(</span>
+             <span style="color: #51afef;">(</span><span style="color: #dcaeea;">user-mail-address</span> . <span style="color: #98be65;">"chahakcr7@gmail.com"</span><span style="color: #51afef;">)</span>
+             <span style="color: #51afef;">(</span><span style="color: #dcaeea;">user-full-name</span> . <span style="color: #98be65;">"Chahak"</span><span style="color: #51afef;">)</span>
+             <span style="color: #51afef;">(</span>mu4e-drafts-folder . <span style="color: #98be65;">"/chahakcr7/[Gmail]/Drafts"</span><span style="color: #51afef;">)</span>
+             <span style="color: #51afef;">(</span>mu4e-sent-folder . <span style="color: #98be65;">"/chahakcr7/[Gmail]/Sent Mail"</span><span style="color: #51afef;">)</span>
+             <span style="color: #51afef;">(</span>mu4e-refile-folder . <span style="color: #98be65;">"/chahakcr7/[Gmail]/All Mail"</span><span style="color: #51afef;">)</span>
+             <span style="color: #51afef;">(</span>mu4e-trash-folder . <span style="color: #98be65;">"/chahakcr7/[Gmail]/Trash"</span><span style="color: #51afef;">)</span>
+             <span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span>
+       <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">Official Email</span>
+       <span style="color: #98be65;">(</span>make-mu4e-context
+        <span style="color: #c678dd;">:name</span> <span style="color: #98be65;">"Official"</span>
+        <span style="color: #c678dd;">:match-func</span> <span style="color: #a9a1e1;">(</span><span style="color: #51afef;">lambda</span> <span style="color: #51afef;">(</span>msg<span style="color: #51afef;">)</span>
+                      <span style="color: #51afef;">(</span><span style="color: #51afef;">when</span> msg
+                        <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">string-prefix-p</span> <span style="color: #98be65;">"/chahakmehta013"</span> <span style="color: #98be65;">(</span>mu4e-message-field msg <span style="color: #c678dd;">:maildir</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>
+        <span style="color: #c678dd;">:vars</span>
+        <span style="color: #51afef;">'</span><span style="color: #a9a1e1;">(</span>
+          <span style="color: #51afef;">(</span><span style="color: #dcaeea;">user-mail-address</span> . <span style="color: #98be65;">"chahak.mehta013@gmail.com"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span><span style="color: #dcaeea;">user-full-name</span> . <span style="color: #98be65;">"Chahak Mehta"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-drafts-folder . <span style="color: #98be65;">"/chahakmehta013/[Gmail]/Drafts"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-sent-folder . <span style="color: #98be65;">"/chahakmehta013/[Gmail]/Sent Mail"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-refile-folder . <span style="color: #98be65;">"/chahakmehta013/[Gmail]/All Mail"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-trash-folder . <span style="color: #98be65;">"/chahakmehta013/[Gmail]/Trash"</span><span style="color: #51afef;">)</span>
+          <span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span>
+
+       <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">UT Austin email</span>
+       <span style="color: #98be65;">(</span>make-mu4e-context
+        <span style="color: #c678dd;">:name</span> <span style="color: #98be65;">"UT Austin"</span>
+        <span style="color: #c678dd;">:match-func</span> <span style="color: #a9a1e1;">(</span><span style="color: #51afef;">lambda</span> <span style="color: #51afef;">(</span>msg<span style="color: #51afef;">)</span>
+                      <span style="color: #51afef;">(</span><span style="color: #51afef;">when</span> msg
+                        <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">string-prefix-p</span> <span style="color: #98be65;">"/chahakut"</span> <span style="color: #98be65;">(</span>mu4e-message-field msg <span style="color: #c678dd;">:maildir</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>
+        <span style="color: #c678dd;">:vars</span>
+        <span style="color: #51afef;">'</span><span style="color: #a9a1e1;">(</span>
+          <span style="color: #51afef;">(</span><span style="color: #dcaeea;">user-mail-address</span> . <span style="color: #98be65;">"chahak@utexas.edu"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span><span style="color: #dcaeea;">user-full-name</span> . <span style="color: #98be65;">"Chahak Mehta"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-drafts-folder . <span style="color: #98be65;">"/chahakut/[Gmail]/Drafts"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-sent-folder . <span style="color: #98be65;">"/chahakut/[Gmail]/Sent Mail"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-refile-folder . <span style="color: #98be65;">"/chahakut/[Gmail]/All Mail"</span><span style="color: #51afef;">)</span>
+          <span style="color: #51afef;">(</span>mu4e-trash-folder . <span style="color: #98be65;">"/chahakut/[Gmail]/Trash"</span><span style="color: #51afef;">)</span>
+          <span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>
