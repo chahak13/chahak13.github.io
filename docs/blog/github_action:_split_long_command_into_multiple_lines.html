@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 01:20 -->
+<!-- 2022-11-20 Sun 02:10 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Github Action: Split Long Command into Multiple Lines</title>
@@ -34,7 +34,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/">&lt; Home</a>
+<a href="/docs">&lt; Home</a>
+<a href="/docs/blog/sitemap.html">&lt; Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -63,7 +64,7 @@
 <p>
 I have a Github action command that is really long:
 </p>
-<pre class="example" id="org20120b4">
+<pre class="example" id="org6f6d5b2">
 name: build
 
 on: [push]
@@ -94,7 +95,7 @@ Comments
 <p>
 I have a multi line command using backslash to separate the lines as follows:
 </p>
-<pre class="example" id="orgfc8c1ed">
+<pre class="example" id="org2063312">
 - name: Configure functions
   run: |
     firebase functions:config:set \
@@ -128,7 +129,7 @@ Comments:
 You can use the YAML <b>folded style</b> with <code>&amp;gt;</code> which is supported by GitHub Actions.
 For example,
 </p>
-<pre class="example" id="orgf50c1e6">
+<pre class="example" id="orge300862">
 run: &gt;
   xvfb-run
   ./mvnw -f my/pom.xml
@@ -139,7 +140,7 @@ run: &gt;
 <p>
 newlines will be replaced with spaces so the above is equivalent to
 </p>
-<pre class="example" id="org7925f7b">
+<pre class="example" id="org18777c6">
 run: xvfb-run ./mvnw -f my/pom.xml clean verify -DskipTests
 
 </pre>
@@ -166,7 +167,7 @@ You can use:
 I found the site <a href="https://yaml-multiline.info/">yaml-multiline.info</a> useful for understanding how yaml strings are interpreted.
 For my use case, I ended up doing the following:
 </p>
-<pre class="example" id="orgc161aef">
+<pre class="example" id="org082b115">
 run: &gt;-
   for i in $(find . -type f -name "*.log");
   do
@@ -197,7 +198,7 @@ As far as I know, GitHub Actions does not support that.
 However, you can use environment variables for that.
 For example, this script splits your command in 3 lines of code and executes it as one line.
 </p>
-<pre class="example" id="org46e2213">
+<pre class="example" id="org56f8075">
 steps:
   - name: Install Prerequisites
     run: |
@@ -226,7 +227,7 @@ Comments:
 <p>
 Note also the <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#join">join</a> and <a href="https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#format">format</a> functions for expressions: 
 </p>
-<pre class="example" id="org385c2b7">
+<pre class="example" id="org0234663">
 HELLO_WORLD = ${{ join('Hello', 'world!') }}
 HELLO_WORLD = ${{ format('{{Hello {0}}}', 'World') }}
 

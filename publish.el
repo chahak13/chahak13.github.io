@@ -47,7 +47,8 @@
 (defvar publish-chahak13-css "<link rel=\"stylesheet\" href=\"../style.css\" type=\"text/css\"/>")
 (defvar publish-chahak13-header "<div id=\"updated\">Updated: %C</div>
 <nav>
-<a href=\"/\">&lt; Home</a>
+<a href=\"/docs\">Home</a>
+<a href=\"/docs/blog/sitemap.html\">Posts</a>
 </nav>")
 
 (defvar publish-chahak13-footer "<hr/>
@@ -58,7 +59,7 @@ Created with %c
 </footer>")
 
 (defvar publish-chahak13-base-dir "~/Documents/chahak13.github.io/org/")
-(defvar publish-chahak13-publish-dir "~/Documents/chahak13.github.io/html/")
+(defvar publish-chahak13-publish-dir "~/Documents/chahak13.github.io/docs/")
 
 (setq org-publish-project-alist
       `(("index"
@@ -70,7 +71,7 @@ Created with %c
          :publishing-function org-html-publish-to-html
 
          :html-head "<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>"
-         :html-preamble "<div id=\"updated\">Updated: %C</div>"
+         :html-preamble "<div id=\"updated\">Updated: %C</div> <nav> <a href=\"/docs/blog/sitemap.html\">Posts</a>"
          :html-postamble ,publish-chahak13-footer)
 
         ("pages"
@@ -102,10 +103,10 @@ Created with %c
          :html-postamble ,publish-chahak13-footer)
 
         ("static"
-         :base-directory "~/Documents/chahak13.github.io/org/"
+         :base-directory ,publish-chahak13-base-dir
          :base-extension "css\\|txt\\|jpg\\|gif\\|png"
          :recursive t
-         :publishing-directory "~/Documents/chahak13.github.io/html/"
+         :publishing-directory ,publish-chahak13-publish-dir
          :publishing-function org-publish-attachment)
 
         ("chahak13.github.io" :components ("index" "pages" "blog" "static"))))

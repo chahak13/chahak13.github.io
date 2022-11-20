@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 01:20 -->
+<!-- 2022-11-20 Sun 02:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Setup for org-roam and its compatriots</title>
@@ -13,7 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/">&lt; Home</a>
+<a href="/docs">&lt; Home</a>
+<a href="/docs/blog/sitemap.html">&lt; Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -194,7 +195,7 @@ While the bulk of <code>org-roam</code>&rsquo;s functionality is built up on van
 Each note needs to be prescribed with a title (duh?). This allows quick searching of notes. <code>org-roam</code> adds to the standard <code>+title</code> keyword in org-mode by using an new keyword called <code>#+roam_alias</code>. These aliases are space-delimited quoted strings that can also be used to refer the note while using <code>org-roam</code>. It also provides support for extracting title from the first headline in the file. The default action is to determine titles using <code>#+title</code> and <code>#+roam_alias</code> and if <code>#+title</code> isn&rsquo;t available, then fallback to the first headline. This is useful in topics like &ldquo;World War 2&rdquo; where it can also be referred to as &ldquo;WW2&rdquo; or &ldquo;World War II&rdquo; or such.
 </p>
 
-<pre class="example" id="org0f281f3">
+<pre class="example" id="org92e554a">
   #+title: World War 2
   #+roam_alias: "WWII" "WW2" "World War II"
 </pre>
@@ -321,7 +322,7 @@ To enable org-roam&rsquo;s protocol extensions, add the following to emacs init 
 I had to make a desktop application file for <code>emacsclient</code> to use <code>org-protocol</code>. It can be made on Linux platforms by creating a file in <code>~/.local/share/applications/</code> directory. An example file is shown below
 </p>
 
-<pre class="example" id="org1b9f1bc">
+<pre class="example" id="org8aeb392">
   [Desktop Entry]
   Name=Org-Protocol
   Exec=emacsclient %u
