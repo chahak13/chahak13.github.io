@@ -61,6 +61,9 @@ Created with %c
 (defvar publish-chahak13-base-dir "~/Documents/chahak13.github.io/org/")
 (defvar publish-chahak13-publish-dir "~/Documents/chahak13.github.io/docs/")
 
+;; Render ~verbatim~ as kbd tag in HTML
+(add-to-list 'org-html-text-markup-alist '(verbatim . "<kbd>%s</kbd>"))
+
 (setq org-publish-project-alist
       `(("index"
          :base-directory ,publish-chahak13-base-dir
@@ -111,6 +114,8 @@ Created with %c
 
         ("chahak13.github.io" :components ("index" "pages" "blog" "static"))))
 
+(require 'org-roam)
+(org-roam-update-org-id-locations)
 (if (member "t" command-line-args)
     (progn
       (print "force publish all org files")

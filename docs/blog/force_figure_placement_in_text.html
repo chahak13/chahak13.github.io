@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 02:09 -->
+<!-- 2022-11-20 Sun 13:24 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Force figure placement in text</title>
@@ -34,8 +34,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">&lt; Home</a>
-<a href="/docs/blog/sitemap.html">&lt; Posts</a>
+<a href="/docs">Home</a>
+<a href="/docs/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -64,7 +64,7 @@
 <p>
 I have a problem when a lot of figures are in question. Some figures tend to &ldquo;fly around&rdquo;, that is, be a paragraph below, although I placed them before that paragraph. I use code:
 </p>
-<pre class="example" id="org5abd654">
+<pre class="example" id="org6c40a87">
 \begin{figure}[ht]
 \begin{center}
 \advance\leftskip-3cm
@@ -94,7 +94,7 @@ Comments
 <p>
 <b>The short answer:</b> use the “<a href="http://www.ctan.org/tex-archive/help/Catalogue/entries/float.html">float</a>” package and then the <code>[H]</code> option for your figure.
 </p>
-<pre class="example" id="org87b3c32">
+<pre class="example" id="orgf6101c0">
 \usepackage{float}
 
 ...
@@ -131,7 +131,7 @@ Comments:
 <p>
 do <i>not</i> use a floating environment if you do not want it float.
 </p>
-<pre class="example" id="org8c6f9dd">
+<pre class="example" id="org626a47c">
 \usepackage{caption}
 ...
 \noindent%
@@ -145,7 +145,7 @@ do <i>not</i> use a floating environment if you do not want it float.
 <p>
 or
 </p>
-<pre class="example" id="org8e10ba1">
+<pre class="example" id="org925837c">
 \begin{center}
   \includegraphics[...]{slike/visina8}}
 \captionof{figure}{...}\label{visina8}%      only if needed  
@@ -192,7 +192,7 @@ If you later want to change it to a real float just turn <code>nofloat</code> to
 See the <code>adjustox</code> manual for all options. 
 If you don&rsquo;t want to box the content you can still use the <code>adjustbox</code> package as it provides the <code>{adjnofloat}{&amp;lt;type&amp;gt;}</code> environment. It is used internally to implement the <code>nofloat</code> key. Users can either redefine this environment to change or patch the <code>nofloat</code> behavior or use the environment directly.  The environment uses code very similar as in <a href="https://tex.stackexchange.com/a/8631/2975">Herberts answer</a>.
 </p>
-<pre class="example" id="orgc600830">
+<pre class="example" id="org9e772a2">
 \documentclass{article}
 \usepackage{blindtext}% for example text here only
 \usepackage{adjustbox}
