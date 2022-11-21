@@ -74,7 +74,7 @@ Created with %c
          :publishing-function org-html-publish-to-html
 
          :html-head "<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>"
-         :html-preamble "<div id=\"updated\">Updated: %C</div> <nav> <a href=\"/docs/blog/sitemap.html\">Posts</a>"
+         :html-preamble "<div id=\"updated\">Updated: %C</div> <nav> <a href=\"/blog/sitemap.html\">Posts</a>"
          :html-postamble ,publish-chahak13-footer)
 
         ("pages"
