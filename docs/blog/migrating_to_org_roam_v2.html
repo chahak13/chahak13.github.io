@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Migrating to org-roam v2</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -42,7 +42,7 @@
 </div>
 </nav>
 <p>
-<code>org-roam</code> recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for <code>org-roam</code> configuration. I&rsquo;m going to try and implement a workflow similar to Jethro&rsquo;s, as a starting step.
+<kbd>org-roam</kbd> recently moved to v2 and introduced many breaking changes. This provided me an opportunity to do a much needed writeover for <kbd>org-roam</kbd> configuration. I&rsquo;m going to try and implement a workflow similar to Jethro&rsquo;s, as a starting step.
 </p>
 
 <div id="outline-container-orgac13707" class="outline-2">
@@ -130,7 +130,7 @@ To acknowledge that we do want the newer version, we&rsquo;ll add the variable a
 <h2 id="orgbfa4259"><span class="section-number-2">2.</span> Setup</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-The biggest change in the newer version is that now instead of files, the smallest independent entity is a <code>node</code> which is defined as <i>any headline or top level file with an ID</i>. The ids can be created by using the <code>org-id-get-create</code> function.
+The biggest change in the newer version is that now instead of files, the smallest independent entity is a <kbd>node</kbd> which is defined as <i>any headline or top level file with an ID</i>. The ids can be created by using the <kbd>org-id-get-create</kbd> function.
 </p>
 
 <p>
@@ -148,7 +148,7 @@ First of all, we have to create the directory for roam to create the notes in.
 </div>
 
 <p>
-<code>org-roam</code> doesn&rsquo;t have a major mode anymore. Instead, <code>org-roam-setup</code> is to be used to start roam.
+<kbd>org-roam</kbd> doesn&rsquo;t have a major mode anymore. Instead, <kbd>org-roam-setup</kbd> is to be used to start roam.
 </p>
 
 <div class="org-src-container">
@@ -166,17 +166,17 @@ There are 3 main functions for creating/linking the nodes in v2.
 </p>
 
 <ol class="org-ol">
-<li><code>org-roam-node-insert</code> :: Creates a node if it doesn&rsquo;t exist, and inserts a link to he node at point.</li>
-<li><code>org-roam-node-find</code> :: Creates a node if it doesn&rsquo;t exist, and visits the node.</li>
-<li><code>org-roam-capture</code> :: Creates a node if it doesn&rsquo;t exist, and restores the current window configuration upon completion.</li>
+<li><kbd>org-roam-node-insert</kbd> :: Creates a node if it doesn&rsquo;t exist, and inserts a link to he node at point.</li>
+<li><kbd>org-roam-node-find</kbd> :: Creates a node if it doesn&rsquo;t exist, and visits the node.</li>
+<li><kbd>org-roam-capture</kbd> :: Creates a node if it doesn&rsquo;t exist, and restores the current window configuration upon completion.</li>
 </ol>
 
 
 <p>
-org-roam builds up on the <code>org-capture</code> templating system. The default template simply adds a property drawer with an ID and a title to the new file.
+org-roam builds up on the <kbd>org-capture</kbd> templating system. The default template simply adds a property drawer with an ID and a title to the new file.
 </p>
 
-<pre class="example" id="org2ec53f3">
+<pre class="example" id="orgb657982">
 :PROPERTIES:
 :ID:       9102114b-61c3-4cce-857d-53bd72d3044a
 :END:
@@ -189,7 +189,7 @@ org-roam builds up on the <code>org-capture</code> templating system. The defaul
 <h2 id="org7c72cd5"><span class="section-number-2">4.</span> Org-roam buffer</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-Instead of the side window, backlinks are now shown in a dedicated org-roam buffer. <code>org-roam-buffer-toggle</code> launches an org-roam buffer that tracks the node currently at point. The content of this buffer changes depending on the node under point.
+Instead of the side window, backlinks are now shown in a dedicated org-roam buffer. <kbd>org-roam-buffer-toggle</kbd> launches an org-roam buffer that tracks the node currently at point. The content of this buffer changes depending on the node under point.
 </p>
 </div>
 </div>
@@ -198,7 +198,7 @@ Instead of the side window, backlinks are now shown in a dedicated org-roam buff
 <h2 id="org75e25e3"><span class="section-number-2">5.</span> Tags</h2>
 <div class="outline-text-2" id="text-5">
 <p>
-Org-roam uses the same tagging system that org uses. This means that the tags are set by the <code>#+filetags</code> keyword for the file and as regular org tags for headline level nodes.
+Org-roam uses the same tagging system that org uses. This means that the tags are set by the <kbd>#+filetags</kbd> keyword for the file and as regular org tags for headline level nodes.
 </p>
 </div>
 </div>
@@ -207,7 +207,7 @@ Org-roam uses the same tagging system that org uses. This means that the tags ar
 <h2 id="org1fc088f"><span class="section-number-2">6.</span> Org-roam protocol</h2>
 <div class="outline-text-2" id="text-6">
 <p>
-<code>org-protocol</code> provides a way to capture content from external applications like browser. It does it by extending the <code>org-protocol</code> with 2 protocols: the <code>roam-node</code> and <code>roam-ref</code> protocol.
+<kbd>org-protocol</kbd> provides a way to capture content from external applications like browser. It does it by extending the <kbd>org-protocol</kbd> with 2 protocols: the <kbd>roam-node</kbd> and <kbd>roam-ref</kbd> protocol.
 </p>
 
 <div class="org-src-container">
@@ -221,7 +221,7 @@ Org-roam uses the same tagging system that org uses. This means that the tags ar
 <h3 id="org3da462a"><span class="section-number-3">6.1.</span> org-protocol on Linux</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
-First of all, we need to install the <code>org-protocol</code>. To do that, we first need to create a desktop appplication in <code>~/.local/share/applications/org-protocol.desktop</code>:
+First of all, we need to install the <kbd>org-protocol</kbd>. To do that, we first need to create a desktop appplication in <kbd>~/.local/share/applications/org-protocol.desktop</kbd>:
 </p>
 
 <pre class="example" id="orgd071693">
@@ -235,7 +235,7 @@ MimeType=x-scheme-handler/org-protocol
 </pre>
 
 <p>
-We then associate the <code>org-protocol://</code> links with the desktop application by running the following command in the shell:
+We then associate the <kbd>org-protocol://</kbd> links with the desktop application by running the following command in the shell:
 </p>
 
 <div class="org-src-container">
@@ -249,7 +249,7 @@ We then associate the <code>org-protocol://</code> links with the desktop applic
 <h3 id="org65280c7"><span class="section-number-3">6.2.</span> roam-node protocol</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
-The roam-node protocol opens the node with the ID specified <code>node</code> key (eg. <code>org-protocol://roam-node://roam-node?node=node-id</code>). <code>org-roam-graph</code> uses this to make the graph navigable.
+The roam-node protocol opens the node with the ID specified <kbd>node</kbd> key (eg. <kbd>org-protocol://roam-node://roam-node?node=node-id</kbd>). <kbd>org-roam-graph</kbd> uses this to make the graph navigable.
 </p>
 </div>
 </div>
@@ -258,7 +258,7 @@ The roam-node protocol opens the node with the ID specified <code>node</code> ke
 <h3 id="org37a58b6"><span class="section-number-3">6.3.</span> roam-ref protocol</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
-This protocol find or creates a new note with a given <code>roam_key</code>. This can be used with a javascript bookmarklet in the browser.
+This protocol find or creates a new note with a given <kbd>roam_key</kbd>. This can be used with a javascript bookmarklet in the browser.
 </p>
 
 <div class="org-src-container">
@@ -273,7 +273,7 @@ This protocol find or creates a new note with a given <code>roam_key</code>. Thi
 </div>
 
 <p>
-where <code>template</code> is the template key for a template in <code>org-roam-capture-ref-templates</code>. These templates should contain a <code>#+roam_key: ${ref}</code> in it.
+where <kbd>template</kbd> is the template key for a template in <kbd>org-roam-capture-ref-templates</kbd>. These templates should contain a <kbd>#+roam_key: ${ref}</kbd> in it.
 </p>
 </div>
 </div>
@@ -327,7 +327,7 @@ For org-roam templates,
 <h2 id="org22d578a"><span class="section-number-2">8.</span> Using general.el to set keybindings</h2>
 <div class="outline-text-2" id="text-8">
 <p>
-To add new keymaps and bindings, I&rsquo;m going to use <code>general.el</code> to create new keybindings.
+To add new keymaps and bindings, I&rsquo;m going to use <kbd>general.el</kbd> to create new keybindings.
 </p>
 
 <div class="org-src-container">

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pipenv in emacs</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -29,7 +29,7 @@
 </div>
 </nav>
 <p>
-<code>org-mode</code> is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode. I use <a href="https://pipenv.pypa.io/en/latest/">pipenv</a> for managing my virtual environments. To use that in emacs, I found the <a href="https://github.com/pwalsh/pipenv.el">pipenv.el</a> package that seems to provide all the necessary functionalities to use pipenv in emacs. It can be installed using <code>straight.el</code> directly
+<kbd>org-mode</kbd> is a really good and powerful interface for literate programming. It also forms a good substitute for Jupyter notebooks when collaboration isn&rsquo;t particularly required on the project. Though, there is one problem that occurs when using python in org-mode - it uses the default system-wide python installation for running the code-blocks. Since using python for various projects requires using virtual environments, it becomes essential to be able to use them inside org-mode. I use <a href="https://pipenv.pypa.io/en/latest/">pipenv</a> for managing my virtual environments. To use that in emacs, I found the <a href="https://github.com/pwalsh/pipenv.el">pipenv.el</a> package that seems to provide all the necessary functionalities to use pipenv in emacs. It can be installed using <kbd>straight.el</kbd> directly
 </p>
 
 <div class="org-src-container">
@@ -42,17 +42,17 @@
 </div>
 
 <p>
-This enables the <code>pipenv-mode</code> minor mode while using <code>python-mode</code> or <code>org-mode</code>. This should provide functions like <code>pipenv-activate</code> and <code>pipenv-deactivate</code> to activate the required virtual environment and <code>pipenv-install</code> to install any package and add it to the <code>Pipfile</code>.
+This enables the <kbd>pipenv-mode</kbd> minor mode while using <kbd>python-mode</kbd> or <kbd>org-mode</kbd>. This should provide functions like <kbd>pipenv-activate</kbd> and <kbd>pipenv-deactivate</kbd> to activate the required virtual environment and <kbd>pipenv-install</kbd> to install any package and add it to the <kbd>Pipfile</kbd>.
 </p>
 
 <p>
-When I enabled the <code>pipenv-mode</code> minor mode and ran <code>M-x pipenv-activate</code> in a directory that contained a <code>Pipfile</code>, it showed me an error <code>Searching for program: No such file or directory, pipenv</code>. I tried restarting the emacs session but it did not work.
+When I enabled the <kbd>pipenv-mode</kbd> minor mode and ran <kbd>M-x pipenv-activate</kbd> in a directory that contained a <kbd>Pipfile</kbd>, it showed me an error <kbd>Searching for program: No such file or directory, pipenv</kbd>. I tried restarting the emacs session but it did not work.
 </p>
 <div id="outline-container-org20b1645" class="outline-2">
 <h2 id="org20b1645"><span class="section-number-2">1.</span> Getting pipenv to work</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-After running into the issue, I decided going into the source code to see what&rsquo;s going wrong. First important thing that I noticed was that the function <code>pipenv-activate</code> checks if the current directory or any of its parent directory is a pipenv project via the <code>pipenv-project?</code> function. This is done using the <code>locate-dominating-file</code> function and returns the path to the first found directory that contains <code>Pipfile</code>.
+After running into the issue, I decided going into the source code to see what&rsquo;s going wrong. First important thing that I noticed was that the function <kbd>pipenv-activate</kbd> checks if the current directory or any of its parent directory is a pipenv project via the <kbd>pipenv-project?</kbd> function. This is done using the <kbd>locate-dominating-file</kbd> function and returns the path to the first found directory that contains <kbd>Pipfile</kbd>.
 </p>
 
 <div class="org-src-container">
@@ -63,7 +63,7 @@ After running into the issue, I decided going into the source code to see what&r
 </div>
 
 <p>
-<code>pipenv-activate</code> then waits for the <code>pipenv-venv</code> function to return the path to the virtual environment for the current project. On trying this function on a file in a pipenv project, I found out that it was this function that was throwing the error. This also made the error more clear as I realised that it is trying to run the <code>pipenv --venv</code> command and couldn&rsquo;t find the <code>pipenv</code> executable. On further inspection, I found out that the <code>pipenv</code> executable was in <code>~/.local/bin/</code> which was not in the emacs <code>exec-path</code> variable. So, adding this path should potentially resolve this issue.
+<kbd>pipenv-activate</kbd> then waits for the <kbd>pipenv-venv</kbd> function to return the path to the virtual environment for the current project. On trying this function on a file in a pipenv project, I found out that it was this function that was throwing the error. This also made the error more clear as I realised that it is trying to run the <kbd>pipenv --venv</kbd> command and couldn&rsquo;t find the <kbd>pipenv</kbd> executable. On further inspection, I found out that the <kbd>pipenv</kbd> executable was in <kbd>~/.local/bin/</kbd> which was not in the emacs <kbd>exec-path</kbd> variable. So, adding this path should potentially resolve this issue.
 </p>
 
 <div class="org-src-container">
@@ -72,7 +72,7 @@ After running into the issue, I decided going into the source code to see what&r
 </div>
 
 <p>
-Yay! <code>pipenv-activate</code> works now :)
+Yay! <kbd>pipenv-activate</kbd> works now :)
 </p>
 </div>
 </div>

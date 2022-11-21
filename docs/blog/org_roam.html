@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Setup for org-roam and its compatriots</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -49,7 +49,7 @@
 <li><a href="#org6d154ea">7. Graphing</a></li>
 <li><a href="#org20a0c10">8. Roam protocol</a>
 <ul>
-<li><a href="#orgb017342">8.1. The <code>roam-ref</code> Protocol</a></li>
+<li><a href="#orgb017342">8.1. The <kbd>roam-ref</kbd> Protocol</a></li>
 </ul>
 </li>
 <li><a href="#orgc4f7d3d">9. Daily-notes</a></li>
@@ -60,20 +60,20 @@
 <li><a href="#orgc33b599">12.1. Deft</a></li>
 </ul>
 </li>
-<li><a href="#org7e093fb">13. Keybindings for <code>org-roam</code> functions</a></li>
-<li><a href="#org055cd9e">14. <code>use-package</code> code block</a></li>
+<li><a href="#org7e093fb">13. Keybindings for <kbd>org-roam</kbd> functions</a></li>
+<li><a href="#org055cd9e">14. <kbd>use-package</kbd> code block</a></li>
 </ul>
 </div>
 </nav>
 <p>
-<code>org-roam</code> is an Emacs package that improves note-taking process in <code>org-mode</code>. Per the manual, <i>Org-roam is a tool for network thought</i>. I&rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.
+<kbd>org-roam</kbd> is an Emacs package that improves note-taking process in <kbd>org-mode</kbd>. Per the manual, <i>Org-roam is a tool for network thought</i>. I&rsquo;ve been trying to get into the habit of note-taking and the result of extreme boredom led me to set this up in my system after hearing a lot of good things about it. The complete config block for init.el can be found at the end.
 </p>
 
 <div id="outline-container-org74fac8d" class="outline-2">
 <h2 id="org74fac8d"><span class="section-number-2">1.</span> Zettelkasten</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-<code>Zettelkasten</code> is a German word, and the name of a note taking system that was developed by a German sociologist <b>Niklas Luhmann</b> who used to take notes on cards and then put them into a slip-box. The idea is that, with enough notes linked to each other, one can come up with various ideas to think, write, watch about. This  introduction is, by no means, a good introduction and one should definitely read about Zettelkasten on their own if they find it interesting. <code>org-roam</code> aims to be the slip-box, where every note is a zettel/card of its own.
+<kbd>Zettelkasten</kbd> is a German word, and the name of a note taking system that was developed by a German sociologist <b>Niklas Luhmann</b> who used to take notes on cards and then put them into a slip-box. The idea is that, with enough notes linked to each other, one can come up with various ideas to think, write, watch about. This  introduction is, by no means, a good introduction and one should definitely read about Zettelkasten on their own if they find it interesting. <kbd>org-roam</kbd> aims to be the slip-box, where every note is a zettel/card of its own.
 </p>
 </div>
 
@@ -81,7 +81,7 @@
 <h3 id="org5afa543"><span class="section-number-3">1.1.</span> Fleeting notes</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
-Notes that are essentially short quick reminders of information or ideas that need to be processed later on, or trashed. I have tried using <code>org-capture</code> for this with a decent amount of success but I plan to try <code>org-roam</code>&rsquo;s daily notes feature first to have a comparison. These kinds of notes are a central inbox that are to be further refiled and processed into permanent notes.
+Notes that are essentially short quick reminders of information or ideas that need to be processed later on, or trashed. I have tried using <kbd>org-capture</kbd> for this with a decent amount of success but I plan to try <kbd>org-roam</kbd>&rsquo;s daily notes feature first to have a comparison. These kinds of notes are a central inbox that are to be further refiled and processed into permanent notes.
 </p>
 </div>
 </div>
@@ -118,7 +118,7 @@ Concept notes are more in-depth and require more care in authoring. They need to
 <h2 id="orgaaff6c9"><span class="section-number-2">2.</span> Installation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-I used the <code>straight.el</code> package manager, with the <code>use-package</code> package as a configuration manager to install and customize <code>org-roam</code> and other packages. This can be done by running the following
+I used the <kbd>straight.el</kbd> package manager, with the <kbd>use-package</kbd> package as a configuration manager to install and customize <kbd>org-roam</kbd> and other packages. This can be done by running the following
 </p>
 
 <div class="org-src-container">
@@ -128,7 +128,7 @@ I used the <code>straight.el</code> package manager, with the <code>use-package<
 </div>
 
 <p>
-<code>org-roam</code> needs <code>sqlite3</code> to work. Please make sure that it is installed and available to emacs (Check <code>exec-path</code> variable)
+<kbd>org-roam</kbd> needs <kbd>sqlite3</kbd> to work. Please make sure that it is installed and available to emacs (Check <kbd>exec-path</kbd> variable)
 </p>
 </div>
 </div>
@@ -137,7 +137,7 @@ I used the <code>straight.el</code> package manager, with the <code>use-package<
 <h2 id="org9d2468b"><span class="section-number-2">3.</span> Getting started</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-The first step to start using <code>org-roam</code> is to set the <code>org-roam-directory</code> variable. This directory will contain all the notes that are created during the time of using <code>org-roam</code>. We will set this using the <code>:config</code> block in <code>use-package</code>
+The first step to start using <kbd>org-roam</kbd> is to set the <kbd>org-roam-directory</kbd> variable. This directory will contain all the notes that are created during the time of using <kbd>org-roam</kbd>. We will set this using the <kbd>:config</kbd> block in <kbd>use-package</kbd>
 </p>
 
 <div class="org-src-container">
@@ -153,7 +153,7 @@ Org-roam manual recommends using a flat hierarchy to store all the notes, instea
 </p>
 
 <p>
-The next step is to enable the minor mode <code>org-roam-mode</code> globally. While this sets up Emacs with several hooks, it is not enabled on startup. To do that, we&rsquo;ll add a hook to the <code>use-package</code> block we&rsquo;ve been building.
+The next step is to enable the minor mode <kbd>org-roam-mode</kbd> globally. While this sets up Emacs with several hooks, it is not enabled on startup. To do that, we&rsquo;ll add a hook to the <kbd>use-package</kbd> block we&rsquo;ve been building.
 </p>
 
 <div class="org-src-container">
@@ -167,15 +167,15 @@ The next step is to enable the minor mode <code>org-roam-mode</code> globally. W
 </div>
 
 <p>
-To build the note cache manually, one needs to use <code>M-x org-roam-db-build-cache</code>. Cache builds might take a while in the first run, but is often very quick in subsequent runs because it only reprocesses modified files.
+To build the note cache manually, one needs to use <kbd>M-x org-roam-db-build-cache</kbd>. Cache builds might take a while in the first run, but is often very quick in subsequent runs because it only reprocesses modified files.
 </p>
 
 <p>
-To start taking notes, one of the two functions can be used <code>org-roam-find-file</code> or <code>org-roam-capture</code>. While both of them will create a new file with the provided title, the major difference is that <code>org-roam-find-file</code> will point to the newly created note in the buffer, while <code>org-roam-capture</code> will point the user back to the original buffer, similar to <code>org-capture</code>.
+To start taking notes, one of the two functions can be used <kbd>org-roam-find-file</kbd> or <kbd>org-roam-capture</kbd>. While both of them will create a new file with the provided title, the major difference is that <kbd>org-roam-find-file</kbd> will point to the newly created note in the buffer, while <kbd>org-roam-capture</kbd> will point the user back to the original buffer, similar to <kbd>org-capture</kbd>.
 </p>
 
 <p>
-To insert links in a note, use <code>M-x org-roam-insert</code>. This will bring up a prompt with a list of titles for existing notes. Selecting an existing entry will create and insert a link to the current file. Entering a non-existent title will create a new note with that title and link it. Org-roam recommends liberal linking of files, facilitating build up of a denser graph of inter-connected notes. To toggle the visibility of backlinks of a note, along with some context, call <code>M-x org-roam</code>.
+To insert links in a note, use <kbd>M-x org-roam-insert</kbd>. This will bring up a prompt with a list of titles for existing notes. Selecting an existing entry will create and insert a link to the current file. Entering a non-existent title will create a new note with that title and link it. Org-roam recommends liberal linking of files, facilitating build up of a denser graph of inter-connected notes. To toggle the visibility of backlinks of a note, along with some context, call <kbd>M-x org-roam</kbd>.
 </p>
 </div>
 </div>
@@ -184,7 +184,7 @@ To insert links in a note, use <code>M-x org-roam-insert</code>. This will bring
 <h2 id="orgaea9dcd"><span class="section-number-2">4.</span> Files</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-While the bulk of <code>org-roam</code>&rsquo;s functionality is built up on vanilla org, it adds some extensions and keywords to support additional functionality. 
+While the bulk of <kbd>org-roam</kbd>&rsquo;s functionality is built up on vanilla org, it adds some extensions and keywords to support additional functionality. 
 </p>
 </div>
 
@@ -192,16 +192,16 @@ While the bulk of <code>org-roam</code>&rsquo;s functionality is built up on van
 <h3 id="orgbf4175d"><span class="section-number-3">4.1.</span> File Titles</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-Each note needs to be prescribed with a title (duh?). This allows quick searching of notes. <code>org-roam</code> adds to the standard <code>+title</code> keyword in org-mode by using an new keyword called <code>#+roam_alias</code>. These aliases are space-delimited quoted strings that can also be used to refer the note while using <code>org-roam</code>. It also provides support for extracting title from the first headline in the file. The default action is to determine titles using <code>#+title</code> and <code>#+roam_alias</code> and if <code>#+title</code> isn&rsquo;t available, then fallback to the first headline. This is useful in topics like &ldquo;World War 2&rdquo; where it can also be referred to as &ldquo;WW2&rdquo; or &ldquo;World War II&rdquo; or such.
+Each note needs to be prescribed with a title (duh?). This allows quick searching of notes. <kbd>org-roam</kbd> adds to the standard <kbd>+title</kbd> keyword in org-mode by using an new keyword called <kbd>#+roam_alias</kbd>. These aliases are space-delimited quoted strings that can also be used to refer the note while using <kbd>org-roam</kbd>. It also provides support for extracting title from the first headline in the file. The default action is to determine titles using <kbd>#+title</kbd> and <kbd>#+roam_alias</kbd> and if <kbd>#+title</kbd> isn&rsquo;t available, then fallback to the first headline. This is useful in topics like &ldquo;World War 2&rdquo; where it can also be referred to as &ldquo;WW2&rdquo; or &ldquo;World War II&rdquo; or such.
 </p>
 
-<pre class="example" id="org3eb8ba7">
+<pre class="example" id="orgf617e71">
   #+title: World War 2
   #+roam_alias: "WWII" "WW2" "World War II"
 </pre>
 
 <p>
-Title extraction can be customized using the <code>org-roam-title-sources</code> variable.
+Title extraction can be customized using the <kbd>org-roam-title-sources</kbd> variable.
 </p>
 </div>
 </div>
@@ -210,11 +210,11 @@ Title extraction can be customized using the <code>org-roam-title-sources</code>
 <h3 id="org705ff21"><span class="section-number-3">4.2.</span> File Tags</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
-Tags are used as meta-data for files. They facilitate interaction with notes where titles are insufficient. It also provides a good interface for categorization of notes, especially while searching through all notes. By default, tags are extracted from the <code>#+roam_tags</code> property. Tags are space-delimited quoted strings. To customize this behaviour, check <code>org-roam-tag-sources</code> variable.
+Tags are used as meta-data for files. They facilitate interaction with notes where titles are insufficient. It also provides a good interface for categorization of notes, especially while searching through all notes. By default, tags are extracted from the <kbd>#+roam_tags</kbd> property. Tags are space-delimited quoted strings. To customize this behaviour, check <kbd>org-roam-tag-sources</kbd> variable.
 </p>
 
 <p>
-<b>DOUBT</b>: The screenshots show a <code>- tags ::</code> directive. Need to confirm what works.
+<b>DOUBT</b>: The screenshots show a <kbd>- tags ::</kbd> directive. Need to confirm what works.
 </p>
 </div>
 </div>
@@ -223,7 +223,7 @@ Tags are used as meta-data for files. They facilitate interaction with notes whe
 <h3 id="orge7bc0c5"><span class="section-number-3">4.3.</span> File Refer</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
-Refs are unique identifiers for files. They are declared using the <code>+roam_key</code> and show up as a Ref Backlink in the org-roam link list.
+Refs are unique identifiers for files. They are declared using the <kbd>+roam_key</kbd> and show up as a Ref Backlink in the org-roam link list.
 </p>
 </div>
 </div>
@@ -233,7 +233,7 @@ Refs are unique identifiers for files. They are declared using the <code>+roam_k
 <h2 id="orgee4d985"><span class="section-number-2">5.</span> Templates</h2>
 <div class="outline-text-2" id="text-5">
 <p>
-Org-roam extends the <code>org-capture</code> capabilities for its templating system. Org-roam&rsquo;s capture templates are not completely compatible with <code>org-capture</code>, hence, to modify the templates, use the <code>org-roam-capture-templates</code>. An example template is shown below. This can be added in the <code>:config</code> section of the <code>use-package</code> configuration.
+Org-roam extends the <kbd>org-capture</kbd> capabilities for its templating system. Org-roam&rsquo;s capture templates are not completely compatible with <kbd>org-capture</kbd>, hence, to modify the templates, use the <kbd>org-roam-capture-templates</kbd>. An example template is shown below. This can be added in the <kbd>:config</kbd> section of the <kbd>use-package</kbd> configuration.
 </p>
 
 <div class="org-src-container">
@@ -258,17 +258,17 @@ Org-roam extends the <code>org-capture</code> capabilities for its templating sy
 <h2 id="orgc2a477d"><span class="section-number-2">6.</span> Inserting Links</h2>
 <div class="outline-text-2" id="text-6">
 <p>
-<code>file</code> links for files and <code>id</code> links for headlines are preferred as they ensure that the links will work even without <code>org-roam</code>. <code>file</code> links can be inserted using <code>org-roam-insert</code> whereas links to headlines can be inserted by navigating to the headline and calling <code>org-store-link</code> to store an ID and link into the org-roam database. That link can then be inserted via <code>org-insert-link</code>.
+<kbd>file</kbd> links for files and <kbd>id</kbd> links for headlines are preferred as they ensure that the links will work even without <kbd>org-roam</kbd>. <kbd>file</kbd> links can be inserted using <kbd>org-roam-insert</kbd> whereas links to headlines can be inserted by navigating to the headline and calling <kbd>org-store-link</kbd> to store an ID and link into the org-roam database. That link can then be inserted via <kbd>org-insert-link</kbd>.
 </p>
 
 <p>
-Org-roam also extends org linking syntax by adding <code>roam</code> links. Org-roam registers this link type, and interprets the path as follows:
+Org-roam also extends org linking syntax by adding <kbd>roam</kbd> links. Org-roam registers this link type, and interprets the path as follows:
 </p>
 
 <ul class="org-ul">
-<li><code>[[roam:title]]</code>: links to an org-roam file with title or alias as &ldquo;title&rdquo;.</li>
-<li><code>[[roam:*headline]]</code>: links to the headline &ldquo;headline&rdquo; in the current org-roam file.</li>
-<li><code>[[roam:title*headline]]</code>: links to the headline &ldquo;headline&rdquo; in the org-roam file with title or alias &ldquo;title&rdquo;</li>
+<li><kbd>[[roam:title]]</kbd>: links to an org-roam file with title or alias as &ldquo;title&rdquo;.</li>
+<li><kbd>[[roam:*headline]]</kbd>: links to the headline &ldquo;headline&rdquo; in the current org-roam file.</li>
+<li><kbd>[[roam:title*headline]]</kbd>: links to the headline &ldquo;headline&rdquo; in the org-roam file with title or alias &ldquo;title&rdquo;</li>
 </ul>
 </div>
 </div>
@@ -277,7 +277,7 @@ Org-roam also extends org linking syntax by adding <code>roam</code> links. Org-
 <h2 id="org6d154ea"><span class="section-number-2">7.</span> Graphing</h2>
 <div class="outline-text-2" id="text-7">
 <p>
-<code>org-roam-server</code> is basically a web application to visualize the org-roam database. It needs to be installed separately and can be done easily using <code>straight.el</code> and <code>use-package</code>
+<kbd>org-roam-server</kbd> is basically a web application to visualize the org-roam database. It needs to be installed separately and can be done easily using <kbd>straight.el</kbd> and <kbd>use-package</kbd>
 </p>
 
 <div class="org-src-container">
@@ -301,7 +301,7 @@ Org-roam also extends org linking syntax by adding <code>roam</code> links. Org-
 </div>
 
 <p>
-<code>org-roam-server-mode</code> will enable the global mode. This will start a web server on <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a> that can be accessed for the org-roam visualization. To open the note on clicking a node, the <code>org-roam-protocol</code> needs to be set up, which is done in the next section.
+<kbd>org-roam-server-mode</kbd> will enable the global mode. This will start a web server on <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a> that can be accessed for the org-roam visualization. To open the note on clicking a node, the <kbd>org-roam-protocol</kbd> needs to be set up, which is done in the next section.
 </p>
 </div>
 </div>
@@ -319,10 +319,10 @@ To enable org-roam&rsquo;s protocol extensions, add the following to emacs init 
 </div>
 
 <p>
-I had to make a desktop application file for <code>emacsclient</code> to use <code>org-protocol</code>. It can be made on Linux platforms by creating a file in <code>~/.local/share/applications/</code> directory. An example file is shown below
+I had to make a desktop application file for <kbd>emacsclient</kbd> to use <kbd>org-protocol</kbd>. It can be made on Linux platforms by creating a file in <kbd>~/.local/share/applications/</kbd> directory. An example file is shown below
 </p>
 
-<pre class="example" id="org00eadf5">
+<pre class="example" id="org69fe33c">
   [Desktop Entry]
   Name=Org-Protocol
   Exec=emacsclient %u
@@ -334,10 +334,10 @@ I had to make a desktop application file for <code>emacsclient</code> to use <co
 </div>
 
 <div id="outline-container-orgb017342" class="outline-3">
-<h3 id="orgb017342"><span class="section-number-3">8.1.</span> The <code>roam-ref</code> Protocol</h3>
+<h3 id="orgb017342"><span class="section-number-3">8.1.</span> The <kbd>roam-ref</kbd> Protocol</h3>
 <div class="outline-text-3" id="text-8-1">
 <p>
-This protocol finds or creates a new note with a given <code>roam_key</code>. This is one of the most appealing features of <code>org-roam</code> for me. I&rsquo;m guessing that this in conjunction with Zotero will make my note-taking life much easier on the web. To use this, a bookmarklet needs to be created in the browser. For my choice, that is currently Firefox. The steps to create a bookmarklet are
+This protocol finds or creates a new note with a given <kbd>roam_key</kbd>. This is one of the most appealing features of <kbd>org-roam</kbd> for me. I&rsquo;m guessing that this in conjunction with Zotero will make my note-taking life much easier on the web. To use this, a bookmarklet needs to be created in the browser. For my choice, that is currently Firefox. The steps to create a bookmarklet are
 </p>
 
 <ol class="org-ol">
@@ -359,7 +359,7 @@ In the location field, add the following code
 </div></li>
 </ol>
 <p>
-Here, <code>template</code> is the template key for a template in <code>org-roam-capture-ref-templates</code>
+Here, <kbd>template</kbd> is the template key for a template in <kbd>org-roam-capture-ref-templates</kbd>
 </p>
 
 <div class="org-src-container">
@@ -380,7 +380,7 @@ Here, <code>template</code> is the template key for a template in <code>org-roam
 </div>
 
 <p>
-Now, I can simply click on this bookmarklet from whatever website/article I am looking at, to directly create a note in emacs using org-roam. With the <code>webpage</code> template, I write down the selected text from the browser into the top of the body of the note, in italics.
+Now, I can simply click on this bookmarklet from whatever website/article I am looking at, to directly create a note in emacs using org-roam. With the <kbd>webpage</kbd> template, I write down the selected text from the browser into the top of the body of the note, in italics.
 </p>
 </div>
 </div>
@@ -390,7 +390,7 @@ Now, I can simply click on this bookmarklet from whatever website/article I am l
 <h2 id="orgc4f7d3d"><span class="section-number-2">9.</span> Daily-notes</h2>
 <div class="outline-text-2" id="text-9">
 <p>
-Org-roam provides functions similar to org-journal. I decided to stick to org-roam for the daily notes too, to keep all the notes under one umbrella. To configure daily notes, there are 2 main variables: <code>org-roam-dailies-directory</code> and <code>org-roam-dailies-capture-templates</code>. They are the path to the daily-notes and the capture templates for daily notes respectively. A sane default config taken directly from the manual is
+Org-roam provides functions similar to org-journal. I decided to stick to org-roam for the daily notes too, to keep all the notes under one umbrella. To configure daily notes, there are 2 main variables: <kbd>org-roam-dailies-directory</kbd> and <kbd>org-roam-dailies-capture-templates</kbd>. They are the path to the daily-notes and the capture templates for daily notes respectively. A sane default config taken directly from the manual is
 </p>
 
 <div class="org-src-container">
@@ -404,20 +404,20 @@ Org-roam provides functions similar to org-journal. I decided to stick to org-ro
 </div>
 
 <p>
-The <code>org-roam-dailies-directory</code> should appear in the <code>:file-name</code> for the notes to be recognized as daily-notes.
+The <kbd>org-roam-dailies-directory</kbd> should appear in the <kbd>:file-name</kbd> for the notes to be recognized as daily-notes.
 </p>
 
 <p>
-To start writing daily-notes, call the <code>org-roam-dailies-capture-today</code> function. It creates an entry in the notes for today. <code>org-roam-dailies-find-today</code> finds the note for today, creating it if necessary. Another important function that can be used for searching is the <code>org-roam-dailies-find-date</code> which will open the note for the particular date using a calendar.
+To start writing daily-notes, call the <kbd>org-roam-dailies-capture-today</kbd> function. It creates an entry in the notes for today. <kbd>org-roam-dailies-find-today</kbd> finds the note for today, creating it if necessary. Another important function that can be used for searching is the <kbd>org-roam-dailies-find-date</kbd> which will open the note for the particular date using a calendar.
 </p>
 
 <p>
 Other functions to keep in mind:
 </p>
 <ul class="org-ul">
-<li><code>org-roam-dailies-find-directory</code></li>
-<li><code>org-roam-dailies-find-previous-note</code></li>
-<li><code>org-roam-dailies-find-next-note</code></li>
+<li><kbd>org-roam-dailies-find-directory</kbd></li>
+<li><kbd>org-roam-dailies-find-previous-note</kbd></li>
+<li><kbd>org-roam-dailies-find-next-note</kbd></li>
 </ul>
 </div>
 </div>
@@ -426,7 +426,7 @@ Other functions to keep in mind:
 <h2 id="org9cee252"><span class="section-number-2">10.</span> Diagnosing and Repairing Files</h2>
 <div class="outline-text-2" id="text-10">
 <p>
-Once in a while, it would be a good idea to check for the correctness of the links. To do this easily, org-roam provides the <code>org-roam-doctor</code> function. This function checks the links in the current org-roam buffer. To run it on all files, use <code>C-u M-x org-roam-doctor</code> but this might take some time.
+Once in a while, it would be a good idea to check for the correctness of the links. To do this easily, org-roam provides the <kbd>org-roam-doctor</kbd> function. This function checks the links in the current org-roam buffer. To run it on all files, use <kbd>C-u M-x org-roam-doctor</kbd> but this might take some time.
 </p>
 </div>
 </div>
@@ -435,7 +435,7 @@ Once in a while, it would be a good idea to check for the correctness of the lin
 <h2 id="orga836a76"><span class="section-number-2">11.</span> Finding Unlinked References</h2>
 <div class="outline-text-2" id="text-11">
 <p>
-It is difficult, and pointless to an extent, to try and remember all the notes to link to. For some such cases, org-roam has the <code>org-roam-unlinked-references</code>. It tries to find strings in the current buffer that match the title or aliases of any existing note in the org-roam database. These can then be converted to new links.
+It is difficult, and pointless to an extent, to try and remember all the notes to link to. For some such cases, org-roam has the <kbd>org-roam-unlinked-references</kbd>. It tries to find strings in the current buffer that match the title or aliases of any existing note in the org-roam database. These can then be converted to new links.
 </p>
 
 <p>
@@ -452,7 +452,7 @@ It is difficult, and pointless to an extent, to try and remember all the notes t
 <h3 id="orgc33b599"><span class="section-number-3">12.1.</span> Deft</h3>
 <div class="outline-text-3" id="text-12-1">
 <p>
-<code>deft</code> is an interface for enhanced searching and filtering of notes. This provides a better interface to quickly go to a required note as it searches both, title and body of the note. It can be installed directly from MELPA and is fairly easy to get started with.
+<kbd>deft</kbd> is an interface for enhanced searching and filtering of notes. This provides a better interface to quickly go to a required note as it searches both, title and body of the note. It can be installed directly from MELPA and is fairly easy to get started with.
 </p>
 
 <div class="org-src-container">
@@ -471,10 +471,10 @@ It is difficult, and pointless to an extent, to try and remember all the notes t
 </div>
 
 <div id="outline-container-org7e093fb" class="outline-2">
-<h2 id="org7e093fb"><span class="section-number-2">13.</span> Keybindings for <code>org-roam</code> functions</h2>
+<h2 id="org7e093fb"><span class="section-number-2">13.</span> Keybindings for <kbd>org-roam</kbd> functions</h2>
 <div class="outline-text-2" id="text-13">
 <p>
-I decided to create a keymap for org-roam, and I had heard about the <code>general</code> package on David Wilson&rsquo;s Emacs-from-scratch series so I decided to give that a shot.
+I decided to create a keymap for org-roam, and I had heard about the <kbd>general</kbd> package on David Wilson&rsquo;s Emacs-from-scratch series so I decided to give that a shot.
 </p>
 
 <div class="org-src-container">
@@ -498,7 +498,7 @@ I decided to create a keymap for org-roam, and I had heard about the <code>gener
 </div>
 </div>
 <div id="outline-container-org055cd9e" class="outline-2">
-<h2 id="org055cd9e"><span class="section-number-2">14.</span> <code>use-package</code> code block</h2>
+<h2 id="org055cd9e"><span class="section-number-2">14.</span> <kbd>use-package</kbd> code block</h2>
 <div class="outline-text-2" id="text-14">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  <span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> org-roam

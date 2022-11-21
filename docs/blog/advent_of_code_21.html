@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Advent of Code '21</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -28,22 +28,22 @@
 <ul>
 <li><a href="#org804574c">1.1. Part 1</a>
 <ul>
-<li><a href="#org2031432">1.1.1. Problem</a></li>
-<li><a href="#org4fe06b4">1.1.2. Solution</a></li>
+<li><a href="#org1ca879a">1.1.1. Problem</a></li>
+<li><a href="#org2d2c5bc">1.1.2. Solution</a></li>
 </ul>
 </li>
 <li><a href="#org4551ba1">1.2. Part 2</a>
 <ul>
-<li><a href="#org6c81b83">1.2.1. Problem</a></li>
-<li><a href="#org4731aa6">1.2.2. Solution</a></li>
+<li><a href="#orgd2c8eba">1.2.1. Problem</a></li>
+<li><a href="#org2d4c397">1.2.2. Solution</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#org1d50924">2. Day 2: Dive!</a>
 <ul>
-<li><a href="#org1ca879a">2.1. Problem</a></li>
-<li><a href="#org2d2c5bc">2.2. Solution</a></li>
+<li><a href="#orge38c7ea">2.1. Problem</a></li>
+<li><a href="#org3aa8247">2.2. Solution</a></li>
 </ul>
 </li>
 </ul>
@@ -58,8 +58,8 @@
 <h3 id="org804574c"><span class="section-number-3">1.1.</span> Part 1</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org2031432" class="outline-4">
-<h4 id="org2031432"><span class="section-number-4">1.1.1.</span> Problem</h4>
+<div id="outline-container-org1ca879a" class="outline-4">
+<h4 id="org1ca879a"><span class="section-number-4">1.1.1.</span> Problem</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 You&rsquo;re minding your own business on a ship at sea when the overboard alarm goes off! You rush to see if you can help. Apparently, one of the Elves tripped and accidentally sent the sleigh keys flying into the ocean!
@@ -85,7 +85,7 @@ As the submarine drops below the surface of the ocean, it automatically performs
 For example, suppose you had the following report:
 </p>
 
-<pre class="example" id="orgeb26882">
+<pre class="example" id="org834e23d">
 199
 200
 208
@@ -110,7 +110,7 @@ The first order of business is to figure out how quickly the depth increases, ju
 To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.) In the example above, the changes are as follows:
 </p>
 
-<pre class="example" id="orgb01107d">
+<pre class="example" id="org6586a44">
 199 (N/A - no previous measurement)
 200 (increased)
 208 (increased)
@@ -133,8 +133,8 @@ How many measurements are larger than the previous measurement?
 </div>
 </div>
 
-<div id="outline-container-org4fe06b4" class="outline-4">
-<h4 id="org4fe06b4"><span class="section-number-4">1.1.2.</span> Solution</h4>
+<div id="outline-container-org2d2c5bc" class="outline-4">
+<h4 id="org2d2c5bc"><span class="section-number-4">1.1.2.</span> Solution</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #dcaeea;">count</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">0</span>
@@ -162,8 +162,8 @@ How many measurements are larger than the previous measurement?
 <h3 id="org4551ba1"><span class="section-number-3">1.2.</span> Part 2</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org6c81b83" class="outline-4">
-<h4 id="org6c81b83"><span class="section-number-4">1.2.1.</span> Problem</h4>
+<div id="outline-container-orgd2c8eba" class="outline-4">
+<h4 id="orgd2c8eba"><span class="section-number-4">1.2.1.</span> Problem</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 Considering every single measurement isn&rsquo;t as useful as you expected: there&rsquo;s just too much noise in the data.
@@ -173,7 +173,7 @@ Considering every single measurement isn&rsquo;t as useful as you expected: ther
 Instead, consider sums of a three-measurement sliding window. Again considering the above example:
 </p>
 
-<pre class="example" id="org8c50575">
+<pre class="example" id="org6652a9e">
 199  A
 200  A B
 208  A B C
@@ -198,7 +198,7 @@ Your goal now is to count the number of times the sum of measurements in this sl
 In the above example, the sum of each three-measurement window is as follows:
 </p>
 
-<pre class="example" id="org8eb08f5">
+<pre class="example" id="orgd2e5c32">
 A: 607 (N/A - no previous sum)
 B: 618 (increased)
 C: 618 (no change)
@@ -218,8 +218,8 @@ Consider sums of a three-measurement sliding window. How many sums are larger th
 </p>
 </div>
 </div>
-<div id="outline-container-org4731aa6" class="outline-4">
-<h4 id="org4731aa6"><span class="section-number-4">1.2.2.</span> Solution</h4>
+<div id="outline-container-org2d4c397" class="outline-4">
+<h4 id="org2d4c397"><span class="section-number-4">1.2.2.</span> Solution</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #dcaeea;">count</span> <span style="color: #51afef;">=</span> <span style="color: #a9a1e1;">0</span>
@@ -248,8 +248,8 @@ Consider sums of a three-measurement sliding window. How many sums are larger th
 <h2 id="org1d50924"><span class="section-number-2">2.</span> <a href="https://adventofcode.com/2021/day/2">Day 2: Dive!</a></h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1ca879a" class="outline-3">
-<h3 id="org1ca879a"><span class="section-number-3">2.1.</span> Problem</h3>
+<div id="outline-container-orge38c7ea" class="outline-3">
+<h3 id="orge38c7ea"><span class="section-number-3">2.1.</span> Problem</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Now, you need to figure out how to pilot this thing.
@@ -259,7 +259,7 @@ Now, you need to figure out how to pilot this thing.
 It seems like the submarine can take a series of commands like forward 1, down 2, or up 3:
 </p>
 
-<pre class="example" id="org8116c4a">
+<pre class="example" id="org83e8f9c">
     forward X increases the horizontal position by X units.
     down X increases the depth by X units.
     up X decreases the depth by X units.
@@ -273,7 +273,7 @@ Note that since you&rsquo;re on a submarine, down and up affect your depth, and 
 The submarine seems to already have a planned course (your puzzle input). You should probably figure out where it&rsquo;s going. For example:
 </p>
 
-<pre class="example" id="orgde0597f">
+<pre class="example" id="orga115cec">
 forward 5
 down 5
 forward 8
@@ -286,7 +286,7 @@ forward 2
 Your horizontal position and depth both start at 0. The steps above would then modify them as follows:
 </p>
 
-<pre class="example" id="org04235d1">
+<pre class="example" id="org13ddf8b">
     forward 5 adds 5 to your horizontal position, a total of 5.
     down 5 adds 5 to your depth, resulting in a value of 5.
     forward 8 adds 8 to your horizontal position, a total of 13.
@@ -304,8 +304,8 @@ Calculate the horizontal position and depth you would have after following the p
 </p>
 </div>
 </div>
-<div id="outline-container-org2d2c5bc" class="outline-3">
-<h3 id="org2d2c5bc"><span class="section-number-3">2.2.</span> Solution</h3>
+<div id="outline-container-org3aa8247" class="outline-3">
+<h3 id="org3aa8247"><span class="section-number-3">2.2.</span> Solution</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #51afef;">import</span> pandas <span style="color: #51afef;">as</span> pd

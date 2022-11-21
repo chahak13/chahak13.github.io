@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Mail in emacs - mu4e</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -43,21 +43,21 @@ optimized for quickly processing large amounts of e-mail.
 </blockquote>
 
 <p>
-As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like <code>mbsync</code>, <code>offlineimap</code> etc. I use <a href="fetching_emails_mbsync.html#ID-96244a3a-d9f5-4570-b9d4-d4faa62b8eb1">Fetching emails - mbsync</a> for getting my mail periodically from gmail.
+As taken from the manual, mu4e is an email interface for emacs. It is strictly an interface and doesn&rsquo;t communicate with the email provider for getting mails. This part is delegated to other things like <kbd>mbsync</kbd>, <kbd>offlineimap</kbd> etc. I use <a href="fetching_emails_mbsync.html#ID-96244a3a-d9f5-4570-b9d4-d4faa62b8eb1">Fetching emails - mbsync</a> for getting my mail periodically from gmail.
 </p>
 
 <div id="outline-container-org333556a" class="outline-2">
 <h2 id="org333556a"><span class="section-number-2">1.</span> Installation</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-mu4e comes along with the <code>mu</code> utility that can be downloaded directly from the OS&rsquo;s package manager. For Arch, this can be done via the AUR
+mu4e comes along with the <kbd>mu</kbd> utility that can be downloaded directly from the OS&rsquo;s package manager. For Arch, this can be done via the AUR
 </p>
 <div class="org-src-container">
 <pre class="src src-shell">paru -S mu
 </pre>
 </div>
 <p>
-This installs the <code>mu</code> indexer and its mu4e interface for emacs.
+This installs the <kbd>mu</kbd> indexer and its mu4e interface for emacs.
 </p>
 </div>
 </div>
@@ -66,7 +66,7 @@ This installs the <code>mu</code> indexer and its mu4e interface for emacs.
 <h2 id="org52eb44e"><span class="section-number-2">2.</span> Configuration</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-First thing to use mu4e is to load it into emacs. Since mu4e is installed via the package manager, it needs to be loaded into emacs. This can be done via the <code>load-path</code> directive in use-package.
+First thing to use mu4e is to load it into emacs. Since mu4e is installed via the package manager, it needs to be loaded into emacs. This can be done via the <kbd>load-path</kbd> directive in use-package.
 </p>
 
 <div class="org-src-container">
@@ -103,7 +103,7 @@ An important thing to note is that mu4e doesn&rsquo;t retrieve emails from the p
 </div>
 
 <p>
-Using these variables, mu4e uses the shell command set in the <code>mu4e-get-mail-command</code> variable every <code>mu4e-update-interval</code> seconds, which is set to 10 mins here. This can be changed as per requirement. To improve the indexing performace, I set the the <code>mu4e-index-lazy-check</code> variable to <code>t</code>. This variable tells the mu indexer to not update index for directories whose last modified time is not after the previous indexing. While this doesn&rsquo;t take into consideration changing/updating of messages, it handles addition and removal of messages. Since most of my operations don&rsquo;t involve changing emails in place, I&rsquo;m going to try and use this to see how it affects my flow.
+Using these variables, mu4e uses the shell command set in the <kbd>mu4e-get-mail-command</kbd> variable every <kbd>mu4e-update-interval</kbd> seconds, which is set to 10 mins here. This can be changed as per requirement. To improve the indexing performace, I set the the <kbd>mu4e-index-lazy-check</kbd> variable to <kbd>t</kbd>. This variable tells the mu indexer to not update index for directories whose last modified time is not after the previous indexing. While this doesn&rsquo;t take into consideration changing/updating of messages, it handles addition and removal of messages. Since most of my operations don&rsquo;t involve changing emails in place, I&rsquo;m going to try and use this to see how it affects my flow.
 </p>
 
 <div class="org-src-container">
@@ -117,12 +117,12 @@ Using these variables, mu4e uses the shell command set in the <code>mu4e-get-mai
 <h3 id="org82ff341"><span class="section-number-3">2.2.</span> Contexts</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-Contexts provide the useful ability to switch between various email accounts, based on the right context, or manually. Using this, we can dynamically switch between folders of different email accounts. An <code>mu4e-context</code> is a Lisp object with a few useful members:
+Contexts provide the useful ability to switch between various email accounts, based on the right context, or manually. Using this, we can dynamically switch between folders of different email accounts. An <kbd>mu4e-context</kbd> is a Lisp object with a few useful members:
 </p>
 <ul class="org-ul">
-<li><code>name</code>: The name of the context. e.g. work or private</li>
-<li><code>vars</code>: An association-list of variable settings for this account.</li>
-<li><code>match-func</code>: A function that takes a MSG message plist as argument and returns non-nil if this context matches the situation. mu4e uses the first context that matches.</li>
+<li><kbd>name</kbd>: The name of the context. e.g. work or private</li>
+<li><kbd>vars</kbd>: An association-list of variable settings for this account.</li>
+<li><kbd>match-func</kbd>: A function that takes a MSG message plist as argument and returns non-nil if this context matches the situation. mu4e uses the first context that matches.</li>
 </ul>
 
 <p>

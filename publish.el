@@ -47,8 +47,8 @@
 (defvar publish-chahak13-css "<link rel=\"stylesheet\" href=\"../style.css\" type=\"text/css\"/>")
 (defvar publish-chahak13-header "<div id=\"updated\">Updated: %C</div>
 <nav>
-<a href=\"/docs\">Home</a>
-<a href=\"/docs/blog/sitemap.html\">Posts</a>
+<a href=\"/\">Home</a>
+<a href=\"/blog/sitemap.html\">Posts</a>
 </nav>")
 
 (defvar publish-chahak13-footer "<hr/>

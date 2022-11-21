@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Stampede2 User Guide - TACC User Portal</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -110,7 +110,7 @@ Stampede2 has 4,200 Knight&rsquo;s Landing (KNL) compute nodes. An overview of t
 </table>
 
 <p>
-All but 504 KNL nodes have a 107GB <code>/tmp</code> partition on a 200GB Solid State Drive (SSD). The 504 KNLs originally installed as the Stampede1 KNL sub-system each have a 32GB <code>/tmp</code> partition on 112GB SSDs. The latter nodes currently make up the development, long and flat-quadrant queues. Size of <code>/tmp</code> partitions as of 24 Apr 2018. 
+All but 504 KNL nodes have a 107GB <kbd>/tmp</kbd> partition on a 200GB Solid State Drive (SSD). The 504 KNLs originally installed as the Stampede1 KNL sub-system each have a 32GB <kbd>/tmp</kbd> partition on 112GB SSDs. The latter nodes currently make up the development, long and flat-quadrant queues. Size of <kbd>/tmp</kbd> partitions as of 24 Apr 2018. 
 </p>
 </div>
 </div>
@@ -169,7 +169,7 @@ Stampede2 hosts 1,738 SKX compute nodes.
 </table>
 
 <p>
-Local storage on the SKX compute nodes is in tthe form of 144GB <code>/tmp</code> partitions on a 200GB SSD.
+Local storage on the SKX compute nodes is in tthe form of 144GB <kbd>/tmp</kbd> partitions on a 200GB SSD.
 </p>
 </div>
 </div>
@@ -179,7 +179,7 @@ Local storage on the SKX compute nodes is in tthe form of 144GB <code>/tmp</code
 <h2 id="org93fbc7a"><span class="section-number-2">2.</span> File Systems</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Stampede2 mounts three shared Lustre file systems on which each user has account-specific directories for <code>$HOME</code>, <code>$WORK</code>, and <code>$SCRATCH</code>. Each of the file systems are available on all Stampede2 nodes.
+Stampede2 mounts three shared Lustre file systems on which each user has account-specific directories for <kbd>$HOME</kbd>, <kbd>$WORK</kbd>, and <kbd>$SCRATCH</kbd>. Each of the file systems are available on all Stampede2 nodes.
 </p>
 
 <table>
@@ -201,7 +201,7 @@ Stampede2 mounts three shared Lustre file systems on which each user has account
 </thead>
 <tbody>
 <tr>
-<td class="org-left"><code>$HOME</code></td>
+<td class="org-left"><kbd>$HOME</kbd></td>
 <td class="org-left">10GB; 200,000 files</td>
 <td class="org-left"><b>Not intended for parallel or high-intensity file operations</b></td>
 </tr>
@@ -226,7 +226,7 @@ Stampede2 mounts three shared Lustre file systems on which each user has account
 </tbody>
 <tbody>
 <tr>
-<td class="org-left"><code>$WORK</code></td>
+<td class="org-left"><kbd>$WORK</kbd></td>
 <td class="org-left">1TB; 3,000,000 files across all</td>
 <td class="org-left"><b>Not intended for parallel or high-intensity file operations</b></td>
 </tr>
@@ -251,7 +251,7 @@ Stampede2 mounts three shared Lustre file systems on which each user has account
 </tbody>
 <tbody>
 <tr>
-<td class="org-left"><code>$SCRATCH</code></td>
+<td class="org-left"><kbd>$SCRATCH</kbd></td>
 <td class="org-left">no quota</td>
 <td class="org-left">Overall ~30PB. 4 Meta-Data Servers. 66 Object Storage Targets</td>
 </tr>
@@ -271,7 +271,7 @@ Stampede2 mounts three shared Lustre file systems on which each user has account
 </table>
 
 <p>
-<code>$SCRATCH</code> is a temporary storage space. Files not accessed in last 10 days will be subject to the purging. Reading or executing a file/script will update the access time. <code>ls -ul</code> can be used to view access times.
+<kbd>$SCRATCH</kbd> is a temporary storage space. Files not accessed in last 10 days will be subject to the purging. Reading or executing a file/script will update the access time. <kbd>ls -ul</kbd> can be used to view access times.
 </p>
 </div>
 </div>
@@ -306,7 +306,7 @@ If one wants to connect to a specific login node (not sure when would this be re
 </div>
 
 <p>
-To connect with graphical support (X11), use the normal ssh flags of <code>-X</code> or <code>-Y</code>.
+To connect with graphical support (X11), use the normal ssh flags of <kbd>-X</kbd> or <kbd>-Y</kbd>.
 </p>
 
 <div class="org-src-container">
@@ -315,7 +315,7 @@ To connect with graphical support (X11), use the normal ssh flags of <code>-X</c
 </div>
 
 <p>
-<b>Important</b> <code>ssh-keygen</code> should <i>NOT</i> be run on Stampede2. When logging in, it creates the right key-pair by itself.
+<b>Important</b> <kbd>ssh-keygen</kbd> should <i>NOT</i> be run on Stampede2. When logging in, it creates the right key-pair by itself.
 </p>
 </div>
 </div>
@@ -336,7 +336,7 @@ Stampede2 nodes run <b>Red Hat Enterprise Linux 7</b>.
 <h4 id="orgbad5e55"><span class="section-number-4">4.1.1.</span> Linux Shell</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <p>
-The default login shell is <b>bash</b>. It can be changed to csh, sh, tcsh, or zsh by submitting a ticket through TACC portal. <code>chsh</code> command won&rsquo;t work.
+The default login shell is <b>bash</b>. It can be changed to csh, sh, tcsh, or zsh by submitting a ticket through TACC portal. <kbd>chsh</kbd> command won&rsquo;t work.
 </p>
 </div>
 </div>
@@ -345,7 +345,7 @@ The default login shell is <b>bash</b>. It can be changed to csh, sh, tcsh, or z
 <h4 id="org0b869d5"><span class="section-number-4">4.1.2.</span> Account-level Diagnostics</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <p>
-TACC has a <code>sanitytool</code> module that loads an account-level diagnostics package to detect account-level issues. It also provides fixes for the issues. To run the tool, execute the following commands
+TACC has a <kbd>sanitytool</kbd> module that loads an account-level diagnostics package to detect account-level issues. It also provides fixes for the issues. To run the tool, execute the following commands
 </p>
 
 <div class="org-src-container">
@@ -355,7 +355,7 @@ $ sanitycheck
 </div>
 
 <p>
-It is a good habit to periodically run <code>sanitycheck</code> as preventive measure. To read more help on it, run <code>module help sanitytool</code>.
+It is a good habit to periodically run <kbd>sanitycheck</kbd> as preventive measure. To read more help on it, run <kbd>module help sanitytool</kbd>.
 </p>
 </div>
 </div>

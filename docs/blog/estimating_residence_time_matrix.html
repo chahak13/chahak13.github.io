@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Estimating residence-time matrix</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -29,14 +29,14 @@
 </div>
 </nav>
 <p>
-Extending Notes on: Horne, J. S., Garton, E. O., Krone, S. M., &amp; Lewis, J. S. (2007): Analyzing Animal Movements Using  Brownian Bridges, we now want to calculate the residence-time matrix for various polygons (AGEBs). To do this, we will use the <code>geopandas</code> library along with the data from Hermisillo that we have for a set of individuals. We will currently work with the data of just one individual.
+Extending Notes on: Horne, J. S., Garton, E. O., Krone, S. M., &amp; Lewis, J. S. (2007): Analyzing Animal Movements Using  Brownian Bridges, we now want to calculate the residence-time matrix for various polygons (AGEBs). To do this, we will use the <kbd>geopandas</kbd> library along with the data from Hermisillo that we have for a set of individuals. We will currently work with the data of just one individual.
 </p>
 
 <div id="outline-container-org6607c2b" class="outline-2">
 <h2 id="org6607c2b"><span class="section-number-2">1.</span> AGEB data</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-The data for the AGEBs was provided by INEGI (National Institute of Statistics and Geography). There are a total of 582 AGEBs of which we might discard some that are not of interest. From the data, we particularly care about <code>CVE_AGEB</code> and the geometry - which is a polygon.
+The data for the AGEBs was provided by INEGI (National Institute of Statistics and Geography). There are a total of 582 AGEBs of which we might discard some that are not of interest. From the data, we particularly care about <kbd>CVE_AGEB</kbd> and the geometry - which is a polygon.
 </p>
 
 <div class="org-src-container">
@@ -48,7 +48,7 @@ data.<span style="color: #51afef; font-weight: bold; font-style: italic;">head</
 </div>
 
 <p>
-We can confirm that there are 582 AGEBs by checking the number of rows in the dataframe <code>data</code>.
+We can confirm that there are 582 AGEBs by checking the number of rows in the dataframe <kbd>data</kbd>.
 </p>
 
 <div class="org-src-container">
@@ -57,7 +57,7 @@ We can confirm that there are 582 AGEBs by checking the number of rows in the da
 </div>
 
 <p>
-Each <code>GeoSeries</code> has a corresponding <i>CRS</i> (Coordinate Reference System) that defines the system used for the projection. If a <code>GeoDataFrame</code> has only one column that corresponds to a <code>GeoSeries</code>, then the CRS of that series corresponds to the CRS of the dataframe. A dataframe can also have multiple <code>GeoSeries</code>, each with their own corresponding CRS. In such a case, one of the series is designated as the active geometry column and is used by default for any geometrical operations.
+Each <kbd>GeoSeries</kbd> has a corresponding <i>CRS</i> (Coordinate Reference System) that defines the system used for the projection. If a <kbd>GeoDataFrame</kbd> has only one column that corresponds to a <kbd>GeoSeries</kbd>, then the CRS of that series corresponds to the CRS of the dataframe. A dataframe can also have multiple <kbd>GeoSeries</kbd>, each with their own corresponding CRS. In such a case, one of the series is designated as the active geometry column and is used by default for any geometrical operations.
 </p>
 
 <div class="org-src-container">
@@ -66,7 +66,7 @@ Each <code>GeoSeries</code> has a corresponding <i>CRS</i> (Coordinate Reference
 </div>
 
 <p>
-Here, the data we have is in the &ldquo;MEXICO<sub>ITRF</sub><sub>2008</sub><sub>LCC</sub>&rdquo; system. We will now transform the system to a Pseudomercator system for ease of use. This can be done using the <code>geopandas.GeoDataFrame.to_crs</code> function. The EPSG code corresponding to Pseudomercator projection is <i>EPSG:3857</i>.
+Here, the data we have is in the &ldquo;MEXICO<sub>ITRF</sub><sub>2008</sub><sub>LCC</sub>&rdquo; system. We will now transform the system to a Pseudomercator system for ease of use. This can be done using the <kbd>geopandas.GeoDataFrame.to_crs</kbd> function. The EPSG code corresponding to Pseudomercator projection is <i>EPSG:3857</i>.
 </p>
 
 <div class="org-src-container">

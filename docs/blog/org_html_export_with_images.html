@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>org html export with images</title>
@@ -13,15 +13,15 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">org html export with images</h1>
 </header><p>
-When we use <code>org-html-export-to-html</code> through the org-export interface, we generate html files for the corresponding org file. I use this feature fairly regularly, along with latex export, to share my research work and assignments. One hiccup I almost always face while sharing the html files is that the html file adds relative links to the image files that are a part of the org file which then requires me to share the images separately. Instead, if I can embed the images directly in the html file, then sharing just a self-contained file makes it much easier for me and my collaborators. To achieve this, I update the <code>org-html--format-image</code> function to put in the base64 coded string for the image in the image source link instead of adding a link to the image file.
+When we use <kbd>org-html-export-to-html</kbd> through the org-export interface, we generate html files for the corresponding org file. I use this feature fairly regularly, along with latex export, to share my research work and assignments. One hiccup I almost always face while sharing the html files is that the html file adds relative links to the image files that are a part of the org file which then requires me to share the images separately. Instead, if I can embed the images directly in the html file, then sharing just a self-contained file makes it much easier for me and my collaborators. To achieve this, I update the <kbd>org-html--format-image</kbd> function to put in the base64 coded string for the image in the image source link instead of adding a link to the image file.
 </p>
 
 <div class="org-src-container">

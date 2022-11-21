@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PoC: Stackoverflow parser</title>
@@ -13,15 +13,15 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">PoC: Stackoverflow parser</h1>
 </header><p>
-Load the <code>requests</code> and <code>BeautifulSoup</code> libraries that will be used for scraping the webpage.
+Load the <kbd>requests</kbd> and <kbd>BeautifulSoup</kbd> libraries that will be used for scraping the webpage.
 </p>
 
 <div class="org-src-container">
@@ -50,11 +50,11 @@ We&rsquo;ll download the webpage for further scrutiny using the <code>requests.g
 </div>
 
 <p>
-There are two main classes of objects that are of our interest - 1. Question and 2. Answers (with possibly an accepted marker). Looking at the source code tells us that there are <code>question</code> and <code>answer</code> properties that can be used to filter them out. We&rsquo;ll take a stab at finding the question first.
+There are two main classes of objects that are of our interest - 1. Question and 2. Answers (with possibly an accepted marker). Looking at the source code tells us that there are <kbd>question</kbd> and <kbd>answer</kbd> properties that can be used to filter them out. We&rsquo;ll take a stab at finding the question first.
 </p>
 
 <p>
-A point to note, we cannot directly search for <code>question-hyperlink</code> links because there are other questions on the page too, so we need to first extract the question header from where we can get the required title.
+A point to note, we cannot directly search for <kbd>question-hyperlink</kbd> links because there are other questions on the page too, so we need to first extract the question header from where we can get the required title.
 </p>
 <div class="org-src-container">
 <label class="org-src-name"><span class="listing-number">Listing 1: </span>This piece of code helps us in extracting the title of the question along with a link to it.</label><pre class="src src-python" id="orgad97c95"><span style="color: #dcaeea;">question_header</span> <span style="color: #51afef;">=</span> soup.<span style="color: #51afef; font-weight: bold; font-style: italic;">find</span>(<span style="color: #98be65;">'div'</span>, {<span style="color: #98be65;">'id'</span>: <span style="color: #98be65;">'question-header'</span>})

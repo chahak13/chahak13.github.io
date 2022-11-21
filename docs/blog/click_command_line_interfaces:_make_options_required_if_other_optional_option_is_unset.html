@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Click Command Line Interfaces: Make options required if other optional option is unset</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -45,7 +45,7 @@ If the token was given, there is no need to check for <code>username</code> and 
 Can this be done somehow using callbacks?
 My code to get started which of course does not reflect the intended pattern:
 </p>
-<pre class="example" id="org4b6b3f2">
+<pre class="example" id="org86c87e8">
 @click.command()
 @click.option('--authentication-token', prompt=True, required=True)
 @click.option('--username', prompt=True, required=True)
@@ -69,7 +69,7 @@ Comments
 <p>
 This can be done by building a custom class derived from <code>click.Option</code>, and in that class over riding the <code>click.Option.handle_parse_result()</code> method like:
 </p>
-<pre class="example" id="orgc5e2ef4">
+<pre class="example" id="org2632b2d">
 import click
 
 class NotRequiredIf(click.Option):
@@ -101,7 +101,7 @@ class NotRequiredIf(click.Option):
 <p>
 To use the custom class, pass the <code>cls</code> parameter to <code>click.option</code> decorator like:
 </p>
-<pre class="example" id="org861d13e">
+<pre class="example" id="orgd224ad7">
 @click.option('--username', prompt=True, cls=NotRequiredIf,
               not_required_if='authentication_token')
 
@@ -111,7 +111,7 @@ This works because click is a well designed OO framework. The <code>@click.optio
 In this case we over ride <code>click.Option.handle_parse_result()</code> and disable the need to <code>user/password</code> if <code>authentication-token</code> token is present, and complain if both <code>user/password</code> are <code>authentication-token</code> are present.
 Note: This answer was inspired by <a href="https://stackoverflow.com/a/37491504/7311767">this answer</a>
 </p>
-<pre class="example" id="org521b696">
+<pre class="example" id="org2454716">
 @click.command()
 @click.option('--authentication-token')
 @click.option('--username', prompt=True, cls=NotRequiredIf,
@@ -133,14 +133,14 @@ if __name__ == '__main__':
 <p>
 from <code>login('--username name --password pword'.split())</code>:
 </p>
-<pre class="example" id="org2b4fd3a">
+<pre class="example" id="org73616f7">
 t:None  u:name  p:pword
 
 </pre>
 <p>
 from <code>login('--help'.split())</code>:
 </p>
-<pre class="example" id="orgba7f837">
+<pre class="example" id="orgf4b9158">
 Usage: test.py [OPTIONS]
 
 Options:
@@ -166,7 +166,7 @@ Comments:
 <p>
 Slightly improved <a href="https://stackoverflow.com/a/44349292/7311767">Stephen Rauch&rsquo;s answer</a> to have multiple mutex parameters.
 </p>
-<pre class="example" id="orgb99aa8f">
+<pre class="example" id="org04a9f53">
 import click
 
 class Mutex(click.Option):
@@ -191,7 +191,7 @@ class Mutex(click.Option):
 <p>
 use like this:
 </p>
-<pre class="example" id="org04e1c5f">
+<pre class="example" id="orgf7b2d6a">
 @click.group()
 @click.option("--username", prompt=True, cls=Mutex, not_required_if=["token"])
 @click.option("--password", prompt=True, hide_input=True, cls=Mutex, not_required_if=["token"])
@@ -214,7 +214,7 @@ Comments:
 <p>
 Here&rsquo;s another variant, in which has not<sub>required</sub><sub>if</sub> must be specified with the snake<sub>case</sub> variant, required is used rather than prompt, and importantly, it works if the other arguments are passed through environment variables rather than on the command line by using ctx.command.get<sub>params</sub>(&#x2026;) and param.consume<sub>value</sub>(&#x2026;):
 </p>
-<pre class="example" id="orga9fa417">
+<pre class="example" id="org59bb3b0">
 import click
 
 

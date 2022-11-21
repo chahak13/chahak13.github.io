@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-11-20 Sun 13:24 -->
+<!-- 2022-11-20 Sun 22:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>emacs-jupyter and inline images in org-mode</title>
@@ -13,8 +13,8 @@
 <div id="preamble" class="status">
 <div id="updated">Updated: 2022-11-19 Sat 19:42</div>
 <nav>
-<a href="/docs">Home</a>
-<a href="/docs/blog/sitemap.html">Posts</a>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
 </nav>
 </div>
 <div id="content" class="content">
@@ -30,7 +30,7 @@
 </div>
 </nav>
 <p>
-<code>emacs-jupyter</code> is an emacs interface for jupyter kernels. It can be installed using
+<kbd>emacs-jupyter</kbd> is an emacs interface for jupyter kernels. It can be installed using
 </p>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #51afef;">(</span><span style="color: #51afef;">use-package</span> jupyter
@@ -39,7 +39,7 @@
 </div>
 
 <p>
-If <code>ob-async</code> is installed, then <code>jupyter-python</code> needs to be added to the list of languages that are not run asychronously. (Refer <a href="https://github.com/astahlman/ob-async/pull/71">this issue</a>). This can be done by
+If <kbd>ob-async</kbd> is installed, then <kbd>jupyter-python</kbd> needs to be added to the list of languages that are not run asychronously. (Refer <a href="https://github.com/astahlman/ob-async/pull/71">this issue</a>). This can be done by
 </p>
 
 <div class="org-src-container">
@@ -64,7 +64,7 @@ ab
 <h2 id="org45f4089"><span class="section-number-2">1.</span> emacs-jupyter works doesn&rsquo;t work in server</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-When I first installed <code>emacs-jupyter</code> I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon. On the other hand, if it was started separately as a window, everything ran fine. The issue was that I was adding <code>/home/boticelli/.local/bin/</code> (path to jupyter executable) to <code>exec-path</code> at the end of the config files. When opening emacs from a terminal as an independent session, it was considering this added path somehow, maybe by inheriting it from the shell itself, but it was. I moved that line to near the beginning of the <code>init.el</code> file itself and this seemed to solve the issue. This issue was very similar to the <a href="pipenv_in_emacs.html#ID-4b02b261-cca6-4cae-8fc4-02201dbafebf">Pipenv in emacs</a> issue that I had recently.
+When I first installed <kbd>emacs-jupyter</kbd> I found a weird situation where I could not run jupyter code blocks in org-mode if emacs was started as a daemon. On the other hand, if it was started separately as a window, everything ran fine. The issue was that I was adding <kbd>/home/boticelli/.local/bin/</kbd> (path to jupyter executable) to <kbd>exec-path</kbd> at the end of the config files. When opening emacs from a terminal as an independent session, it was considering this added path somehow, maybe by inheriting it from the shell itself, but it was. I moved that line to near the beginning of the <kbd>init.el</kbd> file itself and this seemed to solve the issue. This issue was very similar to the <a href="pipenv_in_emacs.html#ID-4b02b261-cca6-4cae-8fc4-02201dbafebf">Pipenv in emacs</a> issue that I had recently.
 </p>
 </div>
 </div>
@@ -73,11 +73,11 @@ When I first installed <code>emacs-jupyter</code> I found a weird situation wher
 <h2 id="org9aeb0a5"><span class="section-number-2">2.</span> Why emacs-jupyter</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Running python code in normal org-mode source block is nice and easy. But using them to plot images was a bit painful/difficult. Since <code>emacs-jupyter</code> uses <code>ipython</code> kernel, it allows some magic commands like <code>%matplotlib inline</code> etc to make this easier. It also gives <code>%timeit</code> which is really useful.
+Running python code in normal org-mode source block is nice and easy. But using them to plot images was a bit painful/difficult. Since <kbd>emacs-jupyter</kbd> uses <kbd>ipython</kbd> kernel, it allows some magic commands like <kbd>%matplotlib inline</kbd> etc to make this easier. It also gives <kbd>%timeit</kbd> which is really useful.
 </p>
 
 <p>
-Now, with <code>emacs-jupyter</code>, I can do imports like this and make plotting easier for myself.
+Now, with <kbd>emacs-jupyter</kbd>, I can do imports like this and make plotting easier for myself.
 </p>
 
 <div class="org-src-container">
