@@ -114,6 +114,12 @@ Created with %c
 
         ("chahak13.github.io" :components ("index" "pages" "blog" "static"))))
 
+(defun publish-chahak13-project ()
+  "Publish the entire project and remake index."
+  (interactive)
+  (org-publish "chahak13.github.io")
+  (org-publish "index" t))
+
 (require 'org-roam)
 (org-roam-update-org-id-locations)
 (if (member "t" command-line-args)
