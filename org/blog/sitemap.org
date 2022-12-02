@@ -1,5 +1,6 @@
 #+TITLE: Posts
 
+- {{{timestamp(2022-12-01)}}} [[file:python_matplotlib_animation_duration_stack_overflow.org][python - matplotlib animation duration - Stack Overflow]]
 - {{{timestamp(2022-11-19)}}} [[file:emacs_jupyter.org][emacs-jupyter and inline images in org-mode]]
 - {{{timestamp(2022-11-19)}}} [[file:mail_in_emacs_mu4e.org][Mail in emacs - mu4e]]
 - {{{timestamp(2022-11-19)}}} [[file:uber_s_crazy_yolo_app_rewrite_from_the_front_seat_the_pragmatic_engineer.org][Uber's Crazy YOLO App Rewrite, From the Front Seat - The Pragmatic Engineer]]
