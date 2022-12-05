@@ -1,5 +1,6 @@
 #+TITLE: Posts
 
+- {{{timestamp(2022-12-04)}}} [[file:show_ansi_colors_after_running_code_blocks_in_org_mode.org][Show ANSI colors after running code blocks in org mode]]
 - {{{timestamp(2022-12-01)}}} [[file:python_matplotlib_animation_duration_stack_overflow.org][python - matplotlib animation duration - Stack Overflow]]
 - {{{timestamp(2022-11-19)}}} [[file:emacs_jupyter.org][emacs-jupyter and inline images in org-mode]]
 - {{{timestamp(2022-11-19)}}} [[file:mail_in_emacs_mu4e.org][Mail in emacs - mu4e]]

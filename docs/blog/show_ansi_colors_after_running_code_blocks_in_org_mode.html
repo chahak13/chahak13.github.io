@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-12-04 Sun 21:06 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Show ANSI colors after running code blocks in org mode</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-12-04 Sun 21:03</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Show ANSI colors after running code blocks in org mode</h1>
+</header><p>
+If there are any errors on running a code block in org-mode with ansi colors, they get displayed as the color codes. Adding this function as a hook to org-mode resolves that.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">defun</span> <span style="color: #b58900;">display-ansi-colors</span> <span style="color: #d33682;">()</span>
+  <span style="color: #d33682;">(</span><span style="color: #6c71c4; font-weight: bold;">ansi-color-apply-on-region</span> <span style="color: #859900;">(</span><span style="color: #6c71c4; font-weight: bold;">point-min</span><span style="color: #859900;">)</span> <span style="color: #859900;">(</span><span style="color: #6c71c4; font-weight: bold;">point-max</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
+
+<span style="color: #268bd2;">(</span><span style="color: #6c71c4; font-weight: bold;">add-hook</span> <span style="color: #268bd2;">'</span><span style="color: #268bd2;">org-babel-after-execute-hook</span> <span style="color: #268bd2;">#'</span><span style="color: #b58900;">display-ansi-colors</span><span style="color: #268bd2;">)</span>
+</pre>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>
