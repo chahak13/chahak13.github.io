@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-12-16 Fri 10:26 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Attractors using Datashader</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-12-09 Fri 06:57</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Attractors using Datashader</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org32fa26d">1. Clifford Attractors</a></li>
+</ul>
+</div>
+</nav>
+<p>
+<a href="https://datashader.org/getting_started/index.html">Datashader</a> is a python visualization library that breaks down the visualization step into different parts with the idea of speeding up by running individual parts on particular hardware. This way it can leverage GPUs too potentially (need to read more). This note is just a proof of concept/toying with the library.
+</p>
+
+<p>
+To install, use <code>pip install datashader</code> (or <code>conda</code> if in a conda env). It also supports <kbd>numba</kbd> so that should help speeding up the execution too.
+</p>
+
+<div id="outline-container-org32fa26d" class="outline-2">
+<h2 id="org32fa26d"><span class="section-number-2">1.</span> Clifford Attractors</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Clifford Attractors are strange attractors defined by two iterative equations.
+</p>
+
+<p>
+\[
+x_{n+1} = \sin (ay_n) + c \cos (ax_n)\\
+y_{n+1} = \sin (bx_n) + d \cos (by_n)
+\]
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">import</span> numpy <span style="color: #859900; font-weight: bold;">as</span> np
+<span style="color: #859900; font-weight: bold;">import</span> pandas <span style="color: #859900; font-weight: bold;">as</span> pd
+<span style="color: #859900; font-weight: bold;">import</span> datashader <span style="color: #859900; font-weight: bold;">as</span> ds
+<span style="color: #859900; font-weight: bold;">from</span> datashader <span style="color: #859900; font-weight: bold;">import</span> transfer_functions <span style="color: #859900; font-weight: bold;">as</span> tf
+<span style="color: #859900; font-weight: bold;">from</span> datashader.colors <span style="color: #859900; font-weight: bold;">import</span> inferno, viridis
+<span style="color: #859900; font-weight: bold;">from</span> datashader.utils <span style="color: #859900; font-weight: bold;">import</span> export_image
+<span style="color: #859900; font-weight: bold;">from</span> numba <span style="color: #859900; font-weight: bold;">import</span> jit
+<span style="color: #859900; font-weight: bold;">from</span> functools <span style="color: #859900; font-weight: bold;">import</span> partial
+</pre>
+</div>
+
+<p>
+Setup system for Clifford Attractor
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #268bd2; font-weight: bold;">@</span><span style="color: #268bd2; font-weight: bold;">jit</span><span style="color: #268bd2; font-weight: bold;">(</span><span style="color: #268bd2; font-weight: bold;">nopython</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #d33682; font-weight: bold; font-style: italic;">True</span><span style="color: #268bd2; font-weight: bold;">)</span>
+<span style="color: #859900; font-weight: bold;">def</span> <span style="color: #b58900;">clifford_attractor</span>(<span style="color: #268bd2;">x</span>, <span style="color: #268bd2;">y</span>, <span style="color: #268bd2;">a</span><span style="color: #859900; font-weight: bold;">=-</span><span style="color: #6c71c4; font-weight: bold;">1.3</span>, <span style="color: #268bd2;">b</span><span style="color: #859900; font-weight: bold;">=-</span><span style="color: #6c71c4; font-weight: bold;">1.3</span>, <span style="color: #268bd2;">c</span><span style="color: #859900; font-weight: bold;">=-</span><span style="color: #6c71c4; font-weight: bold;">1.8</span>, <span style="color: #268bd2;">d</span><span style="color: #859900; font-weight: bold;">=-</span><span style="color: #6c71c4; font-weight: bold;">1.9</span>):
+    <span style="color: #859900; font-weight: bold;">return</span> np.<span style="color: #268bd2; font-weight: bold; font-style: italic;">sin</span>(a <span style="color: #859900; font-weight: bold;">*</span> y) <span style="color: #859900; font-weight: bold;">+</span> c <span style="color: #859900; font-weight: bold;">*</span> np.<span style="color: #268bd2; font-weight: bold; font-style: italic;">cos</span>(a <span style="color: #859900; font-weight: bold;">*</span> x), \
+        np.<span style="color: #268bd2; font-weight: bold; font-style: italic;">sin</span>(b <span style="color: #859900; font-weight: bold;">*</span> x) <span style="color: #859900; font-weight: bold;">+</span> d <span style="color: #859900; font-weight: bold;">*</span> np.<span style="color: #268bd2; font-weight: bold; font-style: italic;">cos</span>(b <span style="color: #859900; font-weight: bold;">*</span> y)
+</pre>
+</div>
+
+<p>
+Now, we evaluate this for <code>n</code> iterations.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">
+<span style="color: #268bd2;">n</span> <span style="color: #859900; font-weight: bold;">=</span> <span style="color: #6c71c4; font-weight: bold;">100000000</span>
+
+<span style="color: #268bd2; font-weight: bold;">@</span><span style="color: #268bd2; font-weight: bold;">jit</span><span style="color: #268bd2; font-weight: bold;">(</span><span style="color: #268bd2; font-weight: bold;">nopython</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #d33682; font-weight: bold; font-style: italic;">True</span><span style="color: #268bd2; font-weight: bold;">)</span>
+<span style="color: #859900; font-weight: bold;">def</span> <span style="color: #b58900;">trajectory_coords</span>(<span style="color: #268bd2;">fn</span>, <span style="color: #268bd2;">x0</span>, <span style="color: #268bd2;">y0</span>, <span style="color: #268bd2;">a</span>, <span style="color: #268bd2;">b</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #268bd2;">c</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #268bd2;">d</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #268bd2;">n</span><span style="color: #859900; font-weight: bold;">=</span>n):
+    <span style="color: #268bd2;">x</span>, <span style="color: #268bd2;">y</span> <span style="color: #859900; font-weight: bold;">=</span> np.<span style="color: #268bd2; font-weight: bold; font-style: italic;">zeros</span>(n), np.<span style="color: #268bd2; font-weight: bold; font-style: italic;">zeros</span>(n)
+    x[<span style="color: #6c71c4; font-weight: bold;">0</span>], y[<span style="color: #6c71c4; font-weight: bold;">0</span>] <span style="color: #859900; font-weight: bold;">=</span> x0, y0
+    <span style="color: #96A7A9; font-style: italic;"># partial_fn = partial(fn, a=a, b=b, c=c, d=d)</span>
+    <span style="color: #859900; font-weight: bold;">for</span> <span style="color: #268bd2;">i</span> <span style="color: #859900; font-weight: bold;">in</span> <span style="color: #d33682; font-weight: bold; font-style: italic;">range</span>(n<span style="color: #859900; font-weight: bold;">-</span><span style="color: #6c71c4; font-weight: bold;">1</span>):
+        x[i<span style="color: #859900; font-weight: bold;">+</span><span style="color: #6c71c4; font-weight: bold;">1</span>], y[i<span style="color: #859900; font-weight: bold;">+</span><span style="color: #6c71c4; font-weight: bold;">1</span>] <span style="color: #859900; font-weight: bold;">=</span> <span style="color: #268bd2; font-weight: bold;">fn</span>(x[i], y[i], <span style="color: #268bd2; font-weight: bold;">a</span><span style="color: #859900; font-weight: bold;">=</span>a, <span style="color: #268bd2; font-weight: bold;">b</span><span style="color: #859900; font-weight: bold;">=</span>b, <span style="color: #268bd2; font-weight: bold;">c</span><span style="color: #859900; font-weight: bold;">=</span>c, <span style="color: #268bd2; font-weight: bold;">d</span><span style="color: #859900; font-weight: bold;">=</span>d)
+    <span style="color: #859900; font-weight: bold;">return</span> x, y
+
+<span style="color: #859900; font-weight: bold;">def</span> <span style="color: #b58900;">trajectory</span>(<span style="color: #268bd2;">fn</span>, <span style="color: #268bd2;">x0</span>, <span style="color: #268bd2;">y0</span>, <span style="color: #268bd2;">a</span>, <span style="color: #268bd2;">b</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #268bd2;">c</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #268bd2;">d</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #268bd2;">n</span><span style="color: #859900; font-weight: bold;">=</span>n):
+    <span style="color: #268bd2;">x</span>, <span style="color: #268bd2;">y</span> <span style="color: #859900; font-weight: bold;">=</span> <span style="color: #268bd2; font-weight: bold;">trajectory_coords</span>(fn, x0, y0, a, b, c, d)
+    <span style="color: #859900; font-weight: bold;">return</span> pd.<span style="color: #b58900; font-weight: bold; font-style: italic;">DataFrame</span>({<span style="color: #2aa198;">"x"</span>: x, <span style="color: #2aa198;">"y"</span>: y})
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">%%</span>time
+<span style="color: #268bd2;">df</span> <span style="color: #859900; font-weight: bold;">=</span> <span style="color: #268bd2; font-weight: bold;">trajectory</span>(clifford_attractor, <span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #6c71c4; font-weight: bold;">0</span>, <span style="color: #859900; font-weight: bold;">-</span><span style="color: #6c71c4; font-weight: bold;">1.244</span>, <span style="color: #859900; font-weight: bold;">-</span><span style="color: #6c71c4; font-weight: bold;">1.251</span>, <span style="color: #859900; font-weight: bold;">-</span><span style="color: #6c71c4; font-weight: bold;">1.815</span>, <span style="color: #859900; font-weight: bold;">-</span><span style="color: #6c71c4; font-weight: bold;">1.908</span>)
+</pre>
+</div>
+
+<p>
+Datashader allows aggregating values usinf different types of functions. Here we&rsquo;ll just count the instances of <kbd>(x, y)</kbd> coordinate being reached by the attractor.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #268bd2;">cvs</span> <span style="color: #859900; font-weight: bold;">=</span> ds.<span style="color: #b58900; font-weight: bold; font-style: italic;">Canvas</span>(<span style="color: #268bd2; font-weight: bold;">plot_width</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">700</span>, <span style="color: #268bd2; font-weight: bold;">plot_height</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">700</span>)
+<span style="color: #268bd2;">agg</span> <span style="color: #859900; font-weight: bold;">=</span> cvs.<span style="color: #268bd2; font-weight: bold; font-style: italic;">points</span>(df, <span style="color: #2aa198;">"x"</span>, <span style="color: #2aa198;">"y"</span>)
+</pre>
+</div>
+
+<p>
+We can plot this aggregated data using the <code>tf.shade</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">tf.<span style="color: #b58900; font-weight: bold; font-style: italic;">Image</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">border</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>
+<span style="color: #268bd2;">img</span> <span style="color: #859900; font-weight: bold;">=</span> tf.<span style="color: #268bd2; font-weight: bold; font-style: italic;">shade</span>(agg, <span style="color: #268bd2; font-weight: bold;">cmap</span><span style="color: #859900; font-weight: bold;">=</span>[<span style="color: #2aa198;">"white"</span>, <span style="color: #2aa198;">"black"</span>])
+<span style="color: #96A7A9; font-style: italic;"># img</span>
+<span style="color: #268bd2; font-weight: bold;">export_image</span>(img, <span style="color: #2aa198;">"clifford_attractor_4"</span>, <span style="color: #268bd2; font-weight: bold;">export_path</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #2aa198;">"../assets/"</span>, )
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #d33682; font-weight: bold; font-style: italic;">help</span>(ds.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">colors</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>
