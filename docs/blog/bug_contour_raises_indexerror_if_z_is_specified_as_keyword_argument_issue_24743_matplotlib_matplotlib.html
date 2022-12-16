@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-12-16 Fri 22:16 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>[Bug]: contour raises IndexError if Z is specified as keyword argument · Issue #24743 · matplotlib/matplotlib</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-12-16 Fri 22:15</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">[Bug]: contour raises IndexError if Z is specified as keyword argument · Issue #24743 · matplotlib/matplotlib</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org234f718">1. Bug Summary</a>
+<ul>
+<li><a href="#org699401f">1.1. Code for Reproduction</a></li>
+<li><a href="#orgbcc31cb">1.2. Debugging</a>
+<ul>
+<li><a href="#orgf671484">1.2.1. Requiring atleast 1 positional argument</a></li>
+<li><a href="#orgbf3c43e">1.2.2. Allow extracting X, Y, Z as kwargs</a></li>
+</ul>
+</li>
+<li><a href="#orgadfe8c8">1.3. Tests</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+Reference URL: <a href="https://github.com/matplotlib/matplotlib/issues/24743">https://github.com/matplotlib/matplotlib/issues/24743</a>
+</p>
+
+<div id="outline-container-org234f718" class="outline-2">
+<h2 id="org234f718"><span class="section-number-2">1.</span> Bug Summary</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<code>.contour</code> raises <kbd>IndexError</kbd> when <kbd>Z</kbd> is specified as <code>Z=a</code>.
+</p>
+</div>
+
+<div id="outline-container-org699401f" class="outline-3">
+<h3 id="org699401f"><span class="section-number-3">1.1.</span> Code for Reproduction</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<a href="autoreload_with_ipython.html#ID-89f6cafa-b868-4e66-b27f-cee4db5f0f73">autoreload with ipython</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">%</span>load_ext autoreload
+<span style="color: #859900; font-weight: bold;">%</span>autoreload <span style="color: #6c71c4; font-weight: bold;">3</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">import</span> numpy <span style="color: #859900; font-weight: bold;">as</span> np
+<span style="color: #859900; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #859900; font-weight: bold;">as</span> plt
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #268bd2;">fig</span>, <span style="color: #268bd2;">ax</span> <span style="color: #859900; font-weight: bold;">=</span> plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">subplots</span>()
+ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div>
+
+<pre class="example" id="org2432765">
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+Cell In [3], line 5
+      2 import matplotlib.pyplot as plt
+      4 fig, ax = plt.subplots()
+----&gt; 5 ax.contour(Z=np.random.rand(30, 30))
+
+File ~/Documents/matplotlib/lib/matplotlib/__init__.py:1448, in _preprocess_data.&lt;locals&gt;.inner(ax, data, *args, **kwargs)
+   1445 @functools.wraps(func)
+   1446 def inner(ax, *args, data=None, **kwargs):
+   1447     if data is None:
+-&gt; 1448         return func(ax, *map(sanitize_sequence, args), **kwargs)
+   1450     bound = new_sig.bind(ax, *args, **kwargs)
+   1451     auto_label = (bound.arguments.get(label_namer)
+   1452                   or bound.kwargs.get(label_namer))
+
+File ~/Documents/matplotlib/lib/matplotlib/axes/_axes.py:6427, in Axes.contour(self, *args, **kwargs)
+   6418 """
+   6419 Plot contour lines.
+   6420
+   (...)
+   6424 %(contour_doc)s
+   6425 """
+   6426 kwargs['filled'] = False
+-&gt; 6427 contours = mcontour.QuadContourSet(self, *args, **kwargs)
+   6428 self._request_autoscale_view()
+   6429 return contours
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:769, in ContourSet.__init__(self, ax, levels, filled, linewidths, linestyles, hatches, alpha, origin, extent, cmap, colors, norm, vmin, vmax, extend, antialiased, nchunk, locator, transform, negative_linestyles, *args, **kwargs)
+    765 if self.negative_linestyles is None:
+    766     self.negative_linestyles = \
+    767         mpl.rcParams['contour.negative_linestyle']
+--&gt; 769 kwargs = self._process_args(*args, **kwargs)
+    770 self._process_levels()
+    772 self._extend_min = self.extend in ['min', 'both']
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:1388, in QuadContourSet._process_args(self, corner_mask, algorithm, *args, **kwargs)
+   1384 def _process_args(self, *args, corner_mask=None, algorithm=None, **kwargs):
+   1385     """
+   1386     Process args and kwargs.
+   1387     """
+-&gt; 1388     if isinstance(args[0], QuadContourSet):
+   1389         if self.levels is None:
+   1390             self.levels = args[0].levels
+
+IndexError: tuple index out of range
+</pre>
+
+<figure id="orga5718a1">
+<img src="./.ob-jupyter/7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png" alt="7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-orgbcc31cb" class="outline-3">
+<h3 id="orgbcc31cb"><span class="section-number-3">1.2.</span> Debugging</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-orgf671484" class="outline-4">
+<h4 id="orgf671484"><span class="section-number-4">1.2.1.</span> Requiring atleast 1 positional argument</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+The <code>ax.contour</code> function has the following docstring.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #d33682; font-weight: bold; font-style: italic;">help</span>(ax.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">contour</span>)
+</pre>
+</div>
+
+<pre class="example" id="org94e7acb">
+Help on method contour in module matplotlib.axes._axes:
+
+contour(*args, data=None, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
+    Plot contour lines.
+
+    Call signature::
+
+        contour([X, Y,] Z, [levels], **kwargs)
+
+    `.contour` and `.contourf` draw contour lines and filled contours,
+    respectively.  Except as noted, function signatures and return values
+    are the same for both versions.
+
+    Parameters
+    ----------
+    X, Y : array-like, optional
+        The coordinates of the values in *Z*.
+
+        *X* and *Y* must both be 2D with the same shape as *Z* (e.g.
+        created via `numpy.meshgrid`), or they must both be 1-D such
+        that ``len(X) == N`` is the number of columns in *Z* and
+        ``len(Y) == M`` is the number of rows in *Z*.
+
+        *X* and *Y* must both be ordered monotonically.
+
+        If not given, they are assumed to be integer indices, i.e.
+        ``X = range(N)``, ``Y = range(M)``.
+
+    Z : (M, N) array-like
+        The height values over which the contour is drawn.  Color-mapping is
+        controlled by *cmap*, *norm*, *vmin*, and *vmax*.
+
+    levels : int or array-like, optional
+        Determines the number and positions of the contour lines / regions.
+
+        If an int *n*, use `~matplotlib.ticker.MaxNLocator`, which tries
+        to automatically choose no more than *n+1* "nice" contour levels
+        between minimum and maximum numeric values of *Z*.
+
+        If array-like, draw contour lines at the specified levels.
+        The values must be in increasing order.
+
+    Returns
+    -------
+    `~.contour.QuadContourSet`
+
+    ......
+</pre>
+
+<p>
+The issue comes from the <code>_process_args</code> function on <code>QuadContourSet</code>
+</p>
+
+<pre class="example" id="org1343ec8">
+class QuadContourSet(ContourSet):
+    """
+    Create and store a set of contour lines or filled regions.
+
+    This class is typically not instantiated directly by the user but by
+    `~.Axes.contour` and `~.Axes.contourf`.
+
+    %(contour_set_attributes)s
+    """
+
+    def _process_args(self, *args, corner_mask=None, algorithm=None, **kwargs):
+        """
+        Process args and kwargs.
+        """
+        if isinstance(args[0], QuadContourSet):
+            if self.levels is None:
+                self.levels = args[0].levels
+</pre>
+
+
+<p>
+<kbd>_process_args</kbd> takes in a variable number of arguments using <code>*args</code> so when the <kbd>Z</kbd> data is passed as a kwarg using <code>Z=a</code>, <code>args</code> is now an empty tuple. The expected behaviour would be that it just plots the <kbd>Z</kbd> data.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #268bd2;">fig</span>, <span style="color: #268bd2;">ax</span> <span style="color: #859900; font-weight: bold;">=</span> plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">subplots</span>()
+ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div>
+
+<pre class="example">
+&lt;matplotlib.contour.QuadContourSet at 0x7f4fbb167790&gt;
+</pre>
+
+
+<figure id="orga4af3aa">
+<img src="./.ob-jupyter/f91e4232bb3a5b0224b8735f498702f31159a717.png" alt="f91e4232bb3a5b0224b8735f498702f31159a717.png">
+
+</figure>
+
+<p>
+A simple fix would be to first check that there are <code>args</code>. This can be done by changing the <code>if</code> condition to the following
+</p>
+
+<pre class="example" id="org4495155">
+- if isinstance(args[0], QuadContourSet):
++ if args and isinstance(args[0], QuadContourSet):
+</pre>
+
+<p>
+This results in:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">%</span>autoreload
+<span style="color: #268bd2;">fig</span>, <span style="color: #268bd2;">ax</span> <span style="color: #859900; font-weight: bold;">=</span> plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">subplots</span>()
+ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div>
+
+<pre class="example" id="orgdaf6841">
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+Cell In [5], line 3
+      1 get_ipython().run_line_magic('autoreload', '') 2 fig, ax = plt.subplots()
+----&gt; 3 ax.contour(Z=np.random.rand(30, 30))
+
+File ~/Documents/matplotlib/lib/matplotlib/__init__.py:1448, in _preprocess_data.&lt;locals&gt;.inner(ax, data, *args, **kwargs)
+   1445 @functools.wraps(func)
+   1446 def inner(ax, *args, data=None, **kwargs):
+   1447     if data is None:
+-&gt; 1448         return func(ax, *map(sanitize_sequence, args), **kwargs)
+   1450     bound = new_sig.bind(ax, *args, **kwargs)
+   1451     auto_label = (bound.arguments.get(label_namer)
+   1452                   or bound.kwargs.get(label_namer))
+
+File ~/Documents/matplotlib/lib/matplotlib/axes/_axes.py:6427, in Axes.contour(self, *args, **kwargs)
+   6418 """
+   6419 Plot contour lines.
+   6420
+   (...)
+   6424 %(contour_doc)s
+   6425 """
+   6426 kwargs['filled'] = False
+-&gt; 6427 contours = mcontour.QuadContourSet(self, *args, **kwargs)
+   6428 self._request_autoscale_view()
+   6429 return contours
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:769, in ContourSet.__init__(self, ax, levels, filled, linewidths, linestyles, hatches, alpha, origin, extent, cmap, colors, norm, vmin, vmax, extend, antialiased, nchunk, locator, transform, negative_linestyles, *args, **kwargs)
+    765 if self.negative_linestyles is None:
+    766     self.negative_linestyles = \
+    767         mpl.rcParams['contour.negative_linestyle']
+--&gt; 769 kwargs = self._process_args(*args, **kwargs)
+    770 self._process_levels()
+    772 self._extend_min = self.extend in ['min', 'both']
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:1415, in QuadContourSet._process_args(self, corner_mask, algorithm, *args, **kwargs)
+   1412         corner_mask = mpl.rcParams['contour.corner_mask']
+   1413 self._corner_mask = corner_mask
+-&gt; 1415 x, y, z = self._contour_args(args, kwargs)
+   1417 contour_generator = contourpy.contour_generator(
+   1418     x, y, z, name=self._algorithm, corner_mask=self._corner_mask,
+   1419     line_type=contourpy.LineType.SeparateCode,
+   1420     fill_type=contourpy.FillType.OuterCode,
+   1421     chunk_size=self.nchunk)
+   1423 t = self.get_transform()
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:1449, in QuadContourSet._contour_args(self, args, kwargs)
+   1447 nargs = len(args)
+   1448 if nargs &lt;= 2:
+-&gt; 1449     z = ma.asarray(args[0], dtype=np.float64)
+   1450     x, y = self._initialize_x_y(z)
+   1451     args = args[1:]
+
+IndexError: tuple index out of range
+</pre>
+
+<figure id="org0d17952">
+<img src="./.ob-jupyter/7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png" alt="7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png">
+
+</figure>
+
+<p>
+Okay, it does go beyond the previous error statement but now <code>_contour_args</code> errors out because of the same reason. A better solution to this would be to actually validate and error out if none of X, Y or Z is given in <code>contour</code> / <code>contourf</code>. To do this, we can change the validation in <code>_contour_args</code> to check for non-zero value for <code>len(args)</code>.
+</p>
+
+<pre class="example" id="org3c1ee5d">
+-       if nargs &lt;= 2:
+-           z = ma.asarray(args[0], dtype=np.float64)
+-           x, y = self._initialize_x_y(z)
+-           args = args[1:]
+-       elif nargs &lt;= 4:
+-           x, y, z = self._check_xyz(args[:3], kwargs)
+-           args = args[3:]
+-       else:
+-           raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)
++       if 0 &lt; nargs &lt;= 2:
++           z = ma.asarray(args[0], dtype=np.float64)
++           x, y = self._initialize_x_y(z)
++           args = args[1:]
++       elif 2 &lt; nargs &lt;= 4:
++           x, y, z = self._check_xyz(args[:3], kwargs)
++           args = args[3:]
++       else:
++           raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)
+</pre>
+
+<p>
+This will let it pass to the <code>else</code> block error check which will raise correctly.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #268bd2;">fig</span>, <span style="color: #268bd2;">ax</span> <span style="color: #859900; font-weight: bold;">=</span> plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">subplots</span>()
+ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div>
+
+<pre class="example" id="orgfe6847e">
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+Cell In [7], line 2
+      1 fig, ax = plt.subplots()
+----&gt; 2 ax.contourf(Z=np.random.rand(30, 30))
+
+File ~/Documents/matplotlib/lib/matplotlib/__init__.py:1448, in _preprocess_data.&lt;locals&gt;.inner(ax, data, *args, **kwargs)
+   1445 @functools.wraps(func)
+   1446 def inner(ax, *args, data=None, **kwargs):
+   1447     if data is None:
+-&gt; 1448         return func(ax, *map(sanitize_sequence, args), **kwargs)
+   1450     bound = new_sig.bind(ax, *args, **kwargs)
+   1451     auto_label = (bound.arguments.get(label_namer)
+   1452                   or bound.kwargs.get(label_namer))
+
+File ~/Documents/matplotlib/lib/matplotlib/axes/_axes.py:6443, in Axes.contourf(self, *args, **kwargs)
+   6434 """
+   6435 Plot filled contours.
+   6436
+   (...)
+   6440 %(contour_doc)s
+   6441 """
+   6442 kwargs['filled'] = True
+-&gt; 6443 contours = mcontour.QuadContourSet(self, *args, **kwargs)
+   6444 self._request_autoscale_view()
+   6445 return contours
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:769, in ContourSet.__init__(self, ax, levels, filled, linewidths, linestyles, hatches, alpha, origin, extent, cmap, colors, norm, vmin, vmax, extend, antialiased, nchunk, locator, transform, negative_linestyles, *args, **kwargs)
+    765 if self.negative_linestyles is None:
+    766     self.negative_linestyles = \
+    767         mpl.rcParams['contour.negative_linestyle']
+--&gt; 769 kwargs = self._process_args(*args, **kwargs)
+    770 self._process_levels()
+    772 self._extend_min = self.extend in ['min', 'both']
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:1415, in QuadContourSet._process_args(self, corner_mask, algorithm, *args, **kwargs)
+   1412         corner_mask = mpl.rcParams['contour.corner_mask']
+   1413 self._corner_mask = corner_mask
+-&gt; 1415 x, y, z = self._contour_args(args, kwargs)
+   1417 contour_generator = contourpy.contour_generator(
+   1418     x, y, z, name=self._algorithm, corner_mask=self._corner_mask,
+   1419     line_type=contourpy.LineType.SeparateCode,
+   1420     fill_type=contourpy.FillType.OuterCode,
+   1421     chunk_size=self.nchunk)
+   1423 t = self.get_transform()
+
+File ~/Documents/matplotlib/lib/matplotlib/contour.py:1456, in QuadContourSet._contour_args(self, args, kwargs)
+   1454     args = args[3:]
+   1455 else:
+-&gt; 1456     raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)
+   1457 z = ma.masked_invalid(z, copy=False)
+   1458 self.zmax = float(z.max())
+
+TypeError: contourf() takes from 1 to 4 positional arguments but 0 were given
+</pre>
+
+<figure id="orgf9b2bec">
+<img src="./.ob-jupyter/7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png" alt="7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-orgbf3c43e" class="outline-4">
+<h4 id="orgbf3c43e"><span class="section-number-4">1.2.2.</span> Allow extracting X, Y, Z as kwargs</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+Another way to resolve this would be to allow passing all 3 - X, Y, Z - as keyword arguments and extracting them before checking for positional arguments. This is a better long term solution and can be achieved by adding a few extra checks in <code>_contour_args</code>.
+</p>
+
+<pre class="example" id="org54a2aaf">
+@@ -1446,11 +1447,26 @@ class QuadContourSet(ContourSet):
+         else:
+             fn = 'contour'
+         nargs = len(args)
+-        if nargs &lt;= 2:
++        if "X" in kwargs and "Y" in kwargs and "Z" in kwargs:
++            x, y, z = self._check_xyz(
++                [
++                    kwargs.pop("X"),
++                    kwargs.pop("Y"),
++                    kwargs.pop("Z")
++                ],
++                kwargs
++            )
++        elif (("X" in kwargs) ^ ("Y" in kwargs)) and "Z" in kwargs:
++            raise KeyError("Both 'X' and 'Y' must be passed as kwargs. "
++                           "Passing only one of the two is not allowed.")
++        elif "Z" in kwargs:
++            z = ma.asarray(kwargs.pop("Z"), dtype=np.float64)
++            x, y = self._initialize_x_y(z)
++        elif 0 &lt; nargs &lt;= 2:
+             z = ma.asarray(args[0], dtype=np.float64)
+             x, y = self._initialize_x_y(z)
+             args = args[1:]
+-        elif nargs &lt;= 4:
++        elif 2 &lt; nargs &lt;= 4:
+             x, y, z = self._check_xyz(args[:3], kwargs)
+             args = args[3:]
+         else:
+</pre>
+
+<p>
+Checking this solution:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div>
+
+<pre class="example">
+&lt;matplotlib.contour.QuadContourSet at 0x7febfbe76f50&gt;
+</pre>
+
+
+<figure id="orgfe3a256">
+<img src="../assets/contour.png" alt="contour.png">
+
+</figure>
+</div>
+</div>
+</div>
+<div id="outline-container-orgadfe8c8" class="outline-3">
+<h3 id="orgadfe8c8"><span class="section-number-3">1.3.</span> Tests</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+3 main tests need to be added for this bugfix.
+</p>
+<ol class="org-ol">
+<li><p>
+Z kwarg only check
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">def</span> <span style="color: #b58900;">test_countour_z_kwargonly</span>():
+    <span style="color: #96A7A9; font-style: italic;"># Smoke test for GH#24743</span>
+    <span style="color: #96A7A9; font-style: italic;"># Passing only kwargs</span>
+    plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div></li>
+<li><p>
+Pass all kwargs X, Y, Z
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">def</span> <span style="color: #b58900;">test_contour_xyz_kwargsonly</span>():
+    plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">X</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>), <span style="color: #268bd2; font-weight: bold; font-style: italic;">Y</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>), <span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div></li>
+<li><p>
+Pass Z and either one of X/Y. This should raise an error
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #859900; font-weight: bold;">def</span> <span style="color: #b58900;">test_contour_either_xy</span>():
+    <span style="color: #859900; font-weight: bold;">with</span> pytest.<span style="color: #268bd2; font-weight: bold; font-style: italic;">raises</span>(<span style="color: #b58900; font-style: italic;">KeyError</span>):
+        plt.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour</span>(<span style="color: #268bd2; font-weight: bold; font-style: italic;">X</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>), <span style="color: #268bd2; font-weight: bold; font-style: italic;">Z</span><span style="color: #859900; font-weight: bold;">=</span>np.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">random</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">rand</span>(<span style="color: #6c71c4; font-weight: bold;">30</span>, <span style="color: #6c71c4; font-weight: bold;">30</span>))
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>

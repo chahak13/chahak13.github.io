@@ -1,5 +1,8 @@
 #+TITLE: Posts
 
+- {{{timestamp(2022-12-16)}}} [[file:bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.org][[Bug]: contour raises IndexError if Z is specified as keyword argument · Issue #24743 · matplotlib/matplotlib]]
+- {{{timestamp(2022-12-16)}}} [[file:autoreload_with_ipython.org][autoreload with ipython]]
+- {{{timestamp(2022-12-16)}}} [[file:emacs_jupyter_with_different_venvs_in_same_directory.org][emacs-jupyter with different venvs in same directory]]
 - {{{timestamp(2022-12-09)}}} [[file:attractors_using_datashader.org][Attractors using Datashader]]
 - {{{timestamp(2022-12-09)}}} [[file:attractors_examples_0_1_0_documentation.org][Attractors — Examples 0.1.0 documentation]]
 - {{{timestamp(2022-12-06)}}} [[file:emacsconf_2022_talks_back_to_school_with_emacs.org][EmacsConf - 2022 - talks - Back to school with Emacs]]

@@ -122,12 +122,12 @@ Created with %c
 
 (require 'org-roam)
 (org-roam-update-org-id-locations)
-(if (member "t" command-line-args)
-    (progn
-      (print "force publish all org files")
-      (org-publish-all t))
-    (progn
-      (print "only publish modified org files")
-      (org-publish-all)))
+;; (if (member "t" command-line-args)
+;;     (progn
+;;       (print "force publish all org files")
+;;       (org-publish-all t))
+;;     (progn
+;;       (print "only publish modified org files")
+;;       (org-publish-all)))
 (provide 'publish)
 ;;; publish.el ends here
