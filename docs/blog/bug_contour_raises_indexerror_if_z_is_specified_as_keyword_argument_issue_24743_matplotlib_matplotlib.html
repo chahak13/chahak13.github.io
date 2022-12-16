@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-12-16 Fri 22:16 -->
+<!-- 2022-12-16 Fri 22:22 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>[Bug]: contour raises IndexError if Z is specified as keyword argument · Issue #24743 · matplotlib/matplotlib</title>
@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="updated">Updated: 2022-12-16 Fri 22:15</div>
+<div id="updated">Updated: 2022-12-16 Fri 22:21</div>
 <nav>
 <a href="/">Home</a>
 <a href="/blog/sitemap.html">Posts</a>
@@ -75,7 +75,7 @@ ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour<
 </pre>
 </div>
 
-<pre class="example" id="org2432765">
+<pre class="example" id="orgd93596b">
 ---------------------------------------------------------------------------
 IndexError                                Traceback (most recent call last)
 Cell In [3], line 5
@@ -124,7 +124,7 @@ File ~/Documents/matplotlib/lib/matplotlib/contour.py:1388, in QuadContourSet._p
 IndexError: tuple index out of range
 </pre>
 
-<figure id="orga5718a1">
+<figure id="org193132e">
 <img src="./.ob-jupyter/7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png" alt="7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png">
 
 </figure>
@@ -201,7 +201,7 @@ contour(*args, data=None, **kwargs) method of matplotlib.axes._subplots.AxesSubp
 The issue comes from the <code>_process_args</code> function on <code>QuadContourSet</code>
 </p>
 
-<pre class="example" id="org1343ec8">
+<pre class="example" id="orgef72a83">
 class QuadContourSet(ContourSet):
     """
     Create and store a set of contour lines or filled regions.
@@ -237,7 +237,7 @@ ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour<
 </pre>
 
 
-<figure id="orga4af3aa">
+<figure id="org767d90b">
 <img src="./.ob-jupyter/f91e4232bb3a5b0224b8735f498702f31159a717.png" alt="f91e4232bb3a5b0224b8735f498702f31159a717.png">
 
 </figure>
@@ -246,7 +246,7 @@ ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour<
 A simple fix would be to first check that there are <code>args</code>. This can be done by changing the <code>if</code> condition to the following
 </p>
 
-<pre class="example" id="org4495155">
+<pre class="example" id="org7a70721">
 - if isinstance(args[0], QuadContourSet):
 + if args and isinstance(args[0], QuadContourSet):
 </pre>
@@ -262,7 +262,7 @@ ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour<
 </pre>
 </div>
 
-<pre class="example" id="orgdaf6841">
+<pre class="example" id="org0bd94d9">
 ---------------------------------------------------------------------------
 IndexError                                Traceback (most recent call last)
 Cell In [5], line 3
@@ -319,7 +319,7 @@ File ~/Documents/matplotlib/lib/matplotlib/contour.py:1449, in QuadContourSet._c
 IndexError: tuple index out of range
 </pre>
 
-<figure id="org0d17952">
+<figure id="org4623d57">
 <img src="./.ob-jupyter/7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png" alt="7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png">
 
 </figure>
@@ -328,26 +328,27 @@ IndexError: tuple index out of range
 Okay, it does go beyond the previous error statement but now <code>_contour_args</code> errors out because of the same reason. A better solution to this would be to actually validate and error out if none of X, Y or Z is given in <code>contour</code> / <code>contourf</code>. To do this, we can change the validation in <code>_contour_args</code> to check for non-zero value for <code>len(args)</code>.
 </p>
 
-<pre class="example" id="org3c1ee5d">
--       if nargs &lt;= 2:
--           z = ma.asarray(args[0], dtype=np.float64)
--           x, y = self._initialize_x_y(z)
--           args = args[1:]
--       elif nargs &lt;= 4:
--           x, y, z = self._check_xyz(args[:3], kwargs)
--           args = args[3:]
--       else:
--           raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)
-+       if 0 &lt; nargs &lt;= 2:
-+           z = ma.asarray(args[0], dtype=np.float64)
-+           x, y = self._initialize_x_y(z)
-+           args = args[1:]
-+       elif 2 &lt; nargs &lt;= 4:
-+           x, y, z = self._check_xyz(args[:3], kwargs)
-+           args = args[3:]
-+       else:
+<div class="org-src-container">
+<pre class="src src-diff"><span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">       if nargs &lt;= 2:</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">           z = ma.asarray(args[0], dtype=np.float64)</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">           x, y = self._initialize_x_y(z)</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">           args = args[1:]</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">       elif nargs &lt;= 4:</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">           x, y, z = self._check_xyz(args[:3], kwargs)</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">           args = args[3:]</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">       else:</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">           raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">       if 0 &lt; nargs &lt;= 2:</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">           z = ma.asarray(args[0], dtype=np.float64)</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">           x, y = self._initialize_x_y(z)</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">           args = args[1:]</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">       elif 2 &lt; nargs &lt;= 4:</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">           x, y, z = self._check_xyz(args[:3], kwargs)</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">           args = args[3:]</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">       else:</span>
 +           raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)
 </pre>
+</div>
 
 <p>
 This will let it pass to the <code>else</code> block error check which will raise correctly.
@@ -359,7 +360,7 @@ ax.<span style="color: #268bd2; font-weight: bold; font-style: italic;">contour<
 </pre>
 </div>
 
-<pre class="example" id="orgfe6847e">
+<pre class="example" id="org82566dd">
 ---------------------------------------------------------------------------
 TypeError                                 Traceback (most recent call last)
 Cell In [7], line 2
@@ -416,7 +417,7 @@ File ~/Documents/matplotlib/lib/matplotlib/contour.py:1456, in QuadContourSet._c
 TypeError: contourf() takes from 1 to 4 positional arguments but 0 were given
 </pre>
 
-<figure id="orgf9b2bec">
+<figure id="org73cc49b">
 <img src="./.ob-jupyter/7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png" alt="7894eb34c94f6e75f93ee0ef2ee7dacb0b661f8d.png">
 
 </figure>
@@ -429,37 +430,38 @@ TypeError: contourf() takes from 1 to 4 positional arguments but 0 were given
 Another way to resolve this would be to allow passing all 3 - X, Y, Z - as keyword arguments and extracting them before checking for positional arguments. This is a better long term solution and can be achieved by adding a few extra checks in <code>_contour_args</code>.
 </p>
 
-<pre class="example" id="org54a2aaf">
-@@ -1446,11 +1447,26 @@ class QuadContourSet(ContourSet):
-         else:
-             fn = 'contour'
-         nargs = len(args)
--        if nargs &lt;= 2:
-+        if "X" in kwargs and "Y" in kwargs and "Z" in kwargs:
-+            x, y, z = self._check_xyz(
-+                [
-+                    kwargs.pop("X"),
-+                    kwargs.pop("Y"),
-+                    kwargs.pop("Z")
-+                ],
-+                kwargs
-+            )
-+        elif (("X" in kwargs) ^ ("Y" in kwargs)) and "Z" in kwargs:
-+            raise KeyError("Both 'X' and 'Y' must be passed as kwargs. "
-+                           "Passing only one of the two is not allowed.")
-+        elif "Z" in kwargs:
-+            z = ma.asarray(kwargs.pop("Z"), dtype=np.float64)
-+            x, y = self._initialize_x_y(z)
-+        elif 0 &lt; nargs &lt;= 2:
-             z = ma.asarray(args[0], dtype=np.float64)
-             x, y = self._initialize_x_y(z)
-             args = args[1:]
--        elif nargs &lt;= 4:
-+        elif 2 &lt; nargs &lt;= 4:
-             x, y, z = self._check_xyz(args[:3], kwargs)
-             args = args[3:]
+<div class="org-src-container">
+<pre class="src src-diff"><span style="color: #6c71c4;">@@ -1446,11 +1447,26 @@</span><span style="color: #2aa198;"> class QuadContourSet(ContourSet):</span>
+<span style="color: #697c82;">         else:</span>
+<span style="color: #697c82;">             fn = 'contour'</span>
+<span style="color: #697c82;">         nargs = len(args)</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">        if nargs &lt;= 2:</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">        if </span><span style="color: #859900; background-color: #F2E6CE;">"X" in kwargs and "Y" in kwargs and "Z" in kwargs:</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">            x, y, z = self._check_xyz(</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                [</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                    kwargs.pop("X"),</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                    kwargs.pop("Y"),</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                    kwargs.pop("Z")</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                ],</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                kwargs</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">            )</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">        elif (("X" in kwargs) ^ ("Y" in kwargs)) and "Z" in kwargs:</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">            raise KeyError("Both 'X' and 'Y' must be passed as kwargs. "</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">                           "Passing only one of the two is not allowed.")</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">        elif "Z" in kwargs:</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">            z = ma.asarray(kwargs.pop("Z"), dtype=np.float64)</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">            x, y = self._initialize_x_y(z)</span><span style="color: #859900; background-color: #F2E6CE;">
+</span><span style="color: #859900; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">        elif 0 &lt;</span><span style="color: #859900; background-color: #F2E6CE;"> nargs &lt;= 2:</span>
+<span style="color: #697c82;">             z = ma.asarray(args[0], dtype=np.float64)</span>
+<span style="color: #697c82;">             x, y = self._initialize_x_y(z)</span>
+<span style="color: #697c82;">             args = args[1:]</span>
+<span style="color: #aa2222; background-color: #F2E6CE;">-</span><span style="color: #dc322f; background-color: #F2E6CE;">        elif nargs &lt;= 4:</span>
+<span style="color: #22aa22; background-color: #F2E6CE;">+</span><span style="color: #859900; background-color: #F2E6CE;">        elif </span><span style="color: #859900; background-color: #F2E6CE;">2 &lt;</span><span style="color: #859900; background-color: #F2E6CE;"> nargs &lt;= 4:</span>
+<span style="color: #697c82;">             x, y, z = self._check_xyz(args[:3], kwargs)</span>
+<span style="color: #697c82;">             args = args[3:]</span>
          else:
 </pre>
+</div>
 
 <p>
 Checking this solution:
@@ -475,7 +477,7 @@ Checking this solution:
 </pre>
 
 
-<figure id="orgfe3a256">
+<figure id="orgce1e301">
 <img src="../assets/contour.png" alt="contour.png">
 
 </figure>

@@ -265,7 +265,7 @@ IndexError: tuple index out of range
 
 Okay, it does go beyond the previous error statement but now ~_contour_args~ errors out because of the same reason. A better solution to this would be to actually validate and error out if none of X, Y or Z is given in ~contour~ / ~contourf~. To do this, we can change the validation in ~_contour_args~ to check for non-zero value for ~len(args)~.
 
-#+begin_example diff python
+#+begin_src diff python
 -       if nargs <= 2:
 -           z = ma.asarray(args[0], dtype=np.float64)
 -           x, y = self._initialize_x_y(z)
@@ -284,7 +284,7 @@ Okay, it does go beyond the previous error statement but now ~_contour_args~ err
 +           args = args[3:]
 +       else:
 +           raise _api.nargs_error(fn, takes="from 1 to 4", given=nargs)
-#+end_example
+#+end_src
 
 This will let it pass to the ~else~ block error check which will raise correctly.
 
@@ -357,7 +357,7 @@ TypeError: contourf() takes from 1 to 4 positional arguments but 0 were given
 *** Allow extracting X, Y, Z as kwargs
 Another way to resolve this would be to allow passing all 3 - X, Y, Z - as keyword arguments and extracting them before checking for positional arguments. This is a better long term solution and can be achieved by adding a few extra checks in ~_contour_args~.
 
-#+begin_example diff python
+#+begin_src diff python
 @@ -1446,11 +1447,26 @@ class QuadContourSet(ContourSet):
          else:
              fn = 'contour'
@@ -387,7 +387,7 @@ Another way to resolve this would be to allow passing all 3 - X, Y, Z - as keywo
              x, y, z = self._check_xyz(args[:3], kwargs)
              args = args[3:]
          else:
-#+end_example
+#+end_src
 
 Checking this solution:
 
