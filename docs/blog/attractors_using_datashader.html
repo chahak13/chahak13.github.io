@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-12-16 Fri 10:26 -->
+<!-- 2022-12-16 Fri 10:41 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Attractors using Datashader</title>
@@ -32,7 +32,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="updated">Updated: 2022-12-09 Fri 06:57</div>
+<div id="updated">Updated: 2022-12-16 Fri 10:41</div>
 <nav>
 <a href="/">Home</a>
 <a href="/blog/sitemap.html">Posts</a>
@@ -124,6 +124,12 @@ Now, we evaluate this for <code>n</code> iterations.
 </pre>
 </div>
 
+<pre class="example">
+CPU times: user 3.74 s, sys: 246 ms, total: 3.99 s
+Wall time: 3.99 s
+</pre>
+
+
 <p>
 Datashader allows aggregating values usinf different types of functions. Here we&rsquo;ll just count the instances of <kbd>(x, y)</kbd> coordinate being reached by the attractor.
 </p>
@@ -140,16 +146,82 @@ We can plot this aggregated data using the <code>tf.shade</code> function.
 
 <div class="org-src-container">
 <pre class="src src-jupyter-python">tf.<span style="color: #b58900; font-weight: bold; font-style: italic;">Image</span>.<span style="color: #268bd2; font-weight: bold; font-style: italic;">border</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #6c71c4; font-weight: bold;">0</span>
-<span style="color: #268bd2;">img</span> <span style="color: #859900; font-weight: bold;">=</span> tf.<span style="color: #268bd2; font-weight: bold; font-style: italic;">shade</span>(agg, <span style="color: #268bd2; font-weight: bold;">cmap</span><span style="color: #859900; font-weight: bold;">=</span>[<span style="color: #2aa198;">"white"</span>, <span style="color: #2aa198;">"black"</span>])
+<span style="color: #268bd2;">img</span> <span style="color: #859900; font-weight: bold;">=</span> tf.<span style="color: #268bd2; font-weight: bold; font-style: italic;">shade</span>(agg, <span style="color: #268bd2; font-weight: bold;">cmap</span><span style="color: #859900; font-weight: bold;">=</span>inferno)
 <span style="color: #96A7A9; font-style: italic;"># img</span>
 <span style="color: #268bd2; font-weight: bold;">export_image</span>(img, <span style="color: #2aa198;">"clifford_attractor_4"</span>, <span style="color: #268bd2; font-weight: bold;">export_path</span><span style="color: #859900; font-weight: bold;">=</span><span style="color: #2aa198;">"../assets/"</span>, )
 </pre>
 </div>
 
+
+<figure id="org9aa166a">
+<img src="../assets/clifford_attractor_4.png" alt="clifford_attractor_4.png">
+
+</figure>
+
 <div class="org-src-container">
 <pre class="src src-jupyter-python"><span style="color: #d33682; font-weight: bold; font-style: italic;">help</span>(ds.<span style="color: #6c71c4; font-weight: bold; font-style: italic;">colors</span>)
 </pre>
 </div>
+
+<pre class="example" id="orgf05cb81">
+Help on module datashader.colors in datashader:
+
+NAME
+    datashader.colors
+
+FUNCTIONS
+    colormap_select(base_colormap, start=0, end=1.0, reverse=False)
+        Given a colormap in the form of a list, such as a Bokeh palette,
+        return a version of the colormap reversed if requested, and selecting
+        a subset (on a scale 0,1.0) of the elements in the colormap list.
+
+        For instance:
+
+        &gt;&gt;&gt; cmap = ["#000000", "#969696", "#d9d9d9", "#ffffff"]
+        &gt;&gt;&gt; colormap_select(cmap,reverse=True)
+        ['#ffffff', '#d9d9d9', '#969696', '#000000']
+        &gt;&gt;&gt; colormap_select(cmap,0.3,reverse=True)
+        ['#d9d9d9', '#969696', '#000000']
+
+    hex_to_rgb(x)
+        Convert a color hexcode to an rgb tuple.
+
+        Example
+        -------
+        &gt;&gt;&gt; rgb('#FFFFFF')
+        (255, 255, 255)
+
+    rgb(x)
+        Return a triple representing rgb color.
+
+        Can convert colors by name or hexcode. Passing in a valid rgb tuple is
+        idempotent.
+
+        Example
+        -------
+        &gt;&gt;&gt; rgb('plum')
+        (221, 160, 221)
+        &gt;&gt;&gt; rgb('#FFFFFF')
+        (255, 255, 255)
+        &gt;&gt;&gt; rgb((255, 255, 255))
+        (255, 255, 255)
+
+DATA
+    Elevation = ['aqua', 'sandybrown', 'limegreen', 'green', 'green', 'dar...
+    Greys9 = ['#000000', '#252525', '#525252', '#737373', '#969696', '#bdb...
+    Hot = ['black', 'maroon', 'darkred', 'red', 'orangered', 'darkorange',...
+    Set1 = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff3...
+    Set2 = ['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92...
+    Set3 = ['#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb46...
+    Sets1to3 = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#f...
+    annotations = _Feature((3, 7, 0, 'beta', 1), (3, 11, 0, 'alpha', 0), 1...
+    color_lookup = {'aliceblue': '#F0F8FF', 'antiquewhite': '#FAEBD7', 'aq...
+    inferno = [(0, 0, 3), (0, 0, 4), (0, 0, 6), (1, 0, 7), (1, 1, 9), (1, ...
+    viridis = [(68, 1, 84), (68, 2, 85), (69, 3, 87), (69, 5, 88), (69, 6,...
+
+FILE
+    /home/chahak/.local/share/virtualenvs/chahak13.github.io-6_wF4i83/lib/python3.10/site-packages/datashader/colors.py
+</pre>
 </div>
 </div>
 </div>

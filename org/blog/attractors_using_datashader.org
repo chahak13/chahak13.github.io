@@ -2,7 +2,7 @@
 :ID:       864fc3b5-0281-4c50-b3fd-331de4f5953f
 :END:
 #+title: Attractors using Datashader
-#+property: header-args :session datashader :async yes :eval no-export
+#+property: header-args :session datashader :async yes :eval no-export :exports both
 
 [[https://datashader.org/getting_started/index.html][Datashader]] is a python visualization library that breaks down the visualization step into different parts with the idea of speeding up by running individual parts on particular hardware. This way it can leverage GPUs too potentially (need to read more). This note is just a proof of concept/toying with the library.
 
@@ -68,8 +68,8 @@ df = trajectory(clifford_attractor, 0, 0, -1.244, -1.251, -1.815, -1.908)
 #+end_src
 
 #+RESULTS:
-: CPU times: user 3.78 s, sys: 942 ms, total: 4.73 s
-: Wall time: 4.7 s
+: CPU times: user 3.74 s, sys: 246 ms, total: 3.99 s
+: Wall time: 3.99 s
 
 Datashader allows aggregating values usinf different types of functions. Here we'll just count the instances of =(x, y)= coordinate being reached by the attractor.
 
@@ -82,15 +82,15 @@ agg = cvs.points(df, "x", "y")
 
 We can plot this aggregated data using the ~tf.shade~ function.
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :results file :file ../assets/clifford_attractor_4.png
 tf.Image.border=0
-img = tf.shade(agg, cmap=["white", "black"])
+img = tf.shade(agg, cmap=inferno)
 # img
 export_image(img, "clifford_attractor_4", export_path="../assets/", )
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/defd4a040d53e9eb01af74e3ffb7220a3244e2e4.png]]
+[[file:../assets/clifford_attractor_4.png]]
 
 #+begin_src jupyter-python
 help(ds.colors)
