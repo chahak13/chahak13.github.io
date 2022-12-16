@@ -130,7 +130,7 @@ nav a:link { color: var(--text-primary); }
 nav a:visited { color: var(--text-primary); }
 nav a:hover {
     color: var(--back-primary);
-    background: var(--text-primary);
+    /* background: var(--text-primary); */
 }
 
 #content {
