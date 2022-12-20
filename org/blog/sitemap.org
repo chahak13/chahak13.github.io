@@ -1,5 +1,7 @@
 #+TITLE: Posts
 
+- {{{timestamp(2022-12-20)}}} [[file:how_to_remove_all_docker_containers.org][How to remove all docker containers?]]
+- {{{timestamp(2022-12-17)}}} [[file:does_plt_scatter_work_with_masked_offsets.org][Does plt.scatter work with masked offsets?]]
 - {{{timestamp(2022-12-16)}}} [[file:bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.org][[Bug]: contour raises IndexError if Z is specified as keyword argument · Issue #24743 · matplotlib/matplotlib]]
 - {{{timestamp(2022-12-16)}}} [[file:autoreload_with_ipython.org][autoreload with ipython]]
 - {{{timestamp(2022-12-16)}}} [[file:emacs_jupyter_with_different_venvs_in_same_directory.org][emacs-jupyter with different venvs in same directory]]

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2022-12-20 Tue 15:57 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Does plt.scatter work with masked offsets?</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-12-17 Sat 16:35</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Does plt.scatter work with masked offsets?</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc9ef677">1. Masked arrays as input</a></li>
+<li><a href="#org115fc36">2. Masked arrays in <code>set_offsets</code></a></li>
+<li><a href="#org8eb57b2">3. Bug fix</a>
+<ul>
+<li><a href="#org6f1f60c">3.1. Test for bug fix</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+There are 2 things that I want to check mainly:
+</p>
+<ol class="org-ol">
+<li>Does <code>scatter</code> work fine with masked arrays as input?</li>
+<li><p>
+Does <code>scatter</code> work if I reset the coordinates using <code>set_offsets</code> with masked arrays?
+</p>
+
+<p>
+<a href="autoreload_with_ipython.html#ID-89f6cafa-b868-4e66-b27f-cee4db5f0f73">autoreload with ipython</a> 
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">%</span>load_ext autoreload
+<span style="color: #b6a0ff;">%</span>autoreload <span style="color: #00bcff;">3</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">import</span> numpy <span style="color: #b6a0ff;">as</span> np
+<span style="color: #b6a0ff;">import</span> matplotlib.pyplot <span style="color: #b6a0ff;">as</span> plt
+</pre>
+</div></li>
+</ol>
+
+<div id="outline-container-orgc9ef677" class="outline-2">
+<h2 id="orgc9ef677"><span class="section-number-2">1.</span> Masked arrays as input</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This test uses numpy masked arrays as direct inputs to <code>scatter</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #00d3d0;">x</span> <span style="color: #b6a0ff;">=</span> np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">2</span>, <span style="color: #00bcff;">3</span>, <span style="color: #00bcff;">4</span>, <span style="color: #00bcff;">5</span>], <span style="color: #ff9077;">mask</span><span style="color: #b6a0ff;">=</span>[<span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">0</span>])
+<span style="color: #00d3d0;">y</span> <span style="color: #b6a0ff;">=</span> np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">2</span>, <span style="color: #00bcff;">3</span>, <span style="color: #00bcff;">4</span>, <span style="color: #00bcff;">5</span>])
+
+plt.<span style="color: #00bcff; font-style: italic;">scatter</span>(x, y)
+</pre>
+</div>
+
+<pre class="example">
+&lt;matplotlib.collections.PathCollection at 0x7f94ada19f90&gt;
+</pre>
+
+
+<figure id="org867592f">
+<img src="../assets/masked_scatter_input.png" alt="masked_scatter_input.png">
+
+</figure>
+
+<p>
+As in the figure, the mask on <code>x</code> does work fine. So <code>scatter</code> does indeed support masked arrays.
+</p>
+</div>
+</div>
+<div id="outline-container-org115fc36" class="outline-2">
+<h2 id="org115fc36"><span class="section-number-2">2.</span> Masked arrays in <code>set_offsets</code></h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Now, instead if masked arrays were passed in <code>set_offsets</code> to change the offsets for <code>scatter</code>, I suspect that it won&rsquo;t work. To check this, we first plot using the masked data as above.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #00d3d0;">x</span> <span style="color: #b6a0ff;">=</span> np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">2</span>, <span style="color: #00bcff;">3</span>, <span style="color: #00bcff;">4</span>, <span style="color: #00bcff;">5</span>], <span style="color: #ff9077;">mask</span><span style="color: #b6a0ff;">=</span>[<span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">0</span>])
+<span style="color: #00d3d0;">y</span> <span style="color: #b6a0ff;">=</span> np.<span style="color: #00bcff; font-style: italic;">arange</span>(<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">6</span>)
+
+<span style="color: #00d3d0;">fig</span>, <span style="color: #00d3d0;">ax</span> <span style="color: #b6a0ff;">=</span> plt.<span style="color: #00bcff; font-style: italic;">subplots</span>()
+<span style="color: #00d3d0;">scat</span> <span style="color: #b6a0ff;">=</span> ax.<span style="color: #00bcff; font-style: italic;">scatter</span>(x, y)
+</pre>
+</div>
+
+
+<figure id="orgb35614c">
+<img src="../assets/masked_scatter_input_2.png" alt="masked_scatter_input_2.png">
+
+</figure>
+
+<p>
+Now, if we update the <code>x</code> data and plot it again, it should still show only the 3 points it showed before.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #00d3d0;">x</span> <span style="color: #b6a0ff;">+=</span> <span style="color: #00bcff;">1</span>
+<span style="color: #f78fe7;">print</span>(<span style="color: #79a8ff;">f"Updated x: </span><span style="color: #b6a0ff;">{</span><span style="color: #ffffff; background-color: #000000;">x</span><span style="color: #b6a0ff;">}</span><span style="color: #79a8ff;">"</span>)
+scat.<span style="color: #00bcff; font-style: italic;">set_offsets</span>(np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">column_stack</span>([x, y]))
+<span style="color: #f78fe7;">print</span>(scat.<span style="color: #00bcff; font-style: italic;">get_offsets</span>())
+</pre>
+</div>
+
+<pre class="example">
+Updated x: [2 3 -- -- 6]
+[[2. 1.]
+ [3. 2.]
+ [3. 3.]
+ [4. 4.]
+ [6. 5.]]
+</pre>
+
+
+<p>
+As we see, the new offsets set by <code>set_offsets</code> doesn&rsquo;t have the mask information from the original input and will plot all the points instead of plotting only 3 points.
+</p>
+</div>
+</div>
+<div id="outline-container-org8eb57b2" class="outline-2">
+<h2 id="org8eb57b2"><span class="section-number-2">3.</span> Bug fix</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+This bug would have a simple fix. In <kbd>/lib/matplotlib/collections.py</kbd> the following patch should add support for masked array in offsets.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-diff"><span style="color: #dae7ff; background-color: #304466; font-weight: bold;">@@ -545,9 +545,9 @@</span><span style="color: #dae7ff; background-color: #304466;"> class Collection(artist.Artist, cm.ScalarMappable):</span>
+<span style="color: #93959b;">         offsets = np.asanyarray(offsets)</span>
+<span style="color: #93959b;">         if offsets.shape == (2,):  # Broadcast (2,) -&gt; (1, 2) but nothing else.</span>
+<span style="color: #93959b;">             offsets = offsets[None, :]</span>
+<span style="color: #ff8059; background-color: #5e2526; font-weight: bold;">-</span><span style="color: #eebdba; background-color: #5e2526;">        self._offsets = np.column_stack(</span>
+<span style="color: #ff8059; background-color: #5e2526; font-weight: bold;">-</span><span style="color: #eebdba; background-color: #5e2526;">            (np.asarray(self.convert_xunits(offsets[:, 0]), float),</span>
+<span style="color: #ff8059; background-color: #5e2526; font-weight: bold;">-</span><span style="color: #eebdba; background-color: #5e2526;">             np.asarray(self.convert_yunits(offsets[:, 1]), float)))</span>
+<span style="color: #44bc44; background-color: #203d20; font-weight: bold;">+</span><span style="color: #b4ddb4; background-color: #203d20;">        self._offsets = np.ma.column_stack(</span>
+<span style="color: #44bc44; background-color: #203d20; font-weight: bold;">+</span><span style="color: #b4ddb4; background-color: #203d20;">            (np.asanyarray(self.convert_xunits(offsets[:, 0]), float),</span>
+<span style="color: #44bc44; background-color: #203d20; font-weight: bold;">+</span><span style="color: #b4ddb4; background-color: #203d20;">             np.asanyarray(self.convert_yunits(offsets[:, 1]), float)))</span>
+         self.stale = True
+</pre>
+</div>
+</div>
+<div id="outline-container-org6f1f60c" class="outline-3">
+<h3 id="org6f1f60c"><span class="section-number-3">3.1.</span> Test for bug fix</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+A simple test for this would be to check if the newly set offsets array is masked or not.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>/lib/matplotlib/testing/test<sub>collections.py</sub></label><pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">test_masked_set_offsets</span>():
+    <span style="color: #00d3d0;">x</span> <span style="color: #b6a0ff;">=</span> np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">2</span>, <span style="color: #00bcff;">3</span>, <span style="color: #00bcff;">4</span>, <span style="color: #00bcff;">5</span>], <span style="color: #ff9077;">mask</span><span style="color: #b6a0ff;">=</span>[<span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">0</span>])
+    <span style="color: #00d3d0;">y</span> <span style="color: #b6a0ff;">=</span> np.<span style="color: #00bcff; font-style: italic;">arange</span>(<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">6</span>)
+
+    <span style="color: #00d3d0;">fig</span>, <span style="color: #00d3d0;">ax</span> <span style="color: #b6a0ff;">=</span> plt.<span style="color: #00bcff; font-style: italic;">subplots</span>()
+    <span style="color: #00d3d0;">scat</span> <span style="color: #b6a0ff;">=</span> ax.<span style="color: #00bcff; font-style: italic;">scatter</span>(x, y)
+    <span style="color: #00d3d0;">x</span> <span style="color: #b6a0ff;">+=</span> <span style="color: #00bcff;">1</span>
+    scat.<span style="color: #00bcff; font-style: italic;">set_offsets</span>(np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">column_stack</span>([x, y]))
+    <span style="color: #b6a0ff;">assert</span> np.<span style="color: #00bcff; font-style: italic;">ma</span>.<span style="color: #00bcff; font-style: italic;">is_masked</span>(scat.<span style="color: #00bcff; font-style: italic;">get_offsets</span>())
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+</div>
+</body>
+</html>
