@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-01-03 Tue 12:50 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>12. Decorator and Descriptors — Advance Python Tutorials documentation</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2023-01-02 Mon 16:22</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">12. Decorator and Descriptors — Advance Python Tutorials documentation</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org0b33db4">1. Decorators without arguments</a></li>
+<li><a href="#org893ae6f">2. Decorators with arguments</a></li>
+<li><a href="#org61392d4">3. DRY decorators with arguments</a></li>
+</ul>
+</div>
+</nav>
+<p>
+Reference URL: <a href="https://pythonguide.readthedocs.io/en/latest/python/decorator.html">https://pythonguide.readthedocs.io/en/latest/python/decorator.html</a>
+</p>
+
+<div id="outline-container-org0b33db4" class="outline-2">
+<h2 id="org0b33db4"><span class="section-number-2">1.</span> Decorators without arguments</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>The decorator function takes a <code>func</code> function as an argument. This <code>func</code> is the function that is to be wrapped.</li>
+<li>The decorator function defines another function inside it that acts as a <code>wrapper</code> to the <code>func</code> function. This <code>wrapper</code> function returns the return value of <code>func</code> and the <code>decorator</code> returns the <i>function</i> <code>wrapper</code>.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">decorator</span>(<span style="color: #0AAEB3;">func</span>):
+    <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">wrapper</span>(<span style="color: #EF2F27;">*</span><span style="color: #0AAEB3;">args</span>, <span style="color: #EF2F27;">**</span><span style="color: #0AAEB3;">kwargs</span>):
+        <span style="color: #2C78BF; font-style: italic;">print</span>(func.<span style="color: #2C78BF; font-style: italic;">__name__</span>)
+        <span style="color: #EF2F27;">return</span> <span style="color: #918175; font-style: italic;">func</span>(<span style="color: #EF2F27;">*</span>args, <span style="color: #EF2F27;">**</span>kwargs)
+    <span style="color: #EF2F27;">return</span> wrapper
+
+<span style="color: #FBB829;">@decorator</span>
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">example_func</span>():
+    <span style="color: #98BC37;">"""</span><span style="color: #519F50;">Helper docstring</span><span style="color: #98BC37;">"""</span>
+    <span style="color: #EF2F27;">return</span> <span style="color: #FF5C8F;">1</span><span style="color: #EF2F27;">+</span><span style="color: #FF5C8F;">2</span>
+
+<span style="color: #2C78BF; font-style: italic;">print</span>(<span style="color: #918175; font-style: italic;">example_func</span>())
+<span style="color: #2C78BF; font-style: italic;">help</span>(example_func)
+</pre>
+</div>
+
+<pre class="example">
+example_func
+3
+Help on function wrapper in module __main__:
+
+wrapper(*args, **kwargs)
+
+</pre>
+
+
+<p>
+As seen above, using <code>help()</code> on the decorated function (here, <code>example_func</code>) doesn&rsquo;t show the correct docstring help as it just returns the wrapper function. To fix this, we use <code>functools.wraps</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">import</span> functools
+
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">decorator</span>(<span style="color: #0AAEB3;">func</span>):
+    <span style="color: #FBB829;">@functools.</span><span style="color: #918175; font-style: italic;">wraps</span><span style="color: #FBB829;">(func)</span>
+    <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">wrapper</span>(<span style="color: #EF2F27;">*</span><span style="color: #0AAEB3;">args</span>, <span style="color: #EF2F27;">**</span><span style="color: #0AAEB3;">kwargs</span>):
+        <span style="color: #2C78BF; font-style: italic;">print</span>(func.<span style="color: #2C78BF; font-style: italic;">__name__</span>)
+        <span style="color: #EF2F27;">return</span> <span style="color: #918175; font-style: italic;">func</span>(<span style="color: #EF2F27;">*</span>args, <span style="color: #EF2F27;">**</span>kwargs)
+    <span style="color: #EF2F27;">return</span> wrapper
+
+<span style="color: #FBB829;">@decorator</span>
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">example_func</span>():
+    <span style="color: #98BC37;">"""</span><span style="color: #519F50;">Helper docstring</span><span style="color: #98BC37;">"""</span>
+    <span style="color: #EF2F27;">return</span> <span style="color: #FF5C8F;">1</span><span style="color: #EF2F27;">+</span><span style="color: #FF5C8F;">2</span>
+
+<span style="color: #2C78BF; font-style: italic;">print</span>(<span style="color: #918175; font-style: italic;">example_func</span>())
+<span style="color: #2C78BF; font-style: italic;">help</span>(example_func)
+</pre>
+</div>
+
+<pre class="example">
+example_func
+3
+Help on function example_func in module __main__:
+
+example_func()
+    Helper docstring
+
+</pre>
+
+
+<p>
+This shows the correct docstring for <code>example_func</code> and not for <code>wrapper</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-org893ae6f" class="outline-2">
+<h2 id="org893ae6f"><span class="section-number-2">2.</span> Decorators with arguments</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>To write a decorator that accepts arguments, we need to writer one more outer function that takes as arguments all the required decorator arguments and then write the normal decorator inside that function.</li>
+<li><p>
+These arguments are available inside the functions directly.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">decorator_with_arg</span>(<span style="color: #0AAEB3;">prefix</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">""</span>):
+    <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">decorator</span>(<span style="color: #0AAEB3;">func</span>):
+        <span style="color: #0AAEB3;">msg</span> <span style="color: #EF2F27;">=</span> prefix <span style="color: #EF2F27;">+</span> func.<span style="color: #2C78BF; font-style: italic;">__name__</span>
+
+        <span style="color: #FBB829;">@functools.</span><span style="color: #918175; font-style: italic;">wraps</span><span style="color: #FBB829;">(func)</span>
+        <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">wrapper</span>(<span style="color: #EF2F27;">*</span><span style="color: #0AAEB3;">args</span>, <span style="color: #EF2F27;">**</span><span style="color: #0AAEB3;">kwargs</span>):
+            <span style="color: #2C78BF; font-style: italic;">print</span>(msg, prefix)
+            <span style="color: #EF2F27;">return</span> <span style="color: #918175; font-style: italic;">func</span>(<span style="color: #EF2F27;">*</span>args, <span style="color: #EF2F27;">**</span>kwargs)
+        <span style="color: #EF2F27;">return</span> wrapper
+    <span style="color: #EF2F27;">return</span> decorator
+
+<span style="color: #FBB829;">@</span><span style="color: #918175; font-style: italic;">decorator_with_arg</span><span style="color: #FBB829;">(</span><span style="color: #FBB829;">prefix</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">"* "</span><span style="color: #FBB829;">)</span>
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">example_for_arg</span>(<span style="color: #0AAEB3;">x</span>, <span style="color: #0AAEB3;">y</span>):
+    <span style="color: #98BC37;">"""</span><span style="color: #519F50;">Helper docstring with args.</span><span style="color: #98BC37;">"""</span>
+    <span style="color: #EF2F27;">return</span> x <span style="color: #EF2F27;">+</span> y
+
+<span style="color: #2C78BF; font-style: italic;">print</span>(<span style="color: #918175; font-style: italic;">example_for_arg</span>(<span style="color: #FF5C8F;">1</span>, <span style="color: #FF5C8F;">2</span>))
+<span style="color: #2C78BF; font-style: italic;">help</span>(example_for_arg)
+</pre>
+</div>
+
+<pre class="example">
+* example_for_arg *
+3
+Help on function example_for_arg in module __main__:
+
+example_for_arg(x, y)
+    Helper docstring with args.
+
+</pre></li>
+<li>One issue with this method is that now the function cannot be used as a decorator without passing any arguments.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org61392d4" class="outline-2">
+<h2 id="org61392d4"><span class="section-number-2">3.</span> DRY decorators with arguments</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><p>
+To overcome the issue exaplained at the end of the previous section, we use <code>functools.partial</code> to use the same function in both cases.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">decorator_with_optional_arg</span>(<span style="color: #0AAEB3;">func</span><span style="color: #EF2F27;">=</span><span style="color: #2C78BF;">None</span>, <span style="color: #EF2F27;">*</span>, <span style="color: #0AAEB3;">suffix</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">""</span>):
+    <span style="color: #EF2F27;">if</span> func <span style="color: #EF2F27;">is</span> <span style="color: #2C78BF;">None</span>:
+        <span style="color: #EF2F27;">return</span> functools.<span style="color: #918175; font-style: italic;">partial</span>(decorator_with_optional_arg, <span style="color: #FBB829;">suffix</span><span style="color: #EF2F27;">=</span>suffix)
+    <span style="color: #0AAEB3;">msg</span> <span style="color: #EF2F27;">=</span> func.<span style="color: #2C78BF; font-style: italic;">__name__</span> <span style="color: #EF2F27;">+</span> suffix
+
+    <span style="color: #FBB829;">@functools.</span><span style="color: #918175; font-style: italic;">wraps</span><span style="color: #FBB829;">(func)</span>
+    <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">wrapper</span>(<span style="color: #EF2F27;">*</span><span style="color: #0AAEB3;">args</span>, <span style="color: #EF2F27;">**</span><span style="color: #0AAEB3;">kwargs</span>):
+        <span style="color: #2C78BF; font-style: italic;">print</span>(msg)
+        <span style="color: #EF2F27;">return</span> <span style="color: #918175; font-style: italic;">func</span>(<span style="color: #EF2F27;">*</span>args, <span style="color: #EF2F27;">**</span>kwargs)
+    <span style="color: #EF2F27;">return</span> wrapper
+
+<span style="color: #FBB829;">@</span><span style="color: #918175; font-style: italic;">decorator_with_optional_arg</span><span style="color: #FBB829;">(</span><span style="color: #FBB829;">suffix</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">"* "</span><span style="color: #FBB829;">)</span>
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">example_for_arg</span>(<span style="color: #0AAEB3;">x</span>, <span style="color: #0AAEB3;">y</span>):
+    <span style="color: #98BC37;">"""</span><span style="color: #519F50;">Helper docstring with args.</span><span style="color: #98BC37;">"""</span>
+    <span style="color: #EF2F27;">return</span> x <span style="color: #EF2F27;">+</span> y
+
+<span style="color: #FBB829;">@decorator_with_optional_arg</span>
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">example_opt_arg</span>(<span style="color: #0AAEB3;">x</span>, <span style="color: #0AAEB3;">y</span>):
+    <span style="color: #EF2F27;">return</span> x<span style="color: #EF2F27;">-</span>y
+
+<span style="color: #2C78BF; font-style: italic;">print</span>(<span style="color: #918175; font-style: italic;">example_for_arg</span>(<span style="color: #FF5C8F;">1</span>, <span style="color: #FF5C8F;">2</span>))
+<span style="color: #2C78BF; font-style: italic;">print</span>(<span style="color: #918175; font-style: italic;">example_opt_arg</span>(<span style="color: #FF5C8F;">1</span>, <span style="color: #FF5C8F;">2</span>))
+</pre>
+</div>
+
+<pre class="example">
+example_for_arg*
+3
+example_opt_arg
+-1
+</pre></li>
+</ul>
+
+<p>
+When an argument is passed to the decorator, the decorator will not find any function argument at the first position and hence <code>return func(*arg, **kwargs)</code> will generate an error. To solve this, we use <code>partial</code> to return a new function that already has the values of the parameters.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+
+<script src="theme-switcher.js"></script>
+</div>
+</body>
+</html>

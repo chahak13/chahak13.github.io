@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-01-03 Tue 12:50 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>[Bug]: Polar plot wrong Y values when set_ylim is used · Issue #24790 · matplotlib/matplotlib</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-12-23 Fri 19:38</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">[Bug]: Polar plot wrong Y values when set<sub>ylim</sub> is used · Issue #24790 · matplotlib/matplotlib</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org1597db6">1. Bug reproduction</a></li>
+<li><a href="#org072eb48">2. Debugging</a></li>
+</ul>
+</div>
+</nav>
+<p>
+Reference URL: <a href="https://github.com/matplotlib/matplotlib/issues/24790">https://github.com/matplotlib/matplotlib/issues/24790</a>
+</p>
+
+<p>
+Autoreload modules <a href="autoreload_with_ipython.html#ID-89f6cafa-b868-4e66-b27f-cee4db5f0f73">autoreload with ipython</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">%</span>load_ext autoreload
+<span style="color: #EF2F27;">%</span>autoreload <span style="color: #FF5C8F;">3</span>
+</pre>
+</div>
+
+<div id="outline-container-org1597db6" class="outline-2">
+<h2 id="org1597db6"><span class="section-number-2">1.</span> Bug reproduction</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">import</span> numpy <span style="color: #EF2F27;">as</span> np
+<span style="color: #EF2F27;">import</span> matplotlib.pyplot <span style="color: #EF2F27;">as</span> plt
+
+<span style="color: #0AAEB3;">x</span> <span style="color: #EF2F27;">=</span> np.<span style="color: #918175; font-style: italic;">linspace</span>(<span style="color: #FF5C8F;">0</span>, np.<span style="color: #FF5C8F; font-style: italic;">pi</span><span style="color: #EF2F27;">/</span><span style="color: #FF5C8F;">2.</span>, <span style="color: #FBB829;">num</span><span style="color: #EF2F27;">=</span><span style="color: #FF5C8F;">90</span>)
+<span style="color: #0AAEB3;">y</span> <span style="color: #EF2F27;">=</span> np.<span style="color: #918175; font-style: italic;">full</span>(<span style="color: #FF5C8F;">90</span>, <span style="color: #FF5C8F;">5</span>)
+
+<span style="color: #0AAEB3;">fig</span>, <span style="color: #0AAEB3;">ax</span> <span style="color: #EF2F27;">=</span> plt.<span style="color: #918175; font-style: italic;">subplots</span>(<span style="color: #FBB829;">subplot_kw</span><span style="color: #EF2F27;">=</span>{<span style="color: #98BC37;">'projection'</span>: <span style="color: #98BC37;">'polar'</span>})
+ax.<span style="color: #918175; font-style: italic;">set_ylim</span>(<span style="color: #FF5C8F;">4</span>, <span style="color: #FF5C8F;">10</span>)
+<span style="color: #918175; font-style: italic;"># Line drawn correctly at y=5</span>
+ax.<span style="color: #918175; font-style: italic;">plot</span>(x, y)
+<span style="color: #918175; font-style: italic;"># Line drawn correctly if the following line is commented.</span>
+fig.<span style="color: #FF5C8F; font-style: italic;">canvas</span>.<span style="color: #918175; font-style: italic;">draw</span>()
+<span style="color: #918175; font-style: italic;"># Line now drawn incorrectly at y=1</span>
+<span style="color: #918175; font-style: italic;"># ax.set_ylim(0, 6)</span>
+plt.<span style="color: #918175; font-style: italic;">show</span>()
+</pre>
+</div>
+
+
+<figure id="orgf14119f">
+<img src="./.ob-jupyter/ba803095934a25ea3c7ea90ce48f61d8fc512c4d.png" alt="ba803095934a25ea3c7ea90ce48f61d8fc512c4d.png">
+
+</figure>
+
+<p>
+The plot has the line in the wrong position (<kbd>y=1</kbd>) instead of <kbd>y=5</kbd> if <code>ax.set_ylim(0, 10)</code> is kept in.
+</p>
+</div>
+</div>
+<div id="outline-container-org072eb48" class="outline-2">
+<h2 id="org072eb48"><span class="section-number-2">2.</span> Debugging</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><p>
+First step to debug this would be to make sure that this happens only in polar plots and not otherwise.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">x</span> <span style="color: #EF2F27;">=</span> np.<span style="color: #918175; font-style: italic;">linspace</span>(<span style="color: #FF5C8F;">0</span>, np.<span style="color: #FF5C8F; font-style: italic;">pi</span><span style="color: #EF2F27;">/</span><span style="color: #FF5C8F;">2.</span>, <span style="color: #FBB829;">num</span><span style="color: #EF2F27;">=</span><span style="color: #FF5C8F;">90</span>)
+<span style="color: #0AAEB3;">y</span> <span style="color: #EF2F27;">=</span> np.<span style="color: #918175; font-style: italic;">full</span>(<span style="color: #FF5C8F;">90</span>, <span style="color: #FF5C8F;">5</span>)
+
+<span style="color: #0AAEB3;">fig</span>, <span style="color: #0AAEB3;">ax</span> <span style="color: #EF2F27;">=</span> plt.<span style="color: #918175; font-style: italic;">subplots</span>()
+ax.<span style="color: #918175; font-style: italic;">set_ylim</span>(<span style="color: #FF5C8F;">4</span>, <span style="color: #FF5C8F;">10</span>)
+<span style="color: #918175; font-style: italic;"># Line drawn correctly at y=5</span>
+ax.<span style="color: #918175; font-style: italic;">plot</span>(x, y)
+<span style="color: #918175; font-style: italic;"># Line drawn correctly if the following line is commented.</span>
+fig.<span style="color: #FF5C8F; font-style: italic;">canvas</span>.<span style="color: #918175; font-style: italic;">draw</span>()
+<span style="color: #918175; font-style: italic;"># Line now drawn incorrectly at y=1</span>
+ax.<span style="color: #918175; font-style: italic;">set_ylim</span>(<span style="color: #FF5C8F;">0</span>, <span style="color: #FF5C8F;">10</span>)
+
+plt.<span style="color: #918175; font-style: italic;">show</span>()
+</pre>
+</div>
+
+
+<figure id="org4143bb3">
+<img src="./.ob-jupyter/0f4ebd82cb3f48773ca973f545604b2bb194fd14.png" alt="0f4ebd82cb3f48773ca973f545604b2bb194fd14.png">
+
+</figure>
+
+<p>
+This line gets drawn correctly at <kbd>y=5</kbd>, so the bug exists only for polar plots.
+</p></li>
+
+<li><p>
+Step through the <code>draw</code> function to see where it goes wrong.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">fig.<span style="color: #FF5C8F; font-style: italic;">canvas</span>.<span style="color: #0AAEB3; font-style: italic;">draw</span>??
+</pre>
+</div>
+
+<pre class="example" id="org1e89604">
+Signature: fig.canvas.draw()
+Docstring:
+Render the `.Figure`.
+
+This method must walk the artist tree, even if no output is produced,
+because it triggers deferred work that users may want to access
+before saving output to disk. For example computing limits,
+auto-limits, and tick values.
+Source:
+    def draw(self):
+        # docstring inherited
+        self.renderer = self.get_renderer()
+        self.renderer.clear()
+        # Acquire a lock on the shared font cache.
+        with RendererAgg.lock, \
+             (self.toolbar._wait_cursor_for_draw_cm() if self.toolbar
+              else nullcontext()):
+            self.figure.draw(self.renderer)
+            # A GUI class may be need to update a window using this draw, so
+            # don't forget to call the superclass.
+            super().draw()
+File:      ~/Documents/matplotlib/lib/matplotlib/backends/backend_agg.py
+Type:      method
+</pre></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+
+<script src="theme-switcher.js"></script>
+</div>
+</body>
+</html>

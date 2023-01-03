@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-01-03 Tue 12:50 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Audio on Linux</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2022-12-26 Mon 17:06</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Audio on Linux</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orga7b8fb1">1. Pipewire installation</a></li>
+</ul>
+</div>
+</nav>
+<p>
+Taking a leap into understanding a little more about Pipewire since pulseaudio is being a pain and my mic is not working on my archlinux system either.
+</p>
+
+<p>
+Refs:
+</p>
+<ol class="org-ol">
+<li><a href="https://www.youtube.com/watch?v=HxEXMHcwtlI">https://www.youtube.com/watch?v=HxEXMHcwtlI</a></li>
+
+<li>Soundcard is the DAC to convert analog sound to digital (and vice-versa)</li>
+<li>Soundcards also include other hardware for amplifiers etc.</li>
+<li>Kernel has a driver that will allow interaction with the sound card</li>
+<li>OSS (Open sound system) was the first sound driver.</li>
+<li>OSS is now replaced by ALSA (Advanced Linux Sound Architecture).</li>
+<li>ALSA provides the required drivers to interact with different forms of devices (mic, headphone, speaker etc.)</li>
+<li>ALSA doesn&rsquo;t allow multiple inputs to one output (multiplexing)</li>
+<li>Program (client) -&gt; Pulseaudio (server) -&gt; ALSA (driver) -&gt; sound card</li>
+<li>This moves the responsibility of sampling and mixing from ALSA or the card to the <i>server</i>.</li>
+<li>The server can also take in multiple inputs from the microphone and push that into multiple programs (outputs)</li>
+<li>JACK (Jack Audio Connection Kit) is also a sound server that works better with pro-audio tools.</li>
+<li>JACK is more flexible than pulseaudio but is a bit more difficult to use. <i>(as if pulseaudio is easy to troubleshoot&#x2026;)</i></li>
+<li>JACK also has much smaller latencies.</li>
+<li>Pipewire - hopefully the ultimate replacement of both Pulseaudio and JACK.</li>
+<li>Pipewire works as a drop-in replacement for Pulseaudio <i>and</i> JACK.</li>
+<li>Pipewire needs the session plumber (wireplumber) to actually route audio to devices.</li>
+<li><kbd>streambay</kbd> is a Pipewire graph GUI interface.</li>
+</ol>
+
+<div id="outline-container-orga7b8fb1" class="outline-2">
+<h2 id="orga7b8fb1"><span class="section-number-2">1.</span> Pipewire installation</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Install the following:
+<ul class="org-ul">
+<li><kbd>pipewire</kbd></li>
+<li><kbd>pipewire-docs</kbd> for documentation</li>
+<li><kbd>wireplumber</kbd> for pipewire session management</li>
+<li><kbd>wireplumber-docs</kbd> for wireplumber documentation</li>
+<li><kbd>qpwgraph</kbd> for Pipewire Patchbay</li>
+<li><kbd>pipewire-alsa</kbd> to route all applications using ALSA through pipewire (and remove <kbd>pulseaudio-alsa</kbd> if installed)</li>
+<li><kbd>pipewire-pulse</kbd> to replace <kbd>pulseaudio</kbd> and <kbd>pulseaudio-bluetooth</kbd></li>
+<li><kbd>pipewire-jack</kbd> for JACK support</li>
+</ul></li>
+<li><p>
+Playing anything after installation should just work. <kbd>qpwgraph</kbd> can be used to visualize the sources and sinks.
+</p>
+
+<figure id="org64430d9">
+<img src="../assets/Pipewire_installation/2022-12-26_16-37-21_screenshot.png" alt="2022-12-26_16-37-21_screenshot.png" width="50%">
+
+</figure></li>
+<li>Audio playback works after reboot too, without any extra configuration.</li>
+<li>To check the microphone, first test on <a href="https://mictests.com">https://mictests.com</a>
+<ul class="org-ul">
+<li>Mic still doesn&rsquo;t seem to be working.</li>
+<li>Checking the graph, when firefox tries to record, the capture device is connected to the <kbd>Tiger Lake-H HD Audio Controller (Microphone (*))</kbd> device which I would assume to be the right one. It is also labelled as a capture device so that tracks too.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6)
+</div>
+</footer>
+
+<script src="theme-switcher.js"></script>
+</div>
+</body>
+</html>
