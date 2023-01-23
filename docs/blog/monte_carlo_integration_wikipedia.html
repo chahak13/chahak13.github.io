@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-23 Mon 13:29 -->
+<!-- 2023-01-23 Mon 13:32 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Monte Carlo integration - Wikipedia</title>
@@ -32,7 +32,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="updated">Updated: 2023-01-23 Mon 13:29</div>
+<div id="updated">Updated: 2023-01-23 Mon 13:32</div>
 <nav>
 <a href="/">Home</a>
 <a href="/blog/sitemap.html">Posts</a>
@@ -98,73 +98,43 @@ The value of \(I\) can be estimated by taking an average of several such Monte C
 The basic monte carlo estimator is a special case of Importance Sampling Estimator case where we sample the points from a uniform random variable, to calculate the integral. Therefore, \(X_i ~ p(x) = c\). This follows that for interval \((a, b)\), the value of \(c = \frac{1}{b-a}\). Therefore, the Monte Carlo estimator then becomes
 </p>
 
-<p>
-\[
-</p>
 \begin{align*}
   F_{N} &= \frac{1}{N}\sum_{i=1}^{N}\frac{f(X_i)}{p(X_i)} \\
         &= \frac{1}{N} \sum_{i=1}^{N}\frac{f(X_i)}{1/(b-a)}\\
         &= \frac{b-a}{N}\sum_{i=1}^{N}f(X_i)
 \end{align*}
-<p>
-\]
-</p>
 
 <p>
 We can also extend this to be N-Dimensional. For example, a 3D basic estimator for an integral
 </p>
 
-<p>
-\[
-</p>
 \begin{equation}
   \int_{x_0}^{x_1}\int_{y_0}^{y_1}\int_{z_0}^{z_1}f(x,y,z)dx dy dz
 \end{equation}
-<p>
-\]
-</p>
 
 <p>
 would be defined as
 </p>
 
-<p>
-\[
-</p>
 \begin{equation}
   F_{N} = \frac{(x_1 - x_0)(y_1 - y_0)(z_1 - z_0)}{N}\sum_{i=1}^{N}f(X_i)
 \end{equation}
-<p>
-\]
-</p>
 
 <p>
 Therefore, a general rule can be written as follows. For an n-dimensional integral
 </p>
 
-<p>
-\[
-</p>
 \begin{equation*}
   \int_{x_1}^{y_1}\int_{x_2}^{y_2}\dots \int_{x_n}^{y_n}f(x_1, x_2, \dots, x_n)dx_1 dx_2\dots dx_n
 \end{equation*}
-<p>
-\]
-</p>
 
 <p>
 the MC Estimator is defined as
 </p>
 
-<p>
-\[
-</p>
 \begin{equation*}
   F_{N} = \frac{\prod_{i=1}^{n}(y_i - x_i)}{N} \sum_{i=1}^{N}f(x_1, x_2, \dots, x_n)
 \end{equation*}
-<p>
-\]
-</p>
 
 <p>
 where \(N\) is the number of samples that are taken from the uniform distribution for evaluation.
@@ -177,15 +147,9 @@ where \(N\) is the number of samples that are taken from the uniform distributio
 This method can be simulated fairly easily using python. Let us try and integrate the following function for \(0.8 < x < 3\)
 </p>
 
-<p>
-\[
-</p>
 \begin{equation*}
   f(x) = \frac{1}{1 + \sinh(2x)\log(x)^2}
 \end{equation*}
-<p>
-\]
-</p>
 
 <p>
 To do this, we&rsquo;ll first have to define a python function using numpy
