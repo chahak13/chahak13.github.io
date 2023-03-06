@@ -336,7 +336,6 @@ def step(i, kwargs):
     ke = 0.5 * vel_p**2 * kwargs["mass_p"]
     kwargs["kinetic_energy"] = kwargs["kinetic_energy"].at[i].set(ke)
     return kwargs
-
 #+end_src
 
 #+RESULTS:

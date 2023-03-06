@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-03-05 Sun 18:56 -->
+<!-- 2023-03-05 Sun 19:01 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Jax Study</title>
@@ -43,7 +43,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<div id="updated">Updated: 2023-03-05 Sun 18:55</div>
+<div id="updated">Updated: 2023-03-05 Sun 19:01</div>
 <nav>
 <a href="/">Home</a>
 <a href="/blog/sitemap.html">Posts</a>
@@ -79,7 +79,7 @@
 Jax has structure for for-loops using the <code>jax.lax.fori_loop</code>. The implementation executes the arguments to evaluate the following python code:
 </p>
 
-<pre class="example" id="org9fc54b2">
+<pre class="example" id="org205e755">
 def fori_loop(lower, upper, body_fun, init_val):
     val = init_val
     for i in range(lower, upper):
@@ -96,19 +96,19 @@ A quick way to use this is to have a <code>step</code> function that implements 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">import</span> jax.numpy <span style="color: #b6a0ff;">as</span> jnp
-<span style="color: #b6a0ff;">from</span> jax <span style="color: #b6a0ff;">import</span> lax
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">import</span> jax.numpy <span style="color: #EF2F27;">as</span> jnp
+<span style="color: #EF2F27;">from</span> jax <span style="color: #EF2F27;">import</span> lax
 
-<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">forloop_example</span>():
-    <span style="color: #00d3d0;">result</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(<span style="color: #00bcff;">10</span>)
-    <span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">step</span>(<span style="color: #00d3d0;">i</span>, <span style="color: #00d3d0;">val</span>):
-        <span style="color: #00d3d0;">val</span> <span style="color: #b6a0ff;">=</span> val.<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(i)
-        <span style="color: #b6a0ff;">return</span> val
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">forloop_example</span>():
+    <span style="color: #0AAEB3;">result</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(<span style="color: #FF5C8F;">10</span>)
+    <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">step</span>(<span style="color: #0AAEB3;">i</span>, <span style="color: #0AAEB3;">val</span>):
+        <span style="color: #0AAEB3;">val</span> <span style="color: #EF2F27;">=</span> val.<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(i)
+        <span style="color: #EF2F27;">return</span> val
 
-    <span style="color: #00d3d0;">result</span> <span style="color: #b6a0ff;">=</span> lax.<span style="color: #00bcff; font-style: italic;">fori_loop</span>(<span style="color: #00bcff;">0</span>, <span style="color: #f78fe7;">len</span>(result), step, result)
-    <span style="color: #b6a0ff;">return</span> result
+    <span style="color: #0AAEB3;">result</span> <span style="color: #EF2F27;">=</span> lax.<span style="color: #918175; font-style: italic;">fori_loop</span>(<span style="color: #FF5C8F;">0</span>, <span style="color: #2C78BF; font-style: italic;">len</span>(result), step, result)
+    <span style="color: #EF2F27;">return</span> result
 
-<span style="color: #00bcff;">forloop_example</span>()
+<span style="color: #918175; font-style: italic;">forloop_example</span>()
 </pre>
 </div>
 
@@ -122,19 +122,19 @@ If we instead want to update multiple values in the for loop, we can return them
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">forloop_example_multi</span>():
-    <span style="color: #00d3d0;">res1</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(<span style="color: #00bcff;">10</span>)
-    <span style="color: #00d3d0;">res2</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(<span style="color: #00bcff;">10</span>)
-    <span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">step</span>(<span style="color: #00d3d0;">i</span>, <span style="color: #00d3d0;">val</span>):
-        <span style="color: #00d3d0;">res1</span>, <span style="color: #00d3d0;">res2</span> <span style="color: #b6a0ff;">=</span> val
-        <span style="color: #00d3d0;">res1</span> <span style="color: #b6a0ff;">=</span> res1.<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(i)
-        <span style="color: #00d3d0;">res2</span> <span style="color: #b6a0ff;">=</span> res2.<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(<span style="color: #f78fe7;">len</span>(res2)<span style="color: #b6a0ff;">-</span>i)
-        <span style="color: #b6a0ff;">return</span> (res1, res2)
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">forloop_example_multi</span>():
+    <span style="color: #0AAEB3;">res1</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(<span style="color: #FF5C8F;">10</span>)
+    <span style="color: #0AAEB3;">res2</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(<span style="color: #FF5C8F;">10</span>)
+    <span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">step</span>(<span style="color: #0AAEB3;">i</span>, <span style="color: #0AAEB3;">val</span>):
+        <span style="color: #0AAEB3;">res1</span>, <span style="color: #0AAEB3;">res2</span> <span style="color: #EF2F27;">=</span> val
+        <span style="color: #0AAEB3;">res1</span> <span style="color: #EF2F27;">=</span> res1.<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(i)
+        <span style="color: #0AAEB3;">res2</span> <span style="color: #EF2F27;">=</span> res2.<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(<span style="color: #2C78BF; font-style: italic;">len</span>(res2)<span style="color: #EF2F27;">-</span>i)
+        <span style="color: #EF2F27;">return</span> (res1, res2)
 
-    <span style="color: #00d3d0;">res1</span>, <span style="color: #00d3d0;">res2</span> <span style="color: #b6a0ff;">=</span> lax.<span style="color: #00bcff; font-style: italic;">fori_loop</span>(<span style="color: #00bcff;">0</span>, <span style="color: #f78fe7;">len</span>(res1), step, (res1, res2))
-    <span style="color: #b6a0ff;">return</span> res1, res2
+    <span style="color: #0AAEB3;">res1</span>, <span style="color: #0AAEB3;">res2</span> <span style="color: #EF2F27;">=</span> lax.<span style="color: #918175; font-style: italic;">fori_loop</span>(<span style="color: #FF5C8F;">0</span>, <span style="color: #2C78BF; font-style: italic;">len</span>(res1), step, (res1, res2))
+    <span style="color: #EF2F27;">return</span> res1, res2
 
-<span style="color: #00bcff;">forloop_example_multi</span>()
+<span style="color: #918175; font-style: italic;">forloop_example_multi</span>()
 </pre>
 </div>
 
@@ -173,11 +173,11 @@ To calculate gradients of scalar functions in jax, we use the <code>jax.grad()</
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">from</span> jax <span style="color: #b6a0ff;">import</span> grad, value_and_grad
-<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">f</span>(<span style="color: #00d3d0;">x</span>):
-    <span style="color: #b6a0ff;">return</span> x<span style="color: #b6a0ff;">**</span><span style="color: #00bcff;">2</span>
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">from</span> jax <span style="color: #EF2F27;">import</span> grad, value_and_grad
+<span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">f</span>(<span style="color: #0AAEB3;">x</span>):
+    <span style="color: #EF2F27;">return</span> x<span style="color: #EF2F27;">**</span><span style="color: #FF5C8F;">2</span>
 
-<span style="color: #00bcff;">value_and_grad</span>(f)(<span style="color: #00bcff;">3.0</span>)
+<span style="color: #918175; font-style: italic;">value_and_grad</span>(f)(<span style="color: #FF5C8F;">3.0</span>)
 </pre>
 </div>
 
@@ -208,11 +208,11 @@ As we can see, using <code>value_and_grad()</code> we can get the value and grad
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00bcff;">value_and_grad</span>(f)(jnp.<span style="color: #00bcff; font-style: italic;">arange</span>(<span style="color: #00bcff;">4.</span>))
+<pre class="src src-jupyter-python"><span style="color: #918175; font-style: italic;">value_and_grad</span>(f)(jnp.<span style="color: #918175; font-style: italic;">arange</span>(<span style="color: #FF5C8F;">4.</span>))
 </pre>
 </div>
 
-<pre class="example" id="orga070d65">
+<pre class="example" id="org4eb67ba">
 ---------------------------------------------------------------------------
 TypeError                                 Traceback (most recent call last)
 Cell In[7], line 1
@@ -231,8 +231,8 @@ TypeError: Gradient only defined for scalar-output functions. Output had shape: 
 </pre>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">from</span> jax <span style="color: #b6a0ff;">import</span> vmap
-<span style="color: #00bcff;">vmap</span>(<span style="color: #00bcff;">value_and_grad</span>(f))(jnp.<span style="color: #00bcff; font-style: italic;">arange</span>(<span style="color: #00bcff;">4.</span>))
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">from</span> jax <span style="color: #EF2F27;">import</span> vmap
+<span style="color: #918175; font-style: italic;">vmap</span>(<span style="color: #918175; font-style: italic;">value_and_grad</span>(f))(jnp.<span style="color: #918175; font-style: italic;">arange</span>(<span style="color: #FF5C8F;">4.</span>))
 </pre>
 </div>
 
@@ -263,14 +263,14 @@ Therefore, to vectorize gradient calculation on scalar output functions, <code>v
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">fvec</span>(<span style="color: #00d3d0;">x</span>):
-    <span style="color: #b6a0ff;">return</span> jnp.<span style="color: #00bcff; font-style: italic;">array</span>([x<span style="color: #b6a0ff;">**</span><span style="color: #00bcff;">2</span>, x<span style="color: #b6a0ff;">**</span><span style="color: #00bcff;">3</span>])
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">fvec</span>(<span style="color: #0AAEB3;">x</span>):
+    <span style="color: #EF2F27;">return</span> jnp.<span style="color: #918175; font-style: italic;">array</span>([x<span style="color: #EF2F27;">**</span><span style="color: #FF5C8F;">2</span>, x<span style="color: #EF2F27;">**</span><span style="color: #FF5C8F;">3</span>])
 
-<span style="color: #00bcff;">value_and_grad</span>(fvec)(<span style="color: #00bcff;">2.0</span>)
+<span style="color: #918175; font-style: italic;">value_and_grad</span>(fvec)(<span style="color: #FF5C8F;">2.0</span>)
 </pre>
 </div>
 
-<pre class="example" id="org8cc8bc1">
+<pre class="example" id="org3d176aa">
 ---------------------------------------------------------------------------
 TypeError                                 Traceback (most recent call last)
 Cell In[11], line 4
@@ -295,9 +295,9 @@ To calculate these gradients, one way is to use <code>jacobian()</code>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">from</span> jax <span style="color: #b6a0ff;">import</span> jacobian
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">from</span> jax <span style="color: #EF2F27;">import</span> jacobian
 
-<span style="color: #00bcff;">jacobian</span>(fvec)(<span style="color: #00bcff;">2.</span>)
+<span style="color: #918175; font-style: italic;">jacobian</span>(fvec)(<span style="color: #FF5C8F;">2.</span>)
 </pre>
 </div>
 
@@ -311,7 +311,7 @@ Array([ 4., 12.], dtype=float32, weak_type=True)
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00bcff;">jacobian</span>(fvec)(jnp.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">2.</span>, <span style="color: #00bcff;">3.</span>]))
+<pre class="src src-jupyter-python"><span style="color: #918175; font-style: italic;">jacobian</span>(fvec)(jnp.<span style="color: #918175; font-style: italic;">array</span>([<span style="color: #FF5C8F;">2.</span>, <span style="color: #FF5C8F;">3.</span>]))
 </pre>
 </div>
 
@@ -325,7 +325,7 @@ Array([[[ 4.,  0.],
 
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00bcff;">vmap</span>(<span style="color: #00bcff;">jacobian</span>(fvec))(jnp.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">2.</span>, <span style="color: #00bcff;">3.</span>]))
+<pre class="src src-jupyter-python"><span style="color: #918175; font-style: italic;">vmap</span>(<span style="color: #918175; font-style: italic;">jacobian</span>(fvec))(jnp.<span style="color: #918175; font-style: italic;">array</span>([<span style="color: #FF5C8F;">2.</span>, <span style="color: #FF5C8F;">3.</span>]))
 </pre>
 </div>
 
@@ -351,12 +351,12 @@ As can be seen, when we use <code>jacobian()</code> with vector inputs, derivati
 Computational Domain for this problem is set up as
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00d3d0;">L</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">1</span>                           <span style="color: #a8a8a8;"># Domain size</span>
-<span style="color: #00d3d0;">nodes</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">L</span>])       <span style="color: #a8a8a8;"># Nodal coordinates</span>
-<span style="color: #00d3d0;">nnodes</span> <span style="color: #b6a0ff;">=</span> <span style="color: #f78fe7;">len</span>(nodes)             <span style="color: #a8a8a8;"># Number of nodes</span>
-<span style="color: #00d3d0;">nelements</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">1</span>                   <span style="color: #a8a8a8;"># Number of elements</span>
-<span style="color: #00d3d0;">nparticles</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">1</span>                  <span style="color: #a8a8a8;"># Number of particles</span>
-<span style="color: #00d3d0;">el_length</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">L</span> <span style="color: #b6a0ff;">/</span> nelements       <span style="color: #a8a8a8;"># Element length</span>
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">L</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">1</span>                           <span style="color: #918175; font-style: italic;"># Domain size</span>
+<span style="color: #0AAEB3;">nodes</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">array</span>([<span style="color: #FF5C8F;">0</span>, <span style="color: #FF5C8F;">L</span>])       <span style="color: #918175; font-style: italic;"># Nodal coordinates</span>
+<span style="color: #0AAEB3;">nnodes</span> <span style="color: #EF2F27;">=</span> <span style="color: #2C78BF; font-style: italic;">len</span>(nodes)             <span style="color: #918175; font-style: italic;"># Number of nodes</span>
+<span style="color: #0AAEB3;">nelements</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">1</span>                   <span style="color: #918175; font-style: italic;"># Number of elements</span>
+<span style="color: #0AAEB3;">nparticles</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">1</span>                  <span style="color: #918175; font-style: italic;"># Number of particles</span>
+<span style="color: #0AAEB3;">el_length</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">L</span> <span style="color: #EF2F27;">/</span> nelements       <span style="color: #918175; font-style: italic;"># Element length</span>
 
 </pre>
 </div>
@@ -365,8 +365,8 @@ Computational Domain for this problem is set up as
 Material properties:
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00d3d0;">E</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">4</span> <span style="color: #b6a0ff;">*</span> jnp.<span style="color: #00bcff; font-style: italic;">pi</span><span style="color: #b6a0ff;">**</span><span style="color: #00bcff;">2</span>               <span style="color: #a8a8a8;"># Young's modulus</span>
-<span style="color: #00d3d0;">rho</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">1.</span>                        <span style="color: #a8a8a8;"># Density</span>
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">E</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">4</span> <span style="color: #EF2F27;">*</span> jnp.<span style="color: #FF5C8F; font-style: italic;">pi</span><span style="color: #EF2F27;">**</span><span style="color: #FF5C8F;">2</span>               <span style="color: #918175; font-style: italic;"># Young's modulus</span>
+<span style="color: #0AAEB3;">rho</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">1.</span>                        <span style="color: #918175; font-style: italic;"># Density</span>
 </pre>
 </div>
 
@@ -374,8 +374,8 @@ Material properties:
 Initial loading conditions:
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00d3d0;">v0</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.1</span>                        <span style="color: #a8a8a8;"># initial velocity</span>
-<span style="color: #00d3d0;">x_loc</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.5</span>                     <span style="color: #a8a8a8;"># Location to get analytical solution</span>
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">v0</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.1</span>                        <span style="color: #918175; font-style: italic;"># initial velocity</span>
+<span style="color: #0AAEB3;">x_loc</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.5</span>                     <span style="color: #918175; font-style: italic;"># Location to get analytical solution</span>
 </pre>
 </div>
 
@@ -383,13 +383,13 @@ Initial loading conditions:
 The material points in MPM keep track of position, mass, velocity, volume, momentum and stress. The material point is at the middle of the element and its volume is the size of the entire length of the bar.
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00d3d0;">x_p</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.5</span> <span style="color: #b6a0ff;">*</span> el_length           <span style="color: #a8a8a8;"># position of material point</span>
-<span style="color: #00d3d0;">mass_p</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">1.</span>                     <span style="color: #a8a8a8;"># Mass of material point</span>
-<span style="color: #00d3d0;">vol_p</span> <span style="color: #b6a0ff;">=</span> el_length <span style="color: #b6a0ff;">/</span> nparticles  <span style="color: #a8a8a8;"># Volume</span>
-<span style="color: #00d3d0;">vel_p</span> <span style="color: #b6a0ff;">=</span> v0                      <span style="color: #a8a8a8;"># Initial velocity</span>
-<span style="color: #00d3d0;">stress_p</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.</span>                   <span style="color: #a8a8a8;"># Stress</span>
-<span style="color: #00d3d0;">strain_p</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.</span>                   <span style="color: #a8a8a8;"># Strain</span>
-<span style="color: #00d3d0;">momentum_p</span> <span style="color: #b6a0ff;">=</span> mass_p <span style="color: #b6a0ff;">*</span> vel_p
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">x_p</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.5</span> <span style="color: #EF2F27;">*</span> el_length           <span style="color: #918175; font-style: italic;"># position of material point</span>
+<span style="color: #0AAEB3;">mass_p</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">1.</span>                     <span style="color: #918175; font-style: italic;"># Mass of material point</span>
+<span style="color: #0AAEB3;">vol_p</span> <span style="color: #EF2F27;">=</span> el_length <span style="color: #EF2F27;">/</span> nparticles  <span style="color: #918175; font-style: italic;"># Volume</span>
+<span style="color: #0AAEB3;">vel_p</span> <span style="color: #EF2F27;">=</span> v0                      <span style="color: #918175; font-style: italic;"># Initial velocity</span>
+<span style="color: #0AAEB3;">stress_p</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.</span>                   <span style="color: #918175; font-style: italic;"># Stress</span>
+<span style="color: #0AAEB3;">strain_p</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.</span>                   <span style="color: #918175; font-style: italic;"># Strain</span>
+<span style="color: #0AAEB3;">momentum_p</span> <span style="color: #EF2F27;">=</span> mass_p <span style="color: #EF2F27;">*</span> vel_p
 </pre>
 </div>
 </div>
@@ -401,8 +401,8 @@ The material points in MPM keep track of position, mass, velocity, volume, momen
 For the shape function, we use a two-noded single element with linear elements.
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">shape_fn</span>(<span style="color: #00d3d0;">x</span>):
-    <span style="color: #b6a0ff;">return</span> <span style="color: #00bcff;">1</span> <span style="color: #b6a0ff;">-</span> <span style="color: #f78fe7;">abs</span>(x <span style="color: #b6a0ff;">-</span> nodes)<span style="color: #b6a0ff;">/</span><span style="color: #00bcff;">L</span>
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">shape_fn</span>(<span style="color: #0AAEB3;">x</span>):
+    <span style="color: #EF2F27;">return</span> <span style="color: #FF5C8F;">1</span> <span style="color: #EF2F27;">-</span> <span style="color: #2C78BF; font-style: italic;">abs</span>(x <span style="color: #EF2F27;">-</span> nodes)<span style="color: #EF2F27;">/</span><span style="color: #FF5C8F;">L</span>
 </pre>
 </div>
 
@@ -411,7 +411,7 @@ For this shape function, we can write its derivative using <code>jacobian()</cod
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00bcff;">vmap</span>(<span style="color: #00bcff;">jacobian</span>(shape_fn))(jnp.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">0.1</span>, <span style="color: #00bcff;">0.8</span>]))
+<pre class="src src-jupyter-python"><span style="color: #918175; font-style: italic;">vmap</span>(<span style="color: #918175; font-style: italic;">jacobian</span>(shape_fn))(jnp.<span style="color: #918175; font-style: italic;">array</span>([<span style="color: #FF5C8F;">0.1</span>, <span style="color: #FF5C8F;">0.8</span>]))
 </pre>
 </div>
 
@@ -425,8 +425,8 @@ Array([[-1.,  1.],
 As we see, we get the correct value of the derivatives for 2 different values of <code>x</code>. Hence, we can define the derivative of the shape function as
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">shape_fn_grad</span>(<span style="color: #00d3d0;">x</span>):
-    <span style="color: #b6a0ff;">return</span> <span style="color: #00bcff;">vmap</span>(<span style="color: #00bcff;">jacobian</span>(shape_fn))(x)
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">shape_fn_grad</span>(<span style="color: #0AAEB3;">x</span>):
+    <span style="color: #EF2F27;">return</span> <span style="color: #918175; font-style: italic;">vmap</span>(<span style="color: #918175; font-style: italic;">jacobian</span>(shape_fn))(x)
 </pre>
 </div>
 </div>
@@ -457,15 +457,15 @@ During a single timestep, we perform the following actions
 During this entire process, we want to store the evolution of velocity, position and energies with time.
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00d3d0;">t0</span>, <span style="color: #00d3d0;">T</span>, <span style="color: #00d3d0;">dt</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0</span>, <span style="color: #00bcff;">10</span>, <span style="color: #00bcff;">0.01</span>
-<span style="color: #00d3d0;">time</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">arange</span>(t0, <span style="color: #00bcff;">T</span>, dt)
-<span style="color: #00d3d0;">velocity</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(time.<span style="color: #00bcff; font-style: italic;">shape</span>)
-<span style="color: #00d3d0;">position</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(time.<span style="color: #00bcff; font-style: italic;">shape</span>)
-<span style="color: #00d3d0;">strain_energy</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(time.<span style="color: #00bcff; font-style: italic;">shape</span>)
-<span style="color: #00d3d0;">kinetic_energy</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">zeros</span>(time.<span style="color: #00bcff; font-style: italic;">shape</span>)
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">t0</span>, <span style="color: #0AAEB3;">T</span>, <span style="color: #0AAEB3;">dt</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0</span>, <span style="color: #FF5C8F;">10</span>, <span style="color: #FF5C8F;">0.01</span>
+<span style="color: #0AAEB3;">time</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">arange</span>(t0, <span style="color: #FF5C8F;">T</span>, dt)
+<span style="color: #0AAEB3;">velocity</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(time.<span style="color: #FF5C8F; font-style: italic;">shape</span>)
+<span style="color: #0AAEB3;">position</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(time.<span style="color: #FF5C8F; font-style: italic;">shape</span>)
+<span style="color: #0AAEB3;">strain_energy</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(time.<span style="color: #FF5C8F; font-style: italic;">shape</span>)
+<span style="color: #0AAEB3;">kinetic_energy</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">zeros</span>(time.<span style="color: #FF5C8F; font-style: italic;">shape</span>)
 
-<span style="color: #00d3d0;">position</span> <span style="color: #b6a0ff;">=</span> position.<span style="color: #00bcff; font-style: italic;">at</span>[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">set</span>(x_p)
-<span style="color: #00d3d0;">velocity</span> <span style="color: #b6a0ff;">=</span> velocity.<span style="color: #00bcff; font-style: italic;">at</span>[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">set</span>(vel_p)
+<span style="color: #0AAEB3;">position</span> <span style="color: #EF2F27;">=</span> position.<span style="color: #FF5C8F; font-style: italic;">at</span>[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">set</span>(x_p)
+<span style="color: #0AAEB3;">velocity</span> <span style="color: #EF2F27;">=</span> velocity.<span style="color: #FF5C8F; font-style: italic;">at</span>[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">set</span>(vel_p)
 </pre>
 </div>
 
@@ -473,61 +473,60 @@ During this entire process, we want to store the evolution of velocity, position
 Now, we will write a function that will perform one timestep update.
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">step</span>(<span style="color: #00d3d0;">i</span>, <span style="color: #00d3d0;">kwargs</span>):
-    <span style="color: #a8a8a8;"># Shape function and its derivative</span>
-    <span style="color: #00d3d0;">N</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">shape_fn</span>(kwargs[<span style="color: #79a8ff;">"position"</span>][i<span style="color: #b6a0ff;">-</span><span style="color: #00bcff;">1</span>])
-    <span style="color: #00d3d0;">dN</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">jacobian</span>(shape_fn)(kwargs[<span style="color: #79a8ff;">"position"</span>][i<span style="color: #b6a0ff;">-</span><span style="color: #00bcff;">1</span>])
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">step</span>(<span style="color: #0AAEB3;">i</span>, <span style="color: #0AAEB3;">kwargs</span>):
+    <span style="color: #918175; font-style: italic;"># Shape function and its derivative</span>
+    <span style="color: #0AAEB3;">N</span> <span style="color: #EF2F27;">=</span> <span style="color: #918175; font-style: italic;">shape_fn</span>(kwargs[<span style="color: #98BC37;">"position"</span>][i<span style="color: #EF2F27;">-</span><span style="color: #FF5C8F;">1</span>])
+    <span style="color: #0AAEB3;">dN</span> <span style="color: #EF2F27;">=</span> <span style="color: #918175; font-style: italic;">jacobian</span>(shape_fn)(kwargs[<span style="color: #98BC37;">"position"</span>][i<span style="color: #EF2F27;">-</span><span style="color: #FF5C8F;">1</span>])
 
-    <span style="color: #a8a8a8;"># Nodal mass and momentum</span>
-    <span style="color: #00d3d0;">mass_n</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">N</span> <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"mass_p"</span>]
-    <span style="color: #00d3d0;">momentum_n</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">N</span> <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"momentum_p"</span>]
+    <span style="color: #918175; font-style: italic;"># Nodal mass and momentum</span>
+    <span style="color: #0AAEB3;">mass_n</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">N</span> <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"mass_p"</span>]
+    <span style="color: #0AAEB3;">momentum_n</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">N</span> <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"momentum_p"</span>]
 
-    <span style="color: #a8a8a8;"># Boundary conditions</span>
-    <span style="color: #00d3d0;">momentum_n</span> <span style="color: #b6a0ff;">=</span> momentum_n.<span style="color: #00bcff; font-style: italic;">at</span>[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">set</span>(<span style="color: #00bcff;">0</span>)
+    <span style="color: #918175; font-style: italic;"># Boundary conditions</span>
+    <span style="color: #0AAEB3;">momentum_n</span> <span style="color: #EF2F27;">=</span> momentum_n.<span style="color: #FF5C8F; font-style: italic;">at</span>[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">set</span>(<span style="color: #FF5C8F;">0</span>)
 
-    <span style="color: #a8a8a8;"># External forces</span>
-    <span style="color: #00d3d0;">f_ext</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">array</span>([<span style="color: #00bcff;">0.</span>, <span style="color: #00bcff;">0.</span>])
+    <span style="color: #918175; font-style: italic;"># External forces</span>
+    <span style="color: #0AAEB3;">f_ext</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">array</span>([<span style="color: #FF5C8F;">0.</span>, <span style="color: #FF5C8F;">0.</span>])
 
-    <span style="color: #a8a8a8;"># Internal forces</span>
-    <span style="color: #00d3d0;">f_int</span> <span style="color: #b6a0ff;">=</span> <span style="color: #b6a0ff;">-</span>dN <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"vol_p"</span>] <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"stress_p"</span>]
+    <span style="color: #918175; font-style: italic;"># Internal forces</span>
+    <span style="color: #0AAEB3;">f_int</span> <span style="color: #EF2F27;">=</span> <span style="color: #EF2F27;">-</span>dN <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"vol_p"</span>] <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"stress_p"</span>]
 
-    <span style="color: #a8a8a8;"># Total nodal forces</span>
-    <span style="color: #00d3d0;">f_total</span> <span style="color: #b6a0ff;">=</span> f_ext <span style="color: #b6a0ff;">+</span> f_int
-    <span style="color: #00d3d0;">f_total</span> <span style="color: #b6a0ff;">=</span> f_total.<span style="color: #00bcff; font-style: italic;">at</span>[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">set</span>(<span style="color: #00bcff;">0</span>)
+    <span style="color: #918175; font-style: italic;"># Total nodal forces</span>
+    <span style="color: #0AAEB3;">f_total</span> <span style="color: #EF2F27;">=</span> f_ext <span style="color: #EF2F27;">+</span> f_int
+    <span style="color: #0AAEB3;">f_total</span> <span style="color: #EF2F27;">=</span> f_total.<span style="color: #FF5C8F; font-style: italic;">at</span>[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">set</span>(<span style="color: #FF5C8F;">0</span>)
 
-    <span style="color: #00d3d0;">momentum_n</span> <span style="color: #b6a0ff;">+=</span> f_total <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"dt"</span>]
+    <span style="color: #0AAEB3;">momentum_n</span> <span style="color: #EF2F27;">+=</span> f_total <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"dt"</span>]
 
-    <span style="color: #a8a8a8;"># Update particle position and velocity</span>
-    <span style="color: #00d3d0;">vel_p</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">sum</span>(kwargs[<span style="color: #79a8ff;">"dt"</span>] <span style="color: #b6a0ff;">*</span> <span style="color: #00bcff;">N</span> <span style="color: #b6a0ff;">*</span> f_total <span style="color: #b6a0ff;">/</span> mass_n) <span style="color: #b6a0ff;">+</span> kwargs[<span style="color: #79a8ff;">"velocity"</span>][i<span style="color: #b6a0ff;">-</span><span style="color: #00bcff;">1</span>]
-    <span style="color: #00d3d0;">pos_p</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">sum</span>(kwargs[<span style="color: #79a8ff;">"dt"</span>] <span style="color: #b6a0ff;">*</span> <span style="color: #00bcff;">N</span> <span style="color: #b6a0ff;">*</span> momentum_n <span style="color: #b6a0ff;">/</span> mass_n) <span style="color: #b6a0ff;">+</span> kwargs[<span style="color: #79a8ff;">"position"</span>][i<span style="color: #b6a0ff;">-</span><span style="color: #00bcff;">1</span>]
+    <span style="color: #918175; font-style: italic;"># Update particle position and velocity</span>
+    <span style="color: #0AAEB3;">vel_p</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">sum</span>(kwargs[<span style="color: #98BC37;">"dt"</span>] <span style="color: #EF2F27;">*</span> <span style="color: #FF5C8F;">N</span> <span style="color: #EF2F27;">*</span> f_total <span style="color: #EF2F27;">/</span> mass_n) <span style="color: #EF2F27;">+</span> kwargs[<span style="color: #98BC37;">"velocity"</span>][i<span style="color: #EF2F27;">-</span><span style="color: #FF5C8F;">1</span>]
+    <span style="color: #0AAEB3;">pos_p</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">sum</span>(kwargs[<span style="color: #98BC37;">"dt"</span>] <span style="color: #EF2F27;">*</span> <span style="color: #FF5C8F;">N</span> <span style="color: #EF2F27;">*</span> momentum_n <span style="color: #EF2F27;">/</span> mass_n) <span style="color: #EF2F27;">+</span> kwargs[<span style="color: #98BC37;">"position"</span>][i<span style="color: #EF2F27;">-</span><span style="color: #FF5C8F;">1</span>]
 
-    <span style="color: #a8a8a8;"># Update particle momentum</span>
-    kwargs[<span style="color: #00d3d0;">"momentum_p"</span>] <span style="color: #b6a0ff;">=</span> kwargs[<span style="color: #79a8ff;">"mass_p"</span>] <span style="color: #b6a0ff;">*</span> vel_p
+    <span style="color: #918175; font-style: italic;"># Update particle momentum</span>
+    kwargs[<span style="color: #0AAEB3;">"momentum_p"</span>] <span style="color: #EF2F27;">=</span> kwargs[<span style="color: #98BC37;">"mass_p"</span>] <span style="color: #EF2F27;">*</span> vel_p
 
-    <span style="color: #a8a8a8;"># Map nodal velocity</span>
-    <span style="color: #00d3d0;">vel_n</span> <span style="color: #b6a0ff;">=</span> kwargs[<span style="color: #79a8ff;">"mass_p"</span>] <span style="color: #b6a0ff;">*</span> vel_p <span style="color: #b6a0ff;">*</span> jnp.<span style="color: #00bcff; font-style: italic;">divide</span>(<span style="color: #00bcff;">N</span>, mass_n)
-    <span style="color: #00d3d0;">vel_n</span> <span style="color: #b6a0ff;">=</span> vel_n.<span style="color: #00bcff; font-style: italic;">at</span>[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">set</span>(<span style="color: #00bcff;">0</span>)
+    <span style="color: #918175; font-style: italic;"># Map nodal velocity</span>
+    <span style="color: #0AAEB3;">vel_n</span> <span style="color: #EF2F27;">=</span> kwargs[<span style="color: #98BC37;">"mass_p"</span>] <span style="color: #EF2F27;">*</span> vel_p <span style="color: #EF2F27;">*</span> jnp.<span style="color: #918175; font-style: italic;">divide</span>(<span style="color: #FF5C8F;">N</span>, mass_n)
+    <span style="color: #0AAEB3;">vel_n</span> <span style="color: #EF2F27;">=</span> vel_n.<span style="color: #FF5C8F; font-style: italic;">at</span>[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">set</span>(<span style="color: #FF5C8F;">0</span>)
 
-    <span style="color: #a8a8a8;"># Strain rate at the particle</span>
-    <span style="color: #00d3d0;">strain_rate_p</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">dot</span>(dN, vel_n)
-    <span style="color: #a8a8a8;"># Strain increment</span>
-    <span style="color: #00d3d0;">dstrain_p</span> <span style="color: #b6a0ff;">=</span> strain_rate_p <span style="color: #b6a0ff;">*</span> dt
-    <span style="color: #a8a8a8;"># Strain</span>
-    kwargs[<span style="color: #00d3d0;">"strain_p"</span>] <span style="color: #b6a0ff;">+=</span> dstrain_p
-    kwargs[<span style="color: #00d3d0;">"stress_p"</span>] <span style="color: #b6a0ff;">+=</span> kwargs[<span style="color: #79a8ff;">"E"</span>] <span style="color: #b6a0ff;">*</span> dstrain_p
+    <span style="color: #918175; font-style: italic;"># Strain rate at the particle</span>
+    <span style="color: #0AAEB3;">strain_rate_p</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">dot</span>(dN, vel_n)
+    <span style="color: #918175; font-style: italic;"># Strain increment</span>
+    <span style="color: #0AAEB3;">dstrain_p</span> <span style="color: #EF2F27;">=</span> strain_rate_p <span style="color: #EF2F27;">*</span> dt
+    <span style="color: #918175; font-style: italic;"># Strain</span>
+    kwargs[<span style="color: #0AAEB3;">"strain_p"</span>] <span style="color: #EF2F27;">+=</span> dstrain_p
+    kwargs[<span style="color: #0AAEB3;">"stress_p"</span>] <span style="color: #EF2F27;">+=</span> kwargs[<span style="color: #98BC37;">"E"</span>] <span style="color: #EF2F27;">*</span> dstrain_p
 
-    kwargs[<span style="color: #00d3d0;">"velocity"</span>] <span style="color: #b6a0ff;">=</span> kwargs[<span style="color: #79a8ff;">"velocity"</span>].<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(vel_p)
-    kwargs[<span style="color: #00d3d0;">"position"</span>] <span style="color: #b6a0ff;">=</span> kwargs[<span style="color: #79a8ff;">"position"</span>].<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(pos_p)
+    kwargs[<span style="color: #0AAEB3;">"velocity"</span>] <span style="color: #EF2F27;">=</span> kwargs[<span style="color: #98BC37;">"velocity"</span>].<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(vel_p)
+    kwargs[<span style="color: #0AAEB3;">"position"</span>] <span style="color: #EF2F27;">=</span> kwargs[<span style="color: #98BC37;">"position"</span>].<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(pos_p)
 
-    <span style="color: #a8a8a8;"># Compute and store strain energy</span>
-    <span style="color: #00d3d0;">se</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.5</span> <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"stress_p"</span>] <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"strain_p"</span>] <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"vol_p"</span>]
-    kwargs[<span style="color: #00d3d0;">"strain_energy"</span>] <span style="color: #b6a0ff;">=</span> kwargs[<span style="color: #79a8ff;">"strain_energy"</span>].<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(se)
+    <span style="color: #918175; font-style: italic;"># Compute and store strain energy</span>
+    <span style="color: #0AAEB3;">se</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.5</span> <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"stress_p"</span>] <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"strain_p"</span>] <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"vol_p"</span>]
+    kwargs[<span style="color: #0AAEB3;">"strain_energy"</span>] <span style="color: #EF2F27;">=</span> kwargs[<span style="color: #98BC37;">"strain_energy"</span>].<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(se)
 
-    <span style="color: #a8a8a8;"># Compute and store kinetic energy</span>
-    <span style="color: #00d3d0;">ke</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">0.5</span> <span style="color: #b6a0ff;">*</span> vel_p<span style="color: #b6a0ff;">**</span><span style="color: #00bcff;">2</span> <span style="color: #b6a0ff;">*</span> kwargs[<span style="color: #79a8ff;">"mass_p"</span>]
-    kwargs[<span style="color: #00d3d0;">"kinetic_energy"</span>] <span style="color: #b6a0ff;">=</span> kwargs[<span style="color: #79a8ff;">"kinetic_energy"</span>].<span style="color: #00bcff; font-style: italic;">at</span>[i].<span style="color: #00bcff; font-style: italic;">set</span>(ke)
-    <span style="color: #b6a0ff;">return</span> kwargs
-
+    <span style="color: #918175; font-style: italic;"># Compute and store kinetic energy</span>
+    <span style="color: #0AAEB3;">ke</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">0.5</span> <span style="color: #EF2F27;">*</span> vel_p<span style="color: #EF2F27;">**</span><span style="color: #FF5C8F;">2</span> <span style="color: #EF2F27;">*</span> kwargs[<span style="color: #98BC37;">"mass_p"</span>]
+    kwargs[<span style="color: #0AAEB3;">"kinetic_energy"</span>] <span style="color: #EF2F27;">=</span> kwargs[<span style="color: #98BC37;">"kinetic_energy"</span>].<span style="color: #FF5C8F; font-style: italic;">at</span>[i].<span style="color: #918175; font-style: italic;">set</span>(ke)
+    <span style="color: #EF2F27;">return</span> kwargs
 </pre>
 </div>
 
@@ -536,20 +535,20 @@ We can now use this function in the <code>jax.lax.fori_loop()</code> function to
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #00d3d0;">kwargs</span> <span style="color: #b6a0ff;">=</span> {
-    <span style="color: #79a8ff;">"mass_p"</span>: mass_p,
-    <span style="color: #79a8ff;">"vol_p"</span>: vol_p,
-    <span style="color: #79a8ff;">"stress_p"</span>: stress_p,
-    <span style="color: #79a8ff;">"strain_p"</span>: strain_p,
-    <span style="color: #79a8ff;">"momentum_p"</span>: momentum_p,
-    <span style="color: #79a8ff;">"velocity"</span>: velocity,
-    <span style="color: #79a8ff;">"position"</span>: position,
-    <span style="color: #79a8ff;">"strain_energy"</span>: strain_energy,
-    <span style="color: #79a8ff;">"kinetic_energy"</span>: kinetic_energy,
-    <span style="color: #79a8ff;">"E"</span>: <span style="color: #00bcff;">E</span>,
-    <span style="color: #79a8ff;">"dt"</span>: dt,
+<pre class="src src-jupyter-python"><span style="color: #0AAEB3;">kwargs</span> <span style="color: #EF2F27;">=</span> {
+    <span style="color: #98BC37;">"mass_p"</span>: mass_p,
+    <span style="color: #98BC37;">"vol_p"</span>: vol_p,
+    <span style="color: #98BC37;">"stress_p"</span>: stress_p,
+    <span style="color: #98BC37;">"strain_p"</span>: strain_p,
+    <span style="color: #98BC37;">"momentum_p"</span>: momentum_p,
+    <span style="color: #98BC37;">"velocity"</span>: velocity,
+    <span style="color: #98BC37;">"position"</span>: position,
+    <span style="color: #98BC37;">"strain_energy"</span>: strain_energy,
+    <span style="color: #98BC37;">"kinetic_energy"</span>: kinetic_energy,
+    <span style="color: #98BC37;">"E"</span>: <span style="color: #FF5C8F;">E</span>,
+    <span style="color: #98BC37;">"dt"</span>: dt,
 }
-<span style="color: #00d3d0;">result</span> <span style="color: #b6a0ff;">=</span> lax.<span style="color: #00bcff; font-style: italic;">fori_loop</span>(<span style="color: #00bcff;">1</span>, <span style="color: #f78fe7;">len</span>(time), step, kwargs)
+<span style="color: #0AAEB3;">result</span> <span style="color: #EF2F27;">=</span> lax.<span style="color: #918175; font-style: italic;">fori_loop</span>(<span style="color: #FF5C8F;">1</span>, <span style="color: #2C78BF; font-style: italic;">len</span>(time), step, kwargs)
 </pre>
 </div>
 
@@ -557,32 +556,32 @@ We can now use this function in the <code>jax.lax.fori_loop()</code> function to
 We can compare this result with the analytical solution which can be evaluated as follows:
 </p>
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">analytical_vibration</span>(<span style="color: #00d3d0;">E</span>, <span style="color: #00d3d0;">rho</span>, <span style="color: #00d3d0;">v0</span>, <span style="color: #00d3d0;">x_loc</span>, <span style="color: #00d3d0;">duration</span>, <span style="color: #00d3d0;">dt</span>, <span style="color: #00d3d0;">L</span>):
-    <span style="color: #00d3d0;">omega</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">1</span> <span style="color: #b6a0ff;">/</span> <span style="color: #00bcff;">L</span> <span style="color: #b6a0ff;">*</span> jnp.<span style="color: #00bcff; font-style: italic;">sqrt</span>(<span style="color: #00bcff;">E</span> <span style="color: #b6a0ff;">/</span> rho)
-    <span style="color: #00d3d0;">t</span> <span style="color: #b6a0ff;">=</span> jnp.<span style="color: #00bcff; font-style: italic;">arange</span>(<span style="color: #00bcff;">0</span>, duration, dt)
-    <span style="color: #00d3d0;">v</span> <span style="color: #b6a0ff;">=</span> v0 <span style="color: #b6a0ff;">*</span> jnp.<span style="color: #00bcff; font-style: italic;">cos</span>(omega <span style="color: #b6a0ff;">*</span> t)
-    <span style="color: #00d3d0;">x</span> <span style="color: #b6a0ff;">=</span> x_loc <span style="color: #b6a0ff;">*</span> jnp.<span style="color: #00bcff; font-style: italic;">exp</span>(v0 <span style="color: #b6a0ff;">/</span> (<span style="color: #00bcff;">L</span> <span style="color: #b6a0ff;">*</span> omega) <span style="color: #b6a0ff;">*</span> jnp.<span style="color: #00bcff; font-style: italic;">sin</span>(omega <span style="color: #b6a0ff;">*</span> t))
-    <span style="color: #b6a0ff;">return</span> x, v
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">def</span> <span style="color: #FBB829;">analytical_vibration</span>(<span style="color: #0AAEB3;">E</span>, <span style="color: #0AAEB3;">rho</span>, <span style="color: #0AAEB3;">v0</span>, <span style="color: #0AAEB3;">x_loc</span>, <span style="color: #0AAEB3;">duration</span>, <span style="color: #0AAEB3;">dt</span>, <span style="color: #0AAEB3;">L</span>):
+    <span style="color: #0AAEB3;">omega</span> <span style="color: #EF2F27;">=</span> <span style="color: #FF5C8F;">1</span> <span style="color: #EF2F27;">/</span> <span style="color: #FF5C8F;">L</span> <span style="color: #EF2F27;">*</span> jnp.<span style="color: #918175; font-style: italic;">sqrt</span>(<span style="color: #FF5C8F;">E</span> <span style="color: #EF2F27;">/</span> rho)
+    <span style="color: #0AAEB3;">t</span> <span style="color: #EF2F27;">=</span> jnp.<span style="color: #918175; font-style: italic;">arange</span>(<span style="color: #FF5C8F;">0</span>, duration, dt)
+    <span style="color: #0AAEB3;">v</span> <span style="color: #EF2F27;">=</span> v0 <span style="color: #EF2F27;">*</span> jnp.<span style="color: #918175; font-style: italic;">cos</span>(omega <span style="color: #EF2F27;">*</span> t)
+    <span style="color: #0AAEB3;">x</span> <span style="color: #EF2F27;">=</span> x_loc <span style="color: #EF2F27;">*</span> jnp.<span style="color: #918175; font-style: italic;">exp</span>(v0 <span style="color: #EF2F27;">/</span> (<span style="color: #FF5C8F;">L</span> <span style="color: #EF2F27;">*</span> omega) <span style="color: #EF2F27;">*</span> jnp.<span style="color: #918175; font-style: italic;">sin</span>(omega <span style="color: #EF2F27;">*</span> t))
+    <span style="color: #EF2F27;">return</span> x, v
 
 
-<span style="color: #00d3d0;">xa</span>, <span style="color: #00d3d0;">va</span> <span style="color: #b6a0ff;">=</span> <span style="color: #00bcff;">analytical_vibration</span>(<span style="color: #00bcff;">E</span>, rho, v0, x_loc, <span style="color: #00bcff;">T</span>, dt, <span style="color: #00bcff;">L</span>)
+<span style="color: #0AAEB3;">xa</span>, <span style="color: #0AAEB3;">va</span> <span style="color: #EF2F27;">=</span> <span style="color: #918175; font-style: italic;">analytical_vibration</span>(<span style="color: #FF5C8F;">E</span>, rho, v0, x_loc, <span style="color: #FF5C8F;">T</span>, dt, <span style="color: #FF5C8F;">L</span>)
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">import</span> matplotlib.pyplot <span style="color: #b6a0ff;">as</span> plt
+<pre class="src src-jupyter-python"><span style="color: #EF2F27;">import</span> matplotlib.pyplot <span style="color: #EF2F27;">as</span> plt
 
-<span style="color: #00d3d0;">fig</span>, <span style="color: #00d3d0;">ax</span> <span style="color: #b6a0ff;">=</span> plt.<span style="color: #00bcff; font-style: italic;">subplots</span>(<span style="color: #00bcff;">1</span>, <span style="color: #00bcff;">2</span>, <span style="color: #ff9077;">figsize</span><span style="color: #b6a0ff;">=</span>(<span style="color: #00bcff;">16</span>, <span style="color: #00bcff;">6</span>))
-ax[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">plot</span>(time, va, <span style="color: #79a8ff;">"r"</span>, <span style="color: #ff9077;">label</span><span style="color: #b6a0ff;">=</span><span style="color: #79a8ff;">"analytical"</span>)
-ax[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">plot</span>(time, result[<span style="color: #79a8ff;">"velocity"</span>], <span style="color: #79a8ff;">"ob"</span>, <span style="color: #ff9077;">markersize</span><span style="color: #b6a0ff;">=</span><span style="color: #00bcff;">2</span>, <span style="color: #ff9077;">label</span><span style="color: #b6a0ff;">=</span><span style="color: #79a8ff;">"mpm"</span>)
-ax[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">legend</span>()
-ax[<span style="color: #00bcff;">0</span>].<span style="color: #00bcff; font-style: italic;">set_title</span>(<span style="color: #79a8ff;">"Velocity"</span>)
+<span style="color: #0AAEB3;">fig</span>, <span style="color: #0AAEB3;">ax</span> <span style="color: #EF2F27;">=</span> plt.<span style="color: #918175; font-style: italic;">subplots</span>(<span style="color: #FF5C8F;">1</span>, <span style="color: #FF5C8F;">2</span>, <span style="color: #FBB829;">figsize</span><span style="color: #EF2F27;">=</span>(<span style="color: #FF5C8F;">16</span>, <span style="color: #FF5C8F;">6</span>))
+ax[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">plot</span>(time, va, <span style="color: #98BC37;">"r"</span>, <span style="color: #FBB829;">label</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">"analytical"</span>)
+ax[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">plot</span>(time, result[<span style="color: #98BC37;">"velocity"</span>], <span style="color: #98BC37;">"ob"</span>, <span style="color: #FBB829;">markersize</span><span style="color: #EF2F27;">=</span><span style="color: #FF5C8F;">2</span>, <span style="color: #FBB829;">label</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">"mpm"</span>)
+ax[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">legend</span>()
+ax[<span style="color: #FF5C8F;">0</span>].<span style="color: #918175; font-style: italic;">set_title</span>(<span style="color: #98BC37;">"Velocity"</span>)
 
-ax[<span style="color: #00bcff;">1</span>].<span style="color: #00bcff; font-style: italic;">plot</span>(time, xa, <span style="color: #79a8ff;">"r"</span>, <span style="color: #ff9077;">label</span><span style="color: #b6a0ff;">=</span><span style="color: #79a8ff;">"analytical"</span>)
-ax[<span style="color: #00bcff;">1</span>].<span style="color: #00bcff; font-style: italic;">plot</span>(time, result[<span style="color: #79a8ff;">"position"</span>], <span style="color: #79a8ff;">"ob"</span>, <span style="color: #ff9077;">markersize</span><span style="color: #b6a0ff;">=</span><span style="color: #00bcff;">2</span>, <span style="color: #ff9077;">label</span><span style="color: #b6a0ff;">=</span><span style="color: #79a8ff;">"mpm"</span>)
-ax[<span style="color: #00bcff;">1</span>].<span style="color: #00bcff; font-style: italic;">legend</span>()
-ax[<span style="color: #00bcff;">1</span>].<span style="color: #00bcff; font-style: italic;">set_title</span>(<span style="color: #79a8ff;">"Position"</span>)
-fig.<span style="color: #00bcff; font-style: italic;">savefig</span>(<span style="color: #79a8ff;">"../assets/mpm_plots.png"</span>)
+ax[<span style="color: #FF5C8F;">1</span>].<span style="color: #918175; font-style: italic;">plot</span>(time, xa, <span style="color: #98BC37;">"r"</span>, <span style="color: #FBB829;">label</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">"analytical"</span>)
+ax[<span style="color: #FF5C8F;">1</span>].<span style="color: #918175; font-style: italic;">plot</span>(time, result[<span style="color: #98BC37;">"position"</span>], <span style="color: #98BC37;">"ob"</span>, <span style="color: #FBB829;">markersize</span><span style="color: #EF2F27;">=</span><span style="color: #FF5C8F;">2</span>, <span style="color: #FBB829;">label</span><span style="color: #EF2F27;">=</span><span style="color: #98BC37;">"mpm"</span>)
+ax[<span style="color: #FF5C8F;">1</span>].<span style="color: #918175; font-style: italic;">legend</span>()
+ax[<span style="color: #FF5C8F;">1</span>].<span style="color: #918175; font-style: italic;">set_title</span>(<span style="color: #98BC37;">"Position"</span>)
+fig.<span style="color: #918175; font-style: italic;">savefig</span>(<span style="color: #98BC37;">"../assets/mpm_plots.png"</span>)
 </pre>
 </div>
 
