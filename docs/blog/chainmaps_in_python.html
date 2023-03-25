@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-03-25 Sat 11:49 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ChainMaps in Python</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2023-03-25 Sat 11:49</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">ChainMaps in Python</h1>
+</header><p>
+<kbd>ChainMap</kbd> is a class that provides an interface to quickly link multiple
+mappings so that they can be treated as a single unit. For ex., it can act as a
+container such that there are two dictionaries, one default and the other that
+contains user defined values. This allows easy access to new/old and user
+updated values. This note is a simple exploration of the <code>collections.ChainMap</code>
+interface.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">from</span> collections <span style="color: #b6a0ff;">import</span> <span style="color: #6ae4b9;">ChainMap</span>
+
+<span style="color: #00d3d0;">defaults</span> <span style="color: #b6a0ff;">=</span> {<span style="color: #79a8ff;">"color"</span>: <span style="color: #79a8ff;">"red"</span>, <span style="color: #79a8ff;">"user"</span>: <span style="color: #79a8ff;">"guest"</span>, <span style="color: #79a8ff;">"music"</span>: <span style="color: #79a8ff;">"bach"</span>, <span style="color: #79a8ff;">"art"</span>: <span style="color: #79a8ff;">"davinci"</span>}
+<span style="color: #00d3d0;">uservals</span> <span style="color: #b6a0ff;">=</span> {}
+<span style="color: #00d3d0;">mapping</span> <span style="color: #b6a0ff;">=</span> <span style="color: #6ae4b9;">ChainMap</span>(uservals, defaults)
+<span style="color: #f78fe7;">print</span>(mapping)
+</pre>
+</div>
+
+<pre class="example">
+ChainMap({}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'})
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">print_map</span>(<span style="color: #00d3d0;">mapping</span>):
+    <span style="color: #b6a0ff;">for</span> <span style="color: #00d3d0;">k</span>, <span style="color: #00d3d0;">v</span> <span style="color: #b6a0ff;">in</span> mapping.<span style="color: #00bcff; font-style: italic;">items</span>():
+        <span style="color: #f78fe7;">print</span>(<span style="color: #79a8ff;">f"</span><span style="color: #b6a0ff;">{</span><span style="color: #ffffff; background-color: #000000;">k</span><span style="color: #b6a0ff;">}</span><span style="color: #79a8ff;">: </span><span style="color: #b6a0ff;">{</span><span style="color: #ffffff; background-color: #000000;">v</span><span style="color: #b6a0ff;">}</span><span style="color: #79a8ff;">"</span>)
+
+<span style="color: #00bcff;">print_map</span>(mapping)
+</pre>
+</div>
+
+<pre class="example">
+color: red
+user: guest
+music: bach
+art: davinci
+</pre>
+
+
+<p>
+When we add a new key-value pair, it gets added into the first mapping.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">mapping[<span style="color: #00d3d0;">"sport"</span>] <span style="color: #b6a0ff;">=</span> <span style="color: #79a8ff;">"football"</span>
+<span style="color: #f78fe7;">print</span>(mapping)
+<span style="color: #00bcff;">print_map</span>(mapping)
+</pre>
+</div>
+
+<pre class="example">
+ChainMap({'sport': 'football'}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'})
+color: red
+user: guest
+music: bach
+art: davinci
+sport: football
+</pre>
+
+
+<p>
+On updating an existing value, the first mapping gets a new value and hence,
+when we access the value, it returns the new value.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">mapping[<span style="color: #00d3d0;">"music"</span>] <span style="color: #b6a0ff;">=</span> <span style="color: #79a8ff;">"mozart"</span>
+<span style="color: #f78fe7;">print</span>(mapping)
+<span style="color: #00bcff;">print_map</span>(mapping)
+</pre>
+</div>
+
+<pre class="example">
+ChainMap({'sport': 'football', 'music': 'mozart'}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'})
+color: red
+user: guest
+music: mozart
+art: davinci
+sport: football
+</pre>
+
+
+<p>
+It also allows using the dictionary methods like <code>update()</code> to perform bulk
+updates.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">mapping.<span style="color: #00bcff; font-style: italic;">update</span>({<span style="color: #79a8ff;">"music"</span>: <span style="color: #79a8ff;">"beethoven"</span>, <span style="color: #79a8ff;">"art"</span>: <span style="color: #79a8ff;">"boticelli"</span>})
+<span style="color: #f78fe7;">print</span>(mapping)
+<span style="color: #00bcff;">print_map</span>(mapping)
+</pre>
+</div>
+
+<pre class="example">
+ChainMap({'sport': 'football', 'music': 'beethoven', 'art': 'boticelli'}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'})
+color: red
+user: guest
+music: beethoven
+art: boticelli
+sport: football
+</pre>
+
+
+<p>
+If we want to delete the updates to the mapping, we can simply use <code>del</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">del</span> mapping[<span style="color: #79a8ff;">"music"</span>]
+<span style="color: #f78fe7;">print</span>(mapping)
+<span style="color: #00bcff;">print_map</span>(mapping)
+</pre>
+</div>
+
+<pre class="example">
+ChainMap({'sport': 'football', 'art': 'boticelli'}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'})
+color: red
+user: guest
+music: bach
+art: boticelli
+sport: football
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-python">    <span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">__delitem__</span>(<span style="color: #b6a0ff;">self</span>, <span style="color: #00d3d0;">key</span>):
+        <span style="color: #b6a0ff;">try</span>:
+            <span style="color: #b6a0ff;">del</span> <span style="color: #b6a0ff;">self</span>.<span style="color: #00bcff; font-style: italic;">maps</span>[<span style="color: #00bcff;">0</span>][key]
+        <span style="color: #b6a0ff;">except</span> <span style="color: #6ae4b9;">KeyError</span>:
+            <span style="color: #b6a0ff;">raise</span> <span style="color: #6ae4b9;">KeyError</span>(<span style="color: #79a8ff;">f'Key not found in the first mapping: </span><span style="color: #b6a0ff;">{</span><span style="color: #ffffff; background-color: #000000;">key!r</span><span style="color: #b6a0ff;">}</span><span style="color: #79a8ff;">'</span>)
+</pre>
+</div>
+<p>
+An important thing to note is that <code>del</code> will delete the key only from the first
+mapping, so the defaults remain consistent through writes and deletes. For
+example, the following code will raise an error since after the first delete,
+the <code>"music"</code> key is not present in the first mapping.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #b6a0ff;">del</span> mapping[<span style="color: #79a8ff;">"music"</span>]
+<span style="color: #b6a0ff;">del</span> mapping[<span style="color: #79a8ff;">"music"</span>]
+</pre>
+</div>
+
+<pre class="example" id="orga15933f">
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+File /usr/lib/python3.10/collections/__init__.py:1042, in ChainMap.__delitem__(self, key)
+   1041 try:
+-&gt; 1042     del self.maps[0][key]
+   1043 except KeyError:
+
+KeyError: 'music'
+
+During handling of the above exception, another exception occurred:
+
+KeyError                                  Traceback (most recent call last)
+Cell In[22], line 1
+----&gt; 1 del mapping["music"]
+      2 del mapping["music"]
+
+File /usr/lib/python3.10/collections/__init__.py:1044, in ChainMap.__delitem__(self, key)
+   1042     del self.maps[0][key]
+   1043 except KeyError:
+-&gt; 1044     raise KeyError(f'Key not found in the first mapping: {key!r}')
+
+KeyError: "Key not found in the first mapping: 'music'"
+</pre>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6.1)
+</div>
+</footer>
+</div>
+</body>
+</html>
