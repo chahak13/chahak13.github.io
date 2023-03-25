@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-03-24 Fri 21:42 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Org mode customize latex export</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2023-03-24 Fri 21:42</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Org mode customize latex export</h1>
+</header><p>
+Various options can be used to customize the latex output of org mode exported
+file. Some useful snippets from the documentation are given below.
+</p>
+
+<blockquote>
+<p>
+‘DESCRIPTION’
+     The document’s description.  The description along with author
+     name, keywords, and related file metadata are inserted in the
+     output file by the hyperref package.  See
+     ‘org-latex-hyperref-template’ for customizing metadata items.  See
+     ‘org-latex-title-command’ for typesetting description into the
+     document’s front matter.  Use multiple ‘DESCRIPTION’ keywords for
+     long descriptions.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+‘LATEX<sub>CLASS</sub>’
+     This is LaTeX document class, such as <span class="underline">article</span>, <span class="underline">report</span>, <span class="underline">book</span>,
+     and so on, which contain predefined preamble and headline level
+     mapping that the LaTeX export back-end needs.  The back-end reads
+     the default class name from the ‘org-latex-default-class’ variable.
+     Org has <span class="underline">article</span> as the default class.  A valid default class must
+     be an element of ‘org-latex-classes’.
+</p>
+
+<p>
+‘LATEX<sub>CLASS</sub><sub>OPTIONS</sub>’
+     Options the LaTeX export back-end uses when calling the LaTeX
+     document class.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+‘LATEX<sub>HEADER</sub>’
+‘LATEX<sub>HEADER</sub><sub>EXTRA</sub>’
+     Arbitrary lines to add to the document’s preamble, before the
+     hyperref settings.  See ‘org-latex-classes’ for adjusting the
+     structure and order of the LaTeX headers.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+‘SUBTITLE’
+     The document’s subtitle.  It is typeset as per
+     ‘org-latex-subtitle-format’.  If ‘org-latex-subtitle-separate’ is
+     non-‘nil’, it is typed outside of the ‘\title’ macro.  See
+     ‘org-latex-hyperref-template’ for customizing metadata items.  See
+     ‘org-latex-title-command’ for typesetting description into the
+     document’s front matter.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+To float an image without specifying a caption, set the
+‘:float’ attribute to one of the following:
+</p>
+
+<p>
+‘t’
+     For a standard ‘figure’ environment; used by default whenever an
+     image has a caption.
+</p>
+
+<p>
+‘multicolumn’
+     To span the image across multiple columns of a page; the back-end
+     wraps the image in a ‘figure*’ environment.
+</p>
+
+<p>
+‘wrap’
+     For text to flow around the image on the right; the figure occupies
+     the left half of the page.
+</p>
+
+<p>
+‘sideways’
+     For a new page with the image sideways, rotated ninety degrees, in
+     a ‘sidewaysfigure’ environment; overrides ‘:placement’ setting.
+</p>
+
+<p>
+‘nil’
+     To avoid a ‘:float’ even if using a caption.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+13.10.10 Special blocks in LaTeX export
+</p>
+<hr>
+
+<p>
+For other special blocks in the Org file, the LaTeX export back-end
+makes a special environment of the same name.  The back-end also takes
+‘:options’, if any, and appends as-is to that environment’s opening
+string.  For example:
+</p>
+
+<div class="abstract" id="org4f12fcc">
+<p>
+We demonstrate how to solve the Syracuse problem.
+</p>
+
+</div>
+
+<div class="proof" id="orga2ccf0d">
+<p>
+&#x2026;
+Therefore, any even number greater than 2 is the sum of two primes.
+</p>
+
+</div>
+
+<p>
+exports to
+</p>
+
+\begin{abstract}
+  We demonstrate how to solve the Syracuse problem.
+\end{abstract}
+
+\begin{proof}[Proof of important theorem]
+  ...
+  Therefore, any even number greater than 2 is the sum of two primes.
+\end{proof}
+
+<p>
+   If you need to insert a specific caption command, use ‘:caption’
+attribute.  It overrides standard ‘CAPTION’ value, if any.  For example:
+</p>
+
+<div class="proof" id="orgf84e637">
+<p>
+&#x2026;
+</p>
+
+</div>
+</blockquote>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6.1)
+</div>
+</footer>
+</div>
+</body>
+</html>
