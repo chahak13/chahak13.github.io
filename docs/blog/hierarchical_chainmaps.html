@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-04-04 Tue 12:43 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hierarchical ChainMaps</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2023-04-04 Tue 12:42</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Hierarchical ChainMaps</h1>
+</header><p>
+After exploring <a href="chainmaps_in_python.html#ID-1e0607c6-e3de-423b-9088-bc20cc9c78cd">ChainMaps in Python</a> and <a href="config_class_using_chainmaps.html#ID-9311e840-e127-4998-a925-c2837a3dfc33">Config class using ChainMaps</a>,
+I have decided to try and write a Hierarchical ChainMap that can be used as a
+configuration class. This is mainly keeping in mind Matplotlib but might be
+usable in other cases with a few changes too.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #89DDFF;">from</span> collections.abc <span style="color: #89DDFF;">import</span> <span style="color: #c792ea;">Mapping</span>, <span style="color: #c792ea;">MutableMapping</span>
+<span style="color: #89DDFF;">from</span> collections <span style="color: #89DDFF;">import</span> <span style="color: #c792ea;">ChainMap</span>
+
+
+<span style="color: #89DDFF;">class</span> <span style="color: #c792ea;">HierarchicalChainMap</span>:
+    <span style="color: #ffcb6b;">validate</span> <span style="color: #89DDFF;">=</span> <span style="color: #89DDFF;">lambda</span> <span style="color: #ffcb6b;">s</span>, <span style="color: #ffcb6b;">x</span>: x
+    <span style="color: #ffcb6b;">namespaces</span> <span style="color: #89DDFF;">=</span> (
+        <span style="color: #c3e88d;">"backends"</span>,
+        <span style="color: #c3e88d;">"lines"</span>,
+        <span style="color: #c3e88d;">"patches"</span>,
+        <span style="color: #c3e88d;">"hatches"</span>,
+        <span style="color: #c3e88d;">"boxplot"</span>,
+        <span style="color: #c3e88d;">"font"</span>,
+        <span style="color: #c3e88d;">"text"</span>,
+        <span style="color: #c3e88d;">"latex"</span>,
+        <span style="color: #c3e88d;">"axes"</span>,
+        <span style="color: #c3e88d;">"dates"</span>,
+        <span style="color: #c3e88d;">"ticks"</span>,
+        <span style="color: #c3e88d;">"grids"</span>,
+        <span style="color: #c3e88d;">"legend"</span>,
+        <span style="color: #c3e88d;">"figure"</span>,
+        <span style="color: #c3e88d;">"images"</span>,
+        <span style="color: #c3e88d;">"contour"</span>,
+        <span style="color: #c3e88d;">"errorbar"</span>,
+        <span style="color: #c3e88d;">"histogram"</span>,
+        <span style="color: #c3e88d;">"scatter"</span>,
+        <span style="color: #c3e88d;">"agg"</span>,
+        <span style="color: #c3e88d;">"paths"</span>,
+        <span style="color: #c3e88d;">"savefig"</span>,
+        <span style="color: #c3e88d;">"keymaps"</span>,
+        <span style="color: #c3e88d;">"animation"</span>,
+    )
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__init__</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #89DDFF;">*</span><span style="color: #ffcb6b;">args</span>, <span style="color: #89DDFF;">**</span><span style="color: #ffcb6b;">kwargs</span>):
+        <span style="color: #89DDFF;">self</span>.<span style="color: #ffcb6b; font-style: italic;">_namespace_maps</span> <span style="color: #89DDFF;">=</span> {name: <span style="color: #c792ea; font-weight: bold;">ChainMap</span>({}) <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">name</span> <span style="color: #89DDFF;">in</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">namespaces</span>}
+        <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">update</span>(<span style="color: #89DDFF;">*</span>args, <span style="color: #89DDFF;">**</span>kwargs)
+        <span style="color: #89DDFF;">self</span>.<span style="color: #ffcb6b; font-style: italic;">_namespace_maps</span> <span style="color: #89DDFF;">=</span> {
+            name: mapping.<span style="color: #c792ea; font-weight: bold; font-style: italic;">new_child</span>()
+            <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">name</span>, <span style="color: #ffcb6b;">mapping</span> <span style="color: #89DDFF;">in</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">items</span>()
+        }
+        <span style="color: #89DDFF;">self</span>.<span style="color: #ffcb6b; font-style: italic;">_mapping</span> <span style="color: #89DDFF;">=</span> <span style="color: #c792ea; font-weight: bold;">ChainMap</span>(<span style="color: #89DDFF;">*</span><span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">values</span>())
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">_split_key</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">sep</span><span style="color: #89DDFF;">=</span><span style="color: #c3e88d;">"."</span>):
+        <span style="color: #ffcb6b;">keys</span> <span style="color: #89DDFF;">=</span> key.<span style="color: #c792ea; font-weight: bold; font-style: italic;">split</span>(sep, <span style="color: #89DDFF; font-weight: bold;">maxsplit</span><span style="color: #89DDFF;">=</span><span style="color: #F78C6C;">1</span>)
+        <span style="color: #89DDFF;">return</span> keys, <span style="color: #82aaff; font-weight: bold;">len</span>(keys)
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">_get</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>):
+        <span style="color: #ffcb6b;">keys</span>, <span style="color: #ffcb6b;">depth</span> <span style="color: #89DDFF;">=</span> <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">_split_key</span>(key)
+        <span style="color: #89DDFF;">if</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">1</span>:
+            <span style="color: #89DDFF;">return</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[key]
+        <span style="color: #89DDFF;">elif</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">2</span>:
+            <span style="color: #89DDFF;">return</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[keys[<span style="color: #F78C6C;">0</span>]].<span style="color: #c792ea; font-weight: bold; font-style: italic;">get</span>(keys[<span style="color: #F78C6C;">1</span>])
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__getitem__</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>):
+        <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">validate</span>(key)
+        <span style="color: #89DDFF;">return</span> <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">_get</span>(key)
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">_set</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">value</span>):
+        <span style="color: #ffcb6b;">keys</span>, <span style="color: #ffcb6b;">depth</span> <span style="color: #89DDFF;">=</span> <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">_split_key</span>(key)
+        <span style="color: #89DDFF;">if</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">1</span>:
+            <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[<span style="color: #ffcb6b;">key</span>] <span style="color: #89DDFF;">=</span> value
+        <span style="color: #89DDFF;">elif</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">2</span>:
+            <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[keys[<span style="color: #F78C6C;">0</span>]][keys[<span style="color: #F78C6C;">1</span>]] <span style="color: #89DDFF;">=</span> value
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__setitem__</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">value</span>):
+        <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">validate</span>(key)
+        <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">_set</span>(key, value)
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__delitem__</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>):
+        <span style="color: #ffcb6b;">keys</span>, <span style="color: #ffcb6b;">depth</span> <span style="color: #89DDFF;">=</span> <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">_split_key</span>(key)
+        <span style="color: #89DDFF;">if</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">1</span>:
+            <span style="color: #89DDFF;">del</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[key]
+        <span style="color: #89DDFF;">elif</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">2</span>:
+            <span style="color: #89DDFF;">del</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[keys[<span style="color: #F78C6C;">0</span>]][keys[<span style="color: #F78C6C;">1</span>]]
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__iter__</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #c3e88d;">"""</span><span style="color: #626262;">Yield from sorted list of keys</span><span style="color: #c3e88d;">"""</span>
+        <span style="color: #89DDFF;">yield</span> <span style="color: #89DDFF;">from</span> <span style="color: #82aaff; font-weight: bold;">sorted</span>(<span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>())
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__len__</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #89DDFF;">return</span> <span style="color: #82aaff; font-weight: bold;">sum</span>(<span style="color: #82aaff; font-weight: bold;">len</span>(mapping) <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">mapping</span> <span style="color: #89DDFF;">in</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>)
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">__repr__</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #89DDFF;">return</span> <span style="color: #82aaff; font-weight: bold;">repr</span>(<span style="color: #82aaff; font-weight: bold;">dict</span>(rcParams.<span style="color: #c792ea; font-weight: bold; font-style: italic;">items</span>()))
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">keys</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #ffcb6b;">keys</span> <span style="color: #89DDFF;">=</span> (
+            <span style="color: #c3e88d;">"."</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">join</span>((space, key))
+            <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">space</span>, <span style="color: #ffcb6b;">mapping</span> <span style="color: #89DDFF;">in</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">items</span>()
+            <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span> <span style="color: #89DDFF;">in</span> mapping.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>()
+        )
+        <span style="color: #89DDFF;">return</span> keys
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">values</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span> <span style="color: #89DDFF;">in</span> <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>():
+            <span style="color: #89DDFF;">yield</span> <span style="color: #89DDFF;">self</span>[key]
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">items</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">value</span> <span style="color: #89DDFF;">in</span> <span style="color: #82aaff; font-weight: bold;">zip</span>(<span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>(), <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">values</span>()):
+            <span style="color: #89DDFF;">yield</span> key, value
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">pop</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>):
+        <span style="color: #ffcb6b;">keys</span>, <span style="color: #ffcb6b;">depth</span> <span style="color: #89DDFF;">=</span> <span style="color: #89DDFF;">self</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">_split_key</span>(key)
+        <span style="color: #89DDFF;">if</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">1</span>:
+            <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_mapping</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">pop</span>()
+        <span style="color: #89DDFF;">elif</span> depth <span style="color: #89DDFF;">==</span> <span style="color: #F78C6C;">2</span>:
+            <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_namespace_mapping</span>[keys[<span style="color: #F78C6C;">0</span>]].<span style="color: #c792ea; font-weight: bold; font-style: italic;">pop</span>(keys[<span style="color: #F78C6C;">1</span>])
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">popitem</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #89DDFF;">return</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_mapping</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">popitem</span>()
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">clear</span>(<span style="color: #89DDFF;">self</span>):
+        <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_mapping</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">clear</span>()
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">setdefault</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">default</span><span style="color: #89DDFF;">=</span><span style="color: #82aaff;">None</span>):
+        <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_mapping</span>[<span style="color: #ffcb6b;">key</span>] <span style="color: #89DDFF;">=</span> default
+        <span style="color: #89DDFF;">return</span> default
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">get</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">default</span><span style="color: #89DDFF;">=</span><span style="color: #82aaff;">None</span>):
+        <span style="color: #89DDFF;">return</span> <span style="color: #89DDFF;">self</span>.<span style="color: #F78C6C; font-style: italic;">_mapping</span>[key]
+
+    <span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">update</span>(<span style="color: #89DDFF;">self</span>, <span style="color: #ffcb6b;">other</span><span style="color: #89DDFF;">=</span>(), <span style="color: #89DDFF;">/</span>, <span style="color: #89DDFF;">**</span><span style="color: #ffcb6b;">kwds</span>):
+        <span style="color: #c3e88d;">"""</span><span style="color: #626262;">D.update([E, ]**F) -&gt; None.  Update D from mapping/iterable E and F.</span>
+<span style="color: #626262;">        If E present and has a .keys() method, does:     for k in E: D[k] = E[k]</span>
+<span style="color: #626262;">        If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v</span>
+<span style="color: #626262;">        In either case, this is followed by: for k, v in F.items(): D[k] = v</span>
+<span style="color: #626262;">        </span><span style="color: #c3e88d;">"""</span>
+        <span style="color: #89DDFF;">if</span> <span style="color: #82aaff; font-weight: bold;">isinstance</span>(other, <span style="color: #c792ea;">Mapping</span>):
+            <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span> <span style="color: #89DDFF;">in</span> other:
+                <span style="color: #89DDFF;">self</span>[<span style="color: #ffcb6b;">key</span>] <span style="color: #89DDFF;">=</span> other[key]
+        <span style="color: #89DDFF;">elif</span> <span style="color: #82aaff; font-weight: bold;">hasattr</span>(other, <span style="color: #c3e88d;">"keys"</span>):
+            <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span> <span style="color: #89DDFF;">in</span> other.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>():
+                <span style="color: #89DDFF;">self</span>[<span style="color: #ffcb6b;">key</span>] <span style="color: #89DDFF;">=</span> other[key]
+        <span style="color: #89DDFF;">else</span>:
+            <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">value</span> <span style="color: #89DDFF;">in</span> other:
+                <span style="color: #89DDFF;">self</span>[<span style="color: #ffcb6b;">key</span>] <span style="color: #89DDFF;">=</span> value
+        <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">key</span>, <span style="color: #ffcb6b;">value</span> <span style="color: #89DDFF;">in</span> kwds.<span style="color: #c792ea; font-weight: bold; font-style: italic;">items</span>():
+            <span style="color: #89DDFF;">self</span>[<span style="color: #ffcb6b;">key</span>] <span style="color: #89DDFF;">=</span> value
+
+
+<span style="color: #c792ea;">MutableMapping</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">register</span>(<span style="color: #c792ea;">HierarchicalChainMap</span>)
+</pre>
+</div>
+
+<pre class="example">
+__main__.HierarchicalChainMap
+</pre>
+
+
+<p>
+I can then use this class as a new data structure for <code>rcParams</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #ffcb6b;">rcParams</span> <span style="color: #89DDFF;">=</span> <span style="color: #c792ea; font-weight: bold;">HierarchicalChainMap</span>({<span style="color: #c3e88d;">"backends.key1"</span>: <span style="color: #c3e88d;">"abc"</span>, <span style="color: #c3e88d;">"lines.key2"</span>: <span style="color: #c3e88d;">"xyz"</span>})
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">rcParams
+</pre>
+</div>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">backends.key1</td>
+<td class="org-left">:</td>
+<td class="org-left">abc</td>
+<td class="org-left">lines.key2</td>
+<td class="org-left">:</td>
+<td class="org-left">xyz</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Next step is to try and implement a context manager.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #89DDFF;">import</span> contextlib
+<span style="color: #89DDFF;">from</span> copy <span style="color: #89DDFF;">import</span> deepcopy
+
+<span style="color: #89DDFF; font-weight: bold;">@</span><span style="color: #89DDFF; font-weight: bold;">contextlib.</span><span style="color: #F78C6C; font-weight: bold; font-style: italic;">contextmanager</span>
+<span style="color: #89DDFF;">def</span> <span style="color: #82aaff;">rc_context</span>(<span style="color: #ffcb6b;">rc</span><span style="color: #89DDFF;">=</span><span style="color: #82aaff;">None</span>, <span style="color: #ffcb6b;">fname</span><span style="color: #89DDFF;">=</span><span style="color: #82aaff;">None</span>):
+    <span style="color: #ffcb6b;">orig</span> <span style="color: #89DDFF;">=</span> <span style="color: #c792ea; font-weight: bold;">deepcopy</span>(rcParams)
+    <span style="color: #89DDFF;">try</span>:
+        <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">space</span> <span style="color: #89DDFF;">in</span> rcParams.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>():
+            rcParams.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[<span style="color: #ffcb6b;">space</span>] <span style="color: #89DDFF;">=</span> rcParams.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[
+                space
+            ].<span style="color: #c792ea; font-weight: bold; font-style: italic;">new_child</span>()
+        rcParams.<span style="color: #c792ea; font-weight: bold; font-style: italic;">update</span>(rc)
+        <span style="color: #89DDFF;">yield</span>
+    <span style="color: #89DDFF;">finally</span>:
+        <span style="color: #89DDFF;">for</span> <span style="color: #ffcb6b;">space</span> <span style="color: #89DDFF;">in</span> rcParams.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>.<span style="color: #c792ea; font-weight: bold; font-style: italic;">keys</span>():
+            rcParams.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[<span style="color: #ffcb6b;">space</span>] <span style="color: #89DDFF;">=</span> rcParams.<span style="color: #F78C6C; font-style: italic;">_namespace_maps</span>[
+                space
+            ].<span style="color: #F78C6C; font-style: italic;">parents</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #89DDFF;">with</span> <span style="color: #c792ea; font-weight: bold;">rc_context</span>(<span style="color: #89DDFF; font-weight: bold;">rc</span><span style="color: #89DDFF;">=</span>{<span style="color: #c3e88d;">"backends.key1"</span>: <span style="color: #F78C6C;">123</span>}):
+    <span style="color: #82aaff; font-weight: bold;">print</span>(<span style="color: #c3e88d;">"</span><span style="color: #89DDFF;">\n</span><span style="color: #c3e88d;">within context"</span>)
+    <span style="color: #82aaff; font-weight: bold;">print</span>(rcParams)
+
+<span style="color: #82aaff; font-weight: bold;">print</span>(<span style="color: #c3e88d;">"</span><span style="color: #89DDFF;">\n</span><span style="color: #c3e88d;">after context"</span>)
+<span style="color: #82aaff; font-weight: bold;">print</span>(rcParams)
+</pre>
+</div>
+
+<pre class="example">
+
+within context
+{'backends.key1': 123, 'lines.key2': 'xyz'}
+
+after context
+{'backends.key1': 'abc', 'lines.key2': 'xyz'}
+</pre>
+
+
+<p>
+The namespaces can also be accessed directly with their names
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python">rcParams[<span style="color: #c3e88d;">"backends"</span>]
+</pre>
+</div>
+
+<pre class="example">
+ChainMap({}, {'key1': 'abc'})
+</pre>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6.1)
+</div>
+</footer>
+</div>
+</body>
+</html>
