@@ -1,5 +1,7 @@
 #+TITLE: Posts
 
+- {{{timestamp(2023-04-04)}}} [[file:hierarchical_chainmaps.org][Hierarchical ChainMaps]]
+- {{{timestamp(2023-04-03)}}} [[file:config_class_using_chainmaps.org][Config class using ChainMaps]]
 - {{{timestamp(2023-03-25)}}} [[file:chainmaps_in_python.org][ChainMaps in Python]]
 - {{{timestamp(2023-03-24)}}} [[file:org_mode_customize_latex_export.org][Org mode customize latex export]]
 - {{{timestamp(2023-03-05)}}} [[file:jax_study.org][Jax Study]]

@@ -143,3 +143,15 @@ File /usr/lib/python3.10/collections/__init__.py:1044, in ChainMap.__delitem__(s
 KeyError: "Key not found in the first mapping: 'music'"
 #+end_example
 :END:
+
+We can also update the underlying maps directly. As we see, we can add a mapping
+easily by setting the maps to a new list.
+#+begin_src jupyter-python
+print(mapping.maps)
+mapping.maps = [{}, *mapping.maps]
+print(mapping.maps)
+#+end_src
+
+#+RESULTS:
+: [{'sport': 'football'}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'}]
+: [{}, {'sport': 'football'}, {'color': 'red', 'user': 'guest', 'music': 'bach', 'art': 'davinci'}]
