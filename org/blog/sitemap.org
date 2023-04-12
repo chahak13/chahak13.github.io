@@ -1,5 +1,6 @@
 #+TITLE: Posts
 
+- {{{timestamp(2023-04-11)}}} [[file:where_are_matplotlib_rcparams_used.org][Where are Matplotlib rcParams used?]]
 - {{{timestamp(2023-04-04)}}} [[file:hierarchical_chainmaps.org][Hierarchical ChainMaps]]
 - {{{timestamp(2023-04-03)}}} [[file:config_class_using_chainmaps.org][Config class using ChainMaps]]
 - {{{timestamp(2023-03-25)}}} [[file:chainmaps_in_python.org][ChainMaps in Python]]
