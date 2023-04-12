@@ -1183,7 +1183,7 @@ for topic, keyinfo in param_fnames.items():
 |                                    | ~/lib/matplotlib/rcsetup.py:1148~                           | ~None~                                       |
 |                                    | ~/lib/matplotlib/style/core.py:44~                          | ~None~                                       |
 |                                    | ~/lib/matplotlib/tests/test_figure.py:322~                  | ~test_too_many_figures~                      |
-| ~figure.raise_window ~             |                                                             |                                              |
+| ~figure.raise_window~              |                                                             |                                              |
 | ~figure.subplot.left~              | ~/lib/matplotlib/rcsetup.py:1151~                           | ~None~                                       |
 |                                    | ~/lib/matplotlib/tests/test_backend_pgf.py:118~             | ~test_rcupdate~                              |
 |                                    | ~/lib/matplotlib/tests/test_backend_pgf.py:124~             | ~test_rcupdate~                              |
