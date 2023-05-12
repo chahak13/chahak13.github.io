@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-05-11 Thu 20:27 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Berri.ai Hackathon</title>
+<meta name="author" content="Chahak Mehta" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="updated">Updated: 2023-04-15 Sat 17:05</div>
+<nav>
+<a href="/">Home</a>
+<a href="/blog/sitemap.html">Posts</a>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Berri.ai Hackathon</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org50d516a">1. Try to auto link zettelkasten notes</a>
+<ul>
+<li><a href="#orgfa45b5d">1.1. Create chunks of data to use as data source for the berry endpoint</a></li>
+<li><a href="#org7744f7e">1.2. Setting up Berri.ai endpoint</a></li>
+<li><a href="#org6298710">1.3. Playground tries</a>
+<ul>
+<li><a href="#orgc81c085">1.3.1. Try getting relevant notes simply.</a></li>
+<li><a href="#orgb0e1a25">1.3.2. Use create<sub>template</sub> and create<sub>app</sub></a></li>
+<li><a href="#org4a9a957">1.3.3. Generate summaries of notes individually</a></li>
+</ul>
+</li>
+<li><a href="#orgaf57810">1.4. Deleting berry instances</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-org50d516a" class="outline-2">
+<h2 id="org50d516a"><span class="section-number-2">1.</span> Try to auto link zettelkasten notes</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgfa45b5d" class="outline-3">
+<h3 id="orgfa45b5d"><span class="section-number-3">1.1.</span> Create chunks of data to use as data source for the berry endpoint</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> os
+
+<span style="color: #83a598;">text_files</span> <span style="color: #fb4934;">=</span> []
+<span style="color: #fb4934;">for</span> <span style="color: #83a598;">root</span>, <span style="color: #83a598;">dir</span>, <span style="color: #83a598;">files</span> <span style="color: #fb4934;">in</span> os.<span style="color: #d3869b; font-weight: bold; font-style: italic;">walk</span>(<span style="color: #b8bb26;">"/home/chahak/Documents/chahak13.github.io/org/blog/"</span>):
+    <span style="color: #fb4934;">for</span> <span style="color: #83a598;">file</span> <span style="color: #fb4934;">in</span> files:
+        <span style="color: #fb4934;">if</span> file.<span style="color: #d3869b; font-weight: bold; font-style: italic;">endswith</span>(<span style="color: #b8bb26;">".txt"</span>):
+            <span style="color: #fb4934;">with</span> <span style="color: #fe8019; font-weight: bold;">open</span>(file, <span style="color: #b8bb26;">'r'</span>) <span style="color: #fb4934;">as</span> f:
+                <span style="color: #fe8019; font-weight: bold;">print</span>(file)
+                text_files.<span style="color: #d3869b; font-weight: bold; font-style: italic;">append</span>({<span style="color: #b8bb26;">"chunk_metadata"</span>: file, <span style="color: #b8bb26;">"chunk"</span>: f.<span style="color: #d3869b; font-weight: bold; font-style: italic;">read</span>()})
+</pre>
+</div>
+
+<pre class="example" id="orgfe62cb8">
+export_source_code_of_tex_file.txt
+autoreload_with_ipython.txt
+change_font_size_in_emacs.txt
+attractors_using_datashader.txt
+config_class_using_chainmaps.txt
+chunky_pandas_read_csv_in_chunks.txt
+attractors_examples_0_1_0_documentation.txt
+audio_on_linux.txt
+bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt
+where_are_matplotlib_rcparams_used.txt
+does_plt_scatter_work_with_masked_offsets.txt
+chainmaps_in_python.txt
+emacsconf_2022_talks_emacs_journalism_or_everything_s_a_nail_if_you_hit_it_with_emacs.txt
+1_how_scientists_colorize_photos_of_space_youtube.txt
+bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt
+click_command_line_interfaces:_make_options_required_if_other_optional_option_is_unset.txt
+aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode.txt
+12_decorator_and_descriptors_advance_python_tutorials_documentation.txt
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7744f7e" class="outline-3">
+<h3 id="org7744f7e"><span class="section-number-3">1.2.</span> Setting up Berri.ai endpoint</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> json
+<span style="color: #fb4934;">import</span> requests
+
+<span style="color: #83a598;">url</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/create_app"</span>
+<span style="color: #83a598;">data</span> <span style="color: #fb4934;">=</span> {<span style="color: #b8bb26;">"user_email"</span>: <span style="color: #b8bb26;">"cpmdump@gmail.com"</span>, <span style="color: #b8bb26;">"data_source"</span>: json.<span style="color: #d3869b; font-weight: bold; font-style: italic;">dumps</span>(text_files)}
+<span style="color: #83a598;">instance_response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">post</span>(url, <span style="color: #ebdbb2; font-weight: bold;">data</span><span style="color: #fb4934;">=</span>data)
+<span style="color: #83a598;">playground_endpoint</span> <span style="color: #fb4934;">=</span> instance_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"playground_endpoint"</span>]
+<span style="color: #fe8019; font-weight: bold;">print</span>(playground_endpoint)
+</pre>
+</div>
+
+<pre class="example">
+play.berri.ai/aHR0cHM6Ly9zdG9yZXF1ZXJ5YWJoaTItYXlsdS56ZWV0LWJlcnJpLnplZXQuYXBwL2JlcnJpX3F1ZXJ5P3Byb2pfcGF0aD1pbmRleGVzL2NwbWR1bXBAZ21haWwuY29tL2E3MGZhZmYwLWJmMjAtNDU2NS1hMTgxLTRhMTg5ZTRjNDUwNSZwcm9qX25hbWU9U3RyYXdiZXJyeSBQcm9qZWN0JnF1ZXJ5PQ==
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6298710" class="outline-3">
+<h3 id="org6298710"><span class="section-number-3">1.3.</span> Playground tries</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="outline-container-orgc81c085" class="outline-4">
+<h4 id="orgc81c085"><span class="section-number-4">1.3.1.</span> Try getting relevant notes simply.</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">from</span> pprint <span style="color: #fb4934;">import</span> pprint
+
+<span style="color: #83a598;">user_email</span> <span style="color: #fb4934;">=</span> instance_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"account_email"</span>]
+<span style="color: #83a598;">instance_id</span> <span style="color: #fb4934;">=</span> instance_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"instance_id"</span>]
+<span style="color: #83a598;">model</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"gpt-3.5-turbo"</span>
+
+<span style="color: #83a598;">query_api</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/query"</span>
+<span style="color: #83a598;">query</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"which chunks are related to python?"</span>
+<span style="color: #83a598;">query_params</span> <span style="color: #fb4934;">=</span> {
+    <span style="color: #b8bb26;">"user_email"</span>: user_email,
+    <span style="color: #b8bb26;">"instance_id"</span>: instance_id,
+    <span style="color: #b8bb26;">"query"</span>: query,
+    <span style="color: #b8bb26;">"model"</span>: model,
+    <span style="color: #b8bb26;">"top_k"</span>: <span style="color: #d3869b;">5</span>,
+}
+
+<span style="color: #83a598;">response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">get</span>(query_api, <span style="color: #ebdbb2; font-weight: bold;">params</span><span style="color: #fb4934;">=</span>query_params)
+<span style="color: #d3869b; font-weight: bold;">pprint</span>(response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>())
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb0e1a25" class="outline-4">
+<h4 id="orgb0e1a25"><span class="section-number-4">1.3.2.</span> Use create<sub>template</sub> and create<sub>app</sub></h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+We first create a template for the instance using the <code>create_template</code> api.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> requests
+<span style="color: #fb4934;">import</span> json
+
+<span style="color: #83a598;">template_api</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/create_template"</span>
+
+<span style="color: #83a598;">prompt</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"""</span>
+<span style="color: #dfd2b8;">Generate the response as a JSON object of related notes. For example,</span>
+
+<span style="color: #dfd2b8;">Question: What notes are related to xyz?</span>
+<span style="color: #dfd2b8;">Response: {</span>
+<span style="color: #dfd2b8;">    "query": The user question,</span>
+<span style="color: #dfd2b8;">    "related_notes": ["note1", "note2", "note3"],</span>
+<span style="color: #dfd2b8;">}</span>
+<span style="color: #b8bb26;">"""</span>
+<span style="color: #83a598;">app_config</span> <span style="color: #fb4934;">=</span> {
+    <span style="color: #b8bb26;">"advanced"</span>: {
+        <span style="color: #b8bb26;">"intent"</span>: <span style="color: #b8bb26;">"qa_doc"</span>,
+        <span style="color: #b8bb26;">"search"</span>: <span style="color: #b8bb26;">"qa_gen"</span>,
+        <span style="color: #b8bb26;">"app_type"</span>: <span style="color: #b8bb26;">"complex"</span>,
+    },
+    <span style="color: #928374;"># "prompt": prompt,</span>
+}
+
+<span style="color: #83a598;">data</span> <span style="color: #fb4934;">=</span> {<span style="color: #b8bb26;">"app_config"</span>: json.<span style="color: #d3869b; font-weight: bold; font-style: italic;">dumps</span>(app_config)}
+<span style="color: #83a598;">template_response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">post</span>(template_api, <span style="color: #ebdbb2; font-weight: bold;">data</span><span style="color: #fb4934;">=</span>data)
+<span style="color: #fe8019; font-weight: bold;">print</span>(template_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>())
+</pre>
+</div>
+
+<pre class="example">
+{'app_config': {'advanced': {'app_type': 'complex', 'intent': 'qa_doc', 'search': 'qa_gen'}}, 'template_id': 'b037c822-2035-4ce5-9f27-37388e6a0071'}
+</pre>
+
+
+<p>
+Now that we have a template, we will use it to create an instance using the <code>create_app</code> api.
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #83a598;">template_id</span> <span style="color: #fb4934;">=</span> template_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"template_id"</span>]
+
+<span style="color: #83a598;">app_api</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/create_app"</span>
+<span style="color: #83a598;">data</span> <span style="color: #fb4934;">=</span> {<span style="color: #b8bb26;">"template_id"</span>: template_id, <span style="color: #b8bb26;">"user_email"</span>: <span style="color: #b8bb26;">"cpmdump@gmail.com"</span>, <span style="color: #b8bb26;">"data_source"</span>: json.<span style="color: #d3869b; font-weight: bold; font-style: italic;">dumps</span>(text_files)}
+<span style="color: #83a598;">app_response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">post</span>(app_api, <span style="color: #ebdbb2; font-weight: bold;">data</span><span style="color: #fb4934;">=</span>data)
+<span style="color: #fe8019; font-weight: bold;">print</span>(app_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>())
+
+<span style="color: #83a598;">app_endpoint</span> <span style="color: #fb4934;">=</span> app_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"api_endpoint"</span>]
+</pre>
+</div>
+
+<pre class="example">
+{'account_email': 'cpmdump@gmail.com', 'api_endpoint': 'https://api.berri.ai/query?user_email=cpmdump@gmail.com&amp;instance_id=e4e9556e-7337-4bab-a48d-377954985374&amp;agent_type=complex_support', 'instance_id': 'e4e9556e-7337-4bab-a48d-377954985374', 'playground_endpoint': 'play.berri.ai/aHR0cHM6Ly9zdG9yZXF1ZXJ5YWJoaTItYXlsdS56ZWV0LWJlcnJpLnplZXQuYXBwL2JlcnJpX3F1ZXJ5P3Byb2pfcGF0aD1pbmRleGVzL2NwbWR1bXBAZ21haWwuY29tL2U0ZTk1NTZlLTczMzctNGJhYi1hNDhkLTM3Nzk1NDk4NTM3NCZwcm9qX25hbWU9ZGF0YV9saXN0JmFnZW50X3R5cGU9Y29tcGxleF9zdXBwb3J0JnF1ZXJ5PQ==', 'website_endpoint': 'chat.berri.ai/aHR0cHM6Ly9zdG9yZXF1ZXJ5YWJoaTItYXlsdS56ZWV0LWJlcnJpLnplZXQuYXBwL2JlcnJpX3F1ZXJ5P3Byb2pfcGF0aD1pbmRleGVzL2NwbWR1bXBAZ21haWwuY29tL2U0ZTk1NTZlLTczMzctNGJhYi1hNDhkLTM3Nzk1NDk4NTM3NCZwcm9qX25hbWU9ZGF0YV9saXN0JmFnZW50X3R5cGU9Y29tcGxleF9zdXBwb3J0JnF1ZXJ5PQ=='}
+</pre>
+
+
+<p>
+This creates an instance that should have the summaries embedded too, which can help relate notes?
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">from</span> pprint <span style="color: #fb4934;">import</span> pprint
+
+<span style="color: #83a598;">user_email</span> <span style="color: #fb4934;">=</span> app_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"account_email"</span>]
+<span style="color: #83a598;">instance_id</span> <span style="color: #fb4934;">=</span> app_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"instance_id"</span>]
+<span style="color: #83a598;">model</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"gpt-3.5-turbo"</span>
+
+<span style="color: #83a598;">query_api</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/query"</span>
+<span style="color: #83a598;">query</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"which notes are related to python?"</span>
+<span style="color: #83a598;">query_params</span> <span style="color: #fb4934;">=</span> {
+    <span style="color: #b8bb26;">"user_email"</span>: user_email,
+    <span style="color: #b8bb26;">"instance_id"</span>: instance_id,
+    <span style="color: #b8bb26;">"query"</span>: query,
+    <span style="color: #b8bb26;">"model"</span>: model,
+    <span style="color: #b8bb26;">"top_k"</span>: <span style="color: #d3869b;">10</span>,
+}
+
+<span style="color: #83a598;">response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">get</span>(query_api, <span style="color: #ebdbb2; font-weight: bold;">params</span><span style="color: #fb4934;">=</span>query_params)
+
+<span style="color: #fb4934;">for</span> <span style="color: #83a598;">reference</span> <span style="color: #fb4934;">in</span> response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"references"</span>]:
+    <span style="color: #fe8019; font-weight: bold;">print</span>(reference[<span style="color: #b8bb26;">"doc_metadata"</span>], reference[<span style="color: #b8bb26;">"similarity"</span>])
+</pre>
+</div>
+
+<pre class="example">
+autoreload_with_ipython.txt 0.772821150576018
+bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt 0.76837971064003
+where_are_matplotlib_rcparams_used.txt 0.767879123880019
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"response"</span>]
+</pre>
+</div>
+
+<pre class="example">
+All of the notes in this context are related to Python.
+</pre>
+</div>
+</div>
+<div id="outline-container-org4a9a957" class="outline-4">
+<h4 id="org4a9a957"><span class="section-number-4">1.3.3.</span> Generate summaries of notes individually</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> json
+<span style="color: #fb4934;">import</span> requests
+
+<span style="color: #83a598;">summaries</span> <span style="color: #fb4934;">=</span> {}
+<span style="color: #fb4934;">for</span> <span style="color: #83a598;">note</span> <span style="color: #fb4934;">in</span> text_files:
+    <span style="color: #fe8019; font-weight: bold;">print</span>(<span style="color: #b8bb26;">f"Summarizing </span><span style="color: #fb4934;">{</span><span style="color: #ebdbb2; background-color: #282828;">note[</span><span style="color: #b8bb26; background-color: #282828;">'</span><span style="color: #ebdbb2; background-color: #282828;">chunk_metadata</span><span style="color: #b8bb26; background-color: #282828;">'</span><span style="color: #ebdbb2; background-color: #282828;">]</span><span style="color: #fb4934;">}</span><span style="color: #b8bb26;">"</span>)
+    <span style="color: #83a598;">url</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/create_app"</span>
+    <span style="color: #83a598;">data</span> <span style="color: #fb4934;">=</span> {<span style="color: #b8bb26;">"user_email"</span>: <span style="color: #b8bb26;">"cpmdump@gmail.com"</span>, <span style="color: #b8bb26;">"data_source"</span>: json.<span style="color: #d3869b; font-weight: bold; font-style: italic;">dumps</span>([note])}
+    <span style="color: #83a598;">app_response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">post</span>(url, <span style="color: #ebdbb2; font-weight: bold;">data</span><span style="color: #fb4934;">=</span>data)
+
+    <span style="color: #fb4934;">if</span> <span style="color: #fb4934;">not</span> app_response.<span style="color: #d3869b; font-style: italic;">ok</span>:
+        <span style="color: #fe8019; font-weight: bold;">print</span>(app_response.<span style="color: #d3869b; font-style: italic;">text</span>)
+        <span style="color: #fb4934;">break</span>
+    <span style="color: #83a598;">query_api</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/query"</span>
+    <span style="color: #83a598;">query_params</span> <span style="color: #fb4934;">=</span> {
+        <span style="color: #b8bb26;">"user_email"</span>: app_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"account_email"</span>],
+        <span style="color: #b8bb26;">"instance_id"</span>: app_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"instance_id"</span>],
+        <span style="color: #b8bb26;">"query"</span>: <span style="color: #b8bb26;">f"Summarize the note </span><span style="color: #fb4934;">{</span><span style="color: #ebdbb2; background-color: #282828;">note[</span><span style="color: #b8bb26; background-color: #282828;">'</span><span style="color: #ebdbb2; background-color: #282828;">chunk_metadata</span><span style="color: #b8bb26; background-color: #282828;">'</span><span style="color: #ebdbb2; background-color: #282828;">]</span><span style="color: #fb4934;">}</span><span style="color: #b8bb26;">"</span>,
+        <span style="color: #b8bb26;">"model"</span>: <span style="color: #b8bb26;">"gpt-3.5-turbo"</span>,
+    }
+    <span style="color: #83a598;">response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">get</span>(query_api, <span style="color: #ebdbb2; font-weight: bold;">params</span><span style="color: #fb4934;">=</span>query_params)
+    summaries[note[<span style="color: #b8bb26;">"chunk_metadata"</span>]] <span style="color: #fb4934;">=</span> response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"response"</span>]
+
+</pre>
+</div>
+
+<pre class="example" id="orge051d88">
+Summarizing export_source_code_of_tex_file.txt
+Summarizing autoreload_with_ipython.txt
+Summarizing change_font_size_in_emacs.txt
+Summarizing attractors_using_datashader.txt
+Summarizing config_class_using_chainmaps.txt
+Summarizing chunky_pandas_read_csv_in_chunks.txt
+Summarizing attractors_examples_0_1_0_documentation.txt
+Summarizing audio_on_linux.txt
+Summarizing bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt
+Summarizing where_are_matplotlib_rcparams_used.txt
+Summarizing does_plt_scatter_work_with_masked_offsets.txt
+Summarizing chainmaps_in_python.txt
+Summarizing emacsconf_2022_talks_emacs_journalism_or_everything_s_a_nail_if_you_hit_it_with_emacs.txt
+Summarizing 1_how_scientists_colorize_photos_of_space_youtube.txt
+Summarizing bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt
+Summarizing click_command_line_interfaces:_make_options_required_if_other_optional_option_is_unset.txt
+Summarizing aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode.txt
+Summarizing 12_decorator_and_descriptors_advance_python_tutorials_documentation.txt
+</pre>
+
+<p>
+What if we put these summaries as chunks to get related stuff?
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> json
+<span style="color: #fb4934;">import</span> requests
+
+<span style="color: #83a598;">data_dump</span> <span style="color: #fb4934;">=</span> json.<span style="color: #d3869b; font-weight: bold; font-style: italic;">dumps</span>([{<span style="color: #b8bb26;">"chunk_metadata"</span>: name, <span style="color: #b8bb26;">"chunk"</span>: summary} <span style="color: #fb4934;">for</span> <span style="color: #83a598;">name</span>, <span style="color: #83a598;">summary</span> <span style="color: #fb4934;">in</span> summaries.<span style="color: #d3869b; font-weight: bold; font-style: italic;">items</span>()])
+<span style="color: #83a598;">url</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/create_app"</span>
+<span style="color: #83a598;">data</span> <span style="color: #fb4934;">=</span> {<span style="color: #b8bb26;">"user_email"</span>: <span style="color: #b8bb26;">"cpmdump@gmail.com"</span>, <span style="color: #b8bb26;">"data_source"</span>: data_dump}
+<span style="color: #83a598;">instance_response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">post</span>(url, <span style="color: #ebdbb2; font-weight: bold;">data</span><span style="color: #fb4934;">=</span>data)
+<span style="color: #83a598;">playground_endpoint</span> <span style="color: #fb4934;">=</span> instance_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"playground_endpoint"</span>]
+<span style="color: #fe8019; font-weight: bold;">print</span>(playground_endpoint)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">from</span> tqdm <span style="color: #fb4934;">import</span> tqdm
+
+<span style="color: #83a598;">related_queries</span> <span style="color: #fb4934;">=</span> {}
+<span style="color: #fb4934;">for</span> <span style="color: #83a598;">querynote</span> <span style="color: #fb4934;">in</span> <span style="color: #d3869b; font-weight: bold;">tqdm</span>(summaries):
+    <span style="color: #83a598;">query_api</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/query"</span>
+    <span style="color: #928374;"># querynote = "bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt"</span>
+    <span style="color: #928374;"># querynote = "bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt"</span>
+    <span style="color: #83a598;">query_params</span> <span style="color: #fb4934;">=</span> {
+        <span style="color: #b8bb26;">"user_email"</span>: instance_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"account_email"</span>],
+        <span style="color: #b8bb26;">"instance_id"</span>: instance_response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"instance_id"</span>],
+        <span style="color: #b8bb26;">"query"</span>: <span style="color: #b8bb26;">f"Which note other than </span><span style="color: #fb4934;">{</span><span style="color: #ebdbb2; background-color: #282828;">querynote</span><span style="color: #fb4934;">}</span><span style="color: #b8bb26;"> talks about similar topics as </span><span style="color: #fb4934;">{</span><span style="color: #ebdbb2; background-color: #282828;">querynote</span><span style="color: #fb4934;">}</span><span style="color: #b8bb26;">"</span>,
+        <span style="color: #928374;"># "query": f"What topics keywords are covered in {querynote}",</span>
+        <span style="color: #b8bb26;">"model"</span>: <span style="color: #b8bb26;">"gpt-3.5-turbo"</span>,
+    }
+    <span style="color: #83a598;">response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">get</span>(query_api, <span style="color: #ebdbb2; font-weight: bold;">params</span><span style="color: #fb4934;">=</span>query_params)
+    related_queries[<span style="color: #83a598;">querynote</span>] <span style="color: #fb4934;">=</span> [(x[<span style="color: #b8bb26;">"doc_metadata"</span>], x[<span style="color: #b8bb26;">"similarity"</span>]) <span style="color: #fb4934;">for</span> <span style="color: #83a598;">x</span> <span style="color: #fb4934;">in</span> response.<span style="color: #d3869b; font-weight: bold; font-style: italic;">json</span>()[<span style="color: #b8bb26;">"references"</span>]]
+</pre>
+</div>
+
+<pre class="example">
+100% 18/18 [00:33&lt;00:00,  1.86s/it]
+
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #d3869b; font-weight: bold;">pprint</span>(related_queries)
+</pre>
+</div>
+
+<pre class="example" id="org2dc16a7">
+{'12_decorator_and_descriptors_advance_python_tutorials_documentation.txt': [('12_decorator_and_descriptors_advance_python_tutorials_documentation.txt',
+                                                                              0.801491485346171),
+                                                                             ('bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt',
+                                                                              0.769774133145604)],
+ '1_how_scientists_colorize_photos_of_space_youtube.txt': [('1_how_scientists_colorize_photos_of_space_youtube.txt',
+                                                            0.866898380621366),
+                                                           ('aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode.txt',
+                                                            0.787544429009431)],
+ 'aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode.txt': [('aaronpenne_generative_art_a_collection_of_my_generative_artwork_mostly_with_processing_in_python_mode.txt',
+                                                                                                                0.88111354230034),
+                                                                                                               ('emacsconf_2022_talks_emacs_journalism_or_everything_s_a_nail_if_you_hit_it_with_emacs.txt',
+                                                                                                                0.780368471118458)],
+ 'attractors_examples_0_1_0_documentation.txt': [('attractors_examples_0_1_0_documentation.txt',
+                                                  0.849884469214183),
+                                                 ('attractors_using_datashader.txt',
+                                                  0.799727094675026)],
+ 'attractors_using_datashader.txt': [('attractors_using_datashader.txt',
+                                      0.849356923206236),
+                                     ('attractors_examples_0_1_0_documentation.txt',
+                                      0.841316289272838)],
+ 'audio_on_linux.txt': [('audio_on_linux.txt', 0.793566176368703),
+                        ('click_command_line_interfaces:_make_options_required_if_other_optional_option_is_unset.txt',
+                         0.760427890909493)],
+ 'autoreload_with_ipython.txt': [('autoreload_with_ipython.txt',
+                                  0.862660274256445),
+                                 ('chunky_pandas_read_csv_in_chunks.txt',
+                                  0.773916791555096)],
+ 'bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt': [('bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt',
+                                                                                                                0.927062315641177),
+                                                                                                               ('bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt',
+                                                                                                                0.818052487673946)],
+ 'bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt': [('bug_polar_plot_wrong_y_values_when_set_ylim_is_used_issue_24790_matplotlib_matplotlib.txt',
+                                                                                                0.88649582204242),
+                                                                                               ('bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt',
+                                                                                                0.850670934887906)],
+ 'chainmaps_in_python.txt': [('chainmaps_in_python.txt', 0.838342616347961),
+                             ('config_class_using_chainmaps.txt',
+                              0.807442005228644)],
+ 'change_font_size_in_emacs.txt': [('change_font_size_in_emacs.txt',
+                                    0.851839845742051),
+                                   ('emacsconf_2022_talks_emacs_journalism_or_everything_s_a_nail_if_you_hit_it_with_emacs.txt',
+                                    0.789396265311118)],
+ 'chunky_pandas_read_csv_in_chunks.txt': [('chunky_pandas_read_csv_in_chunks.txt',
+                                           0.845295000355032),
+                                          ('where_are_matplotlib_rcparams_used.txt',
+                                           0.763790937761751)],
+ 'click_command_line_interfaces:_make_options_required_if_other_optional_option_is_unset.txt': [('click_command_line_interfaces:_make_options_required_if_other_optional_option_is_unset.txt',
+                                                                                                 0.923219390051759),
+                                                                                                ('where_are_matplotlib_rcparams_used.txt',
+                                                                                                 0.760569829934478)],
+ 'config_class_using_chainmaps.txt': [('config_class_using_chainmaps.txt',
+                                       0.839832113622164),
+                                      ('chainmaps_in_python.txt',
+                                       0.783611604698386)],
+ 'does_plt_scatter_work_with_masked_offsets.txt': [('does_plt_scatter_work_with_masked_offsets.txt',
+                                                    0.845049315280412),
+                                                   ('where_are_matplotlib_rcparams_used.txt',
+                                                    0.773232239436078)],
+ 'emacsconf_2022_talks_emacs_journalism_or_everything_s_a_nail_if_you_hit_it_with_emacs.txt': [('emacsconf_2022_talks_emacs_journalism_or_everything_s_a_nail_if_you_hit_it_with_emacs.txt',
+                                                                                                0.839243988602219),
+                                                                                               ('change_font_size_in_emacs.txt',
+                                                                                                0.794385513400397)],
+ 'export_source_code_of_tex_file.txt': [('export_source_code_of_tex_file.txt',
+                                         0.857983976417399),
+                                        ('where_are_matplotlib_rcparams_used.txt',
+                                         0.780384919535461)],
+ 'where_are_matplotlib_rcparams_used.txt': [('where_are_matplotlib_rcparams_used.txt',
+                                             0.852354787774178),
+                                            ('bug_contour_raises_indexerror_if_z_is_specified_as_keyword_argument_issue_24743_matplotlib_matplotlib.txt',
+                                             0.791104194745004)]}
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">os.<span style="color: #d3869b; font-style: italic;">path</span>.<span style="color: #d3869b; font-weight: bold; font-style: italic;">splitext</span>(<span style="color: #b8bb26;">"/abc/base.txt"</span>)
+</pre>
+</div>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">/abc/base</td>
+<td class="org-left">.txt</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaf57810" class="outline-3">
+<h3 id="orgaf57810"><span class="section-number-3">1.4.</span> Deleting berry instances</h3>
+<div class="outline-text-3" id="text-1-4">
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span style="color: #fb4934;">import</span> requests
+
+<span style="color: #83a598;">url</span> <span style="color: #fb4934;">=</span> <span style="color: #b8bb26;">"https://api.berri.ai/delete_instance"</span>
+
+<span style="color: #83a598;">instances</span> <span style="color: #fb4934;">=</span> [
+    <span style="color: #b8bb26;">"a235f790-8609-4b75-a662-50fc7dd8bfa0"</span>,
+    <span style="color: #b8bb26;">"a93e9e5c-6aef-4965-877d-ad8ef02d072c"</span>,
+    <span style="color: #b8bb26;">"51d56bb7-00ae-42e5-b452-1d14bfb6310c"</span>,
+    <span style="color: #b8bb26;">"10fc52c4-ed2e-4c4a-9184-57f9e4c21f03"</span>,
+    <span style="color: #b8bb26;">"ac160ec7-7660-472d-bdb3-b35b3742449d"</span>,
+    <span style="color: #b8bb26;">"9f5d7028-3644-4874-8dda-eae2cbdb2bb5"</span>,
+    <span style="color: #b8bb26;">"1a387ee8-aade-4cc5-b556-af6405660329"</span>,
+    <span style="color: #b8bb26;">"cd991ec9-92d5-4054-8afc-fc440e3519cf"</span>,
+    <span style="color: #b8bb26;">"1cae75f4-809e-4073-8cb6-516f7ad27748"</span>,
+    <span style="color: #b8bb26;">"a70faff0-bf20-4565-a181-4a189e4c4505"</span>,
+]
+
+<span style="color: #fb4934;">for</span> <span style="color: #83a598;">instance_id</span> <span style="color: #fb4934;">in</span> instances:
+    <span style="color: #83a598;">params</span> <span style="color: #fb4934;">=</span> {
+        <span style="color: #b8bb26;">"user_email"</span>: <span style="color: #b8bb26;">"cpmdump@gmail.com"</span>,
+        <span style="color: #b8bb26;">"instance_id"</span>: instance_id,
+    }
+
+    <span style="color: #fe8019; font-weight: bold;">print</span>(<span style="color: #b8bb26;">f"Deleting </span><span style="color: #fb4934;">{</span><span style="color: #ebdbb2; background-color: #282828;">instance_id</span><span style="color: #fb4934;">}</span><span style="color: #b8bb26;">"</span>)
+    <span style="color: #83a598;">response</span> <span style="color: #fb4934;">=</span> requests.<span style="color: #d3869b; font-weight: bold; font-style: italic;">post</span>(url, <span style="color: #ebdbb2; font-weight: bold;">params</span><span style="color: #fb4934;">=</span>params)
+
+    <span style="color: #fe8019; font-weight: bold;">print</span>(response.<span style="color: #d3869b; font-style: italic;">text</span>)
+</pre>
+</div>
+
+<pre class="example" id="orgcdf3d03">
+Deleting a235f790-8609-4b75-a662-50fc7dd8bfa0
+{"message":"Instance a235f790-8609-4b75-a662-50fc7dd8bfa0 deleted successfully","status":"success"}
+
+Deleting a93e9e5c-6aef-4965-877d-ad8ef02d072c
+{"message":"Instance a93e9e5c-6aef-4965-877d-ad8ef02d072c deleted successfully","status":"success"}
+
+Deleting 51d56bb7-00ae-42e5-b452-1d14bfb6310c
+{"message":"Instance 51d56bb7-00ae-42e5-b452-1d14bfb6310c deleted successfully","status":"success"}
+
+Deleting 10fc52c4-ed2e-4c4a-9184-57f9e4c21f03
+{"message":"Instance 10fc52c4-ed2e-4c4a-9184-57f9e4c21f03 deleted successfully","status":"success"}
+
+Deleting ac160ec7-7660-472d-bdb3-b35b3742449d
+{"message":"Instance ac160ec7-7660-472d-bdb3-b35b3742449d deleted successfully","status":"success"}
+
+Deleting 9f5d7028-3644-4874-8dda-eae2cbdb2bb5
+{"message":"Instance 9f5d7028-3644-4874-8dda-eae2cbdb2bb5 deleted successfully","status":"success"}
+
+Deleting 1a387ee8-aade-4cc5-b556-af6405660329
+{"message":"Instance 1a387ee8-aade-4cc5-b556-af6405660329 deleted successfully","status":"success"}
+
+Deleting cd991ec9-92d5-4054-8afc-fc440e3519cf
+{"message":"Instance cd991ec9-92d5-4054-8afc-fc440e3519cf deleted successfully","status":"success"}
+
+Deleting 1cae75f4-809e-4073-8cb6-516f7ad27748
+{"message":"Instance 1cae75f4-809e-4073-8cb6-516f7ad27748 deleted successfully","status":"success"}
+
+Deleting a70faff0-bf20-4565-a181-4a189e4c4505
+{"message":"Instance a70faff0-bf20-4565-a181-4a189e4c4505 deleted successfully","status":"success"}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<hr/>
+<footer>
+<div class="generated">
+Created with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.6.1)
+</div>
+</footer>
+</div>
+</body>
+</html>

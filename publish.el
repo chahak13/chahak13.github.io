@@ -107,7 +107,7 @@ Created with %c
 
         ("static"
          :base-directory ,publish-chahak13-base-dir
-         :base-extension "css\\|txt\\|jpg\\|gif\\|png"
+         :base-extension "css\\|txt\\|jpg\\|gif\\|png\\|pdf"
          :recursive t
          :publishing-directory ,publish-chahak13-publish-dir
          :publishing-function org-publish-attachment)

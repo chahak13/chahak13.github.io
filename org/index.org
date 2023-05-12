@@ -3,6 +3,7 @@
 
 #+html: <nav>
 - [[https://github.com/chahak13][GitHub]]
+- [[file:assets/Chahak_Mehta_Resume.pdf][Resume]]
 #+html: </nav>
 
 Hello, I'm Chahak! I am a Masters student at UT Austin in the Computational Science, Engineering, and Mathematics program. I like reading about new things in tech, and just anything in general. I also like tinkering with the tools that I use in my everyday life like OS, editor etc. so if you have any thoughts about such things, surely hit me up! I'm currently using =emacs= as my primary editor and most of the content on this site is written in =org-mode=.
